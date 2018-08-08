@@ -9,7 +9,7 @@ package ctrl;
  *
  * @author Douglas
  */
-public class SaidaProDao {
+public class SaidaProCtrl {
     private int ID;
     private int COD_PRO;
     private double VALOR_PRO;
@@ -17,9 +17,10 @@ public class SaidaProDao {
     private double VALOR_TOTAL;  
     private double DESCONT;      
     private int COD_OS;
+    private int COD_STATUS_SP;
 
-    public SaidaProDao(){}
-    public SaidaProDao(int ID, int COD_PRO, double VALOR_PRO, int QTD, double VALOR_TOTAL, double DESCONT, int COD_OS) {
+    public SaidaProCtrl(){}
+    public SaidaProCtrl(int ID, int COD_PRO, double VALOR_PRO, int QTD, double VALOR_TOTAL, double DESCONT, int COD_OS, int COD_STATUS_SP) {
         this.ID = ID;
         this.COD_PRO = COD_PRO;
         this.VALOR_PRO = VALOR_PRO;
@@ -27,6 +28,7 @@ public class SaidaProDao {
         this.VALOR_TOTAL = VALOR_TOTAL;
         this.DESCONT = DESCONT;
         this.COD_OS = COD_OS;
+        this.COD_STATUS_SP = COD_STATUS_SP;
     }
 
     public int getID() {
@@ -83,6 +85,14 @@ public class SaidaProDao {
 
     public void setCOD_OS(int COD_OS) {
         this.COD_OS = COD_OS;
+    }
+
+    public int getCOD_STATUS_SP() {
+        return COD_STATUS_SP;
+    }
+
+    public void setCOD_STATUS_SP(int COD_STATUS_SP) {
+        this.COD_STATUS_SP = COD_STATUS_SP;
     }
     
     

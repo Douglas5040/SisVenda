@@ -15,7 +15,8 @@ import java.sql.SQLException;
  */
 public class BancoMySql {
     //pode também usar 'localhost' no URL
-    private static final String URL = "jdbc:mysql://127.0.0.1/sistema_venda";
+    public static final String IP = "127.0.0.1";
+    private static final String URL = "jdbc:mysql://"+IP+"/sistema_venda";
     private static final String USER = "root";
     private static final String PASSWORD = "";
 	

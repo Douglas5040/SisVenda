@@ -19,7 +19,8 @@ public class OrdemServiceCtrl {
     private double descont;
     private int cod_status_os;
     private String obs;
-
+    
+    public OrdemServiceCtrl(){}
     public OrdemServiceCtrl(int id, double valor, String data_hora_opem, String data_hora_close, int cod_vendedor, int cod_cli, double descont, int cod_status_os, String obs) {
         this.id = id;
         this.valor = valor;

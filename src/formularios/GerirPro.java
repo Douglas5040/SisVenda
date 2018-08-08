@@ -1619,10 +1619,13 @@ public class GerirPro extends javax.swing.JFrame {
             opEst.codOpera = 1;
             opEst.forneceCtrl.setID(forneDao.selectCodFornece(jtFornece.getText()));
             opEst.codUser = SisPrinc.userlogin.getId();
+            
+            //dar pause no processo dessa tela para esperar resposta do Operations Estoque
+            while(!okOperation){}
             if(okOperation){
                 objProDao.inserir(objProduto);
-                JOptionPane.showMessageDialog(null,"Produto cadastrado com Sucesso!!!"); 
-                
+                jlMenssager.setText("Produto cadastrado com Sucesso!!!"); 
+
                 try {
                     SisPrinc.class.newInstance().clickBtnPro();
                 } catch (InstantiationException ex) {
@@ -1633,7 +1636,8 @@ public class GerirPro extends javax.swing.JFrame {
 
                  setVisible(false);
 
-            }else JOptionPane.showMessageDialog(null,"Produto cadastrado com Sucesso!!!"); 
+            }JOptionPane.showMessageDialog(null,"Produto NãO cadastrado!!!"); 
+            
         }
 
     }
@@ -1722,21 +1726,27 @@ public class GerirPro extends javax.swing.JFrame {
             //STATUS
             objProduto.setCod_status(1);
             
-            boolean isProEdit = false;
             
             
             if(jtCodBarras.getText().equals("") || jtNome.getText().equals("") || 
                 jtPriceFrabric.getText().equals("") )
             {   jlMenssager.setText("Preencha todos os Dados do Produto"); 
             }else{   
-                isProEdit = true;
-                objProDao.alterar(objProduto);    
-            }
-
-                if(isProEdit){
+                   
+                OperationsEstoque opEst = new OperationsEstoque();
+                opEst.setVisible(true);
+                opEst.codPro = objProduto.getCod_barras();
+                opEst.qtd = objProduto.getEstoq_atual();
+                opEst.codOpera = 6;
+                opEst.forneceCtrl.setID(forneDao.selectCodFornece(jtFornece.getText()));
+                opEst.codUser = SisPrinc.userlogin.getId();
+                while(!okOperation){}
+                if(okOperation){
+                    objProDao.alterar(objProduto);   
                     jlMenssager.setText("Produto Editado com Sucesso!!!"); 
                     setVisible(false);
                 }else jlMenssager.setText("Produto NÂO Editado!!!"); 
+            }
 
             }else{
             //Formulário de Cadastro de Produtos

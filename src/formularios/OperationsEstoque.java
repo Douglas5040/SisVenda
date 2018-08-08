@@ -9,13 +9,20 @@ import ctrl.ClienteCtrl;
 import ctrl.ControleProCtrl;
 import ctrl.DocumentJTextFIXACtrl;
 import ctrl.FornecedorCtrl;
+import ctrl.OrdemServiceCtrl;
+import ctrl.SaidaProCtrl;
+import ctrl.UsuarioCtrl;
 import dao.ControleProDAO;
+import dao.OrdemServiceDao;
 import dao.ProdutoDao;
+import dao.SaidaProDao;
 import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -24,7 +31,7 @@ import javax.swing.JOptionPane;
  */
 public class OperationsEstoque extends javax.swing.JFrame {
 
-    public int codPro, qtd, codOpera, codNfe, codUser;
+    public int codPro, qtd, codOpera, codOs, codUser;
     public ClienteCtrl cliCtrl;
     public FornecedorCtrl forneceCtrl;
     
@@ -34,6 +41,21 @@ public class OperationsEstoque extends javax.swing.JFrame {
      */
     public OperationsEstoque() {
         initComponents();
+        ProdutoDao proDao = new ProdutoDao();
+        
+        jtCodPro.setText(""+codPro);
+        try {
+           if(codPro != 0 || codPro != -1) jtNomePro.setText(proDao.selecionarPro(""+codPro).getString("NOME"));
+        } catch (SQLException ex) {
+            Logger.getLogger(OperationsEstoque.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("erro consulta Produto, "+ex);
+        }
+        jtQtd.setText(""+qtd);
+        if(codOpera!=0 || codOpera != -1) jcbOperation.setSelectedIndex(codOpera);
+        jtOS.setText(""+codOs);
+        jtUser.setText(SisPrinc.userlogin.getCargo());
+        if(cliCtrl != null) jtCli.setText(cliCtrl.getNome());
+        
         
     }
 
@@ -56,7 +78,7 @@ public class OperationsEstoque extends javax.swing.JFrame {
         jtQtd = new javax.swing.JTextField();
         jtNomePro = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        jtNfe = new javax.swing.JTextField();
+        jtOS = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jtUser = new javax.swing.JTextField();
         jcbOperation = new javax.swing.JComboBox<>();
@@ -111,9 +133,9 @@ public class OperationsEstoque extends javax.swing.JFrame {
         });
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel6.setText("NF-e:");
+        jLabel6.setText("OS.:");
 
-        jtNfe.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jtOS.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel7.setText("Usuario:");
@@ -189,7 +211,7 @@ public class OperationsEstoque extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jtNfe))
+                        .addComponent(jtOS))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -241,7 +263,7 @@ public class OperationsEstoque extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jtNfe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtOS, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7)
                     .addComponent(jtUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -376,6 +398,9 @@ public class OperationsEstoque extends javax.swing.JFrame {
         ctrlProCtrl.setObs(jtaObs.getText());
         
         ctrlProDao.inserir(ctrlProCtrl);
+        
+        GerirPro.okOperation = true;
+        setVisible(false);
 
     }
 
@@ -401,13 +426,19 @@ public class OperationsEstoque extends javax.swing.JFrame {
                                                 +ctrlProCtrl.getQtd(),
                                                 ""+ctrlProCtrl.getCodPro()))
                                                 ctrlProDao.inserir(ctrlProCtrl);
-
+        
+        ctrlProDao.inserir(ctrlProCtrl);
+        setVisible(false);
     }    
  
     public void operationDevolu(){
         ControleProDAO ctrlProDao = new ControleProDAO();
         ProdutoDao proDao = new ProdutoDao();
         ControleProCtrl ctrlProCtrl = new ControleProCtrl();
+        OrdemServiceCtrl osCtrl = new OrdemServiceCtrl();
+        OrdemServiceDao osDao = new OrdemServiceDao();
+        SaidaProCtrl spCtrl = new SaidaProCtrl();
+        SaidaProDao spDao = new SaidaProDao();
 
         ctrlProCtrl.setCodPro(Integer.parseInt(jtCodPro.getText()));
         ctrlProCtrl.setCodOpera(2);
@@ -426,9 +457,108 @@ public class OperationsEstoque extends javax.swing.JFrame {
                                                 ""+ctrlProCtrl.getCodPro()))
                                                 ctrlProDao.inserir(ctrlProCtrl);
         
+        ResultSet rsOs = osDao.selecionarOS(jtOS.getText());
         
+        try {
+            rsOs.first();
+            osCtrl.setId(rsOs.getInt("ID"));
+            osCtrl.setCod_cli(rsOs.getInt("COD_CLI"));
+            osCtrl.setValor(rsOs.getInt("VALOR"));
+            osCtrl.setData_hora_opem(rsOs.getString("DATA_HORA_OPEM"));
+            osCtrl.setData_hora_close(rsOs.getString("DATA_HORA_CLOSE"));
+            osCtrl.setCod_vendedor(rsOs.getInt("COD_VENDEDOR"));
+            osCtrl.setDescont(rsOs.getInt("DESCONT"));
+            osCtrl.setCod_status_os(rsOs.getInt("COD_STATUS_OS"));
+            osCtrl.setObs(rsOs.getString("OBS"));
+            
+            
+            ResultSet rsSp = spDao.selecionarSPporOs(jtOS.getText(), jtCodPro.getText());
 
-    }  
+            spCtrl.setCOD_PRO(codPro);
+            spCtrl.setVALOR_PRO(codPro);
+            spCtrl.setQTD(codPro);
+            spCtrl.setVALOR_TOTAL(codPro);
+            spCtrl.setDESCONT(codPro);
+            spCtrl.setCOD_OS(codPro);
+            spCtrl.setCOD_STATUS_SP(codPro);
+            
+            
+            double valorTotPro = 0;
+            
+            if(Integer.parseInt(jtQtd.getText()) < spCtrl.getQTD())
+            {
+                valorTotPro = spCtrl.getVALOR_PRO()*Integer.parseInt(jtQtd.getText());
+                spCtrl.setQTD(spCtrl.getQTD()-Integer.parseInt(jtQtd.getText()));
+                spCtrl.setVALOR_TOTAL(valorTotPro);
+                osCtrl.setValor(osCtrl.getValor()-spCtrl.getVALOR_TOTAL());
+                osDao.altStatusOS(osCtrl.getId(), 5);
+                
+                
+            }else if(Integer.parseInt(jtQtd.getText()) > spCtrl.getQTD()){
+                JOptionPane.showMessageDialog(null, "Clinte não comprou toda essa QUANTIDADE de produto!!!");
+                jtNomePro.setNextFocusableComponent(jtQtd);
+                jtNomePro.nextFocus();
+                jtQtd.selectAll();
+            }else{
+                osCtrl.setValor(osCtrl.getValor()-spCtrl.getVALOR_TOTAL());
+                spDao.altStatusSP(2, Integer.parseInt(jtCodPro.getText()));
+                osDao.altStatusOS(osCtrl.getId(), 5);
+            }
+            if(osCtrl.getValor() < 1) 
+                osDao.altStatusOS(osCtrl.getId(), 3);
+        
+        } catch (SQLException ex) {
+            Logger.getLogger(OperationsEstoque.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Erro na OPERAÇÃO DE ESTOQUE, "+ex);
+        }
+        
+        ctrlProDao.inserir(ctrlProCtrl);
+        setVisible(false);
+    }
+    
+    public void operationSaidaInvalid(){
+        ControleProDAO ctrlProDao = new ControleProDAO();
+        ProdutoDao proDao = new ProdutoDao();
+        ControleProCtrl ctrlProCtrl = new ControleProCtrl();
+
+        proDao.deletar(Integer.parseInt(jtCodPro.getText()), jtNomePro.getText());
+        ctrlProCtrl.setCodPro(Integer.parseInt(jtCodPro.getText()));
+        if(jcbOperation.getSelectedIndex() == 4)ctrlProCtrl.setCodOpera(4);
+        if(jcbOperation.getSelectedIndex() == 5)ctrlProCtrl.setCodOpera(7);
+        ctrlProCtrl.setCodCli(cliCtrl.getId());
+        ctrlProCtrl.setCodFornece(-1);
+        ctrlProCtrl.setQtd(Integer.parseInt(jtCodPro.getText()));
+        ctrlProCtrl.setDate(SisPrinc.hora);
+        Date dataSistema = new Date();
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        ctrlProCtrl.setHora(formato.format(dataSistema));
+        ctrlProCtrl.setObs(jtaObs.getText());
+        
+        ctrlProDao.inserir(ctrlProCtrl);
+        setVisible(false);
+    }
+    //verificar função no gerir pro
+    public void operationAltDados(){
+        ControleProDAO ctrlProDao = new ControleProDAO();
+        ProdutoDao proDao = new ProdutoDao();
+        ControleProCtrl ctrlProCtrl = new ControleProCtrl();
+
+        ctrlProCtrl.setCodPro(Integer.parseInt(jtCodPro.getText()));
+        ctrlProCtrl.setCodOpera(5);
+        ctrlProCtrl.setCodCli(cliCtrl.getId());
+        ctrlProCtrl.setCodFornece(forneceCtrl.getID());
+        ctrlProCtrl.setQtd(Integer.parseInt(jtCodPro.getText()));
+        ctrlProCtrl.setDate(SisPrinc.hora);
+        Date dataSistema = new Date();
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        ctrlProCtrl.setHora(formato.format(dataSistema));
+        ctrlProCtrl.setObs(jtaObs.getText());
+        
+        
+        ctrlProDao.inserir(ctrlProCtrl);
+        GerirPro.okOperation = true;
+        setVisible(false);
+    }
     /**
      * @param args the command line arguments
      */
@@ -486,8 +616,8 @@ public class OperationsEstoque extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> jcbOperation;
     private javax.swing.JTextField jtCli;
     private javax.swing.JTextField jtCodPro;
-    private javax.swing.JTextField jtNfe;
     private javax.swing.JTextField jtNomePro;
+    private javax.swing.JTextField jtOS;
     private javax.swing.JTextField jtQtd;
     private javax.swing.JTextField jtUser;
     private javax.swing.JTextArea jtaObs;

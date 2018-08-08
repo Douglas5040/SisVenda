@@ -277,8 +277,9 @@ public class SisPrinc extends javax.swing.JFrame {
         jSeparator5 = new javax.swing.JPopupMenu.Separator();
         jMenuItem14 = new javax.swing.JMenuItem();
         jMenuItem15 = new javax.swing.JMenuItem();
-        jMenu5 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
+        jMenu6 = new javax.swing.JMenu();
+        jMenu5 = new javax.swing.JMenu();
 
         jMenuItem2.setText("jMenuItem2");
 
@@ -2306,6 +2307,17 @@ public class SisPrinc extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu4);
 
+        jMenu3.setText("Configurações");
+        jMenu3.setContentAreaFilled(false);
+        jMenu3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jMenu3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jMenu3.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+
+        jMenu6.setText("Configurar IP Sistema");
+        jMenu3.add(jMenu6);
+
+        jMenuBar1.add(jMenu3);
+
         jMenu5.setText("SISTEMA COMERCIAL");
         jMenu5.setContentAreaFilled(false);
         jMenu5.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -2319,12 +2331,6 @@ public class SisPrinc extends javax.swing.JFrame {
         jMenu5.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         jMenu5.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
         jMenuBar1.add(jMenu5);
-
-        jMenu3.setText("jMenu3");
-        jMenu3.setContentAreaFilled(false);
-        jMenu3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jMenu3.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        jMenuBar1.add(jMenu3);
 
         setJMenuBar(jMenuBar1);
 
@@ -2886,8 +2892,7 @@ public class SisPrinc extends javax.swing.JFrame {
                     objDaoVend.inserir(objCtrlVend);
 
                     objDaopro.alterarQtdPro(qtdPro - Integer.parseInt(jtQTD.getText()), 
-                                            jNomePro.getText(),
-                                            Integer.parseInt(jtCodPro.getText()));
+                                            jtCodPro.getText());
                     
                     int qtdRows = jTablePro.getRowCount()-1;
                     jTablePro.setRowSelectionInterval(qtdRows, qtdRows);
@@ -2904,8 +2909,7 @@ public class SisPrinc extends javax.swing.JFrame {
                     objDaoVend.alterar(objCtrlVend);
 
                     objDaopro.alterarQtdPro(qtdPro + Integer.parseInt(jTablePro.getValueAt(posiPro, 3).toString()) - Integer.parseInt(jtQTD.getText()), 
-                                            jNomePro.getText(),
-                                            Integer.parseInt(jtCodPro.getText()));
+                                            jtCodPro.getText());
                     
                     jlValorTotal.setText(String.valueOf(valTotal2+(valSubPro2-desc2)-Double.valueOf(jTablePro.getValueAt(posiPro, 5).toString())));
                     //jTablePro.setShowVerticalLines(true);
@@ -3166,8 +3170,7 @@ public class SisPrinc extends javax.swing.JFrame {
                     objDaoVend.inserir(objCtrlVend);
 
                     objDaopro.alterarQtdPro(qtdPro - Integer.parseInt(jtQTD.getText()), 
-                                            jNomePro.getText(),
-                                            Integer.parseInt(jtCodPro.getText()));
+                                            jtCodPro.getText());
                     
                     int qtdRows = jTablePro.getRowCount()-1;
                     jTablePro.setRowSelectionInterval(qtdRows, qtdRows);
@@ -3191,9 +3194,8 @@ public class SisPrinc extends javax.swing.JFrame {
                     objDaoVend.alterar(objCtrlVend);
 
                     objDaopro.alterarQtdPro(qtdPro + Integer.parseInt(jTablePro.getValueAt(posiPro, 3).toString()) - Integer.parseInt(jtQTD.getText()), 
-                                            jNomePro.getText(),
-                                            Integer.parseInt(jtCodPro.getText()));
-                    
+                                            jtCodPro.getText());
+                   
                     
                     jlValorTotal.setText(doubleCtrl.convertDoubleToString(valTotal2+valSubPro2-Double.valueOf(jTablePro.getValueAt(posiPro, 5).toString())));
                     //jTablePro.setShowVerticalLines(true);
@@ -3250,7 +3252,7 @@ public class SisPrinc extends javax.swing.JFrame {
                             + proDao.qtdPro(objTM.getValueAt(jTablePro.getSelectedRow(), 0).toString());
             int codPro = Integer.parseInt(objTM.getValueAt(jTablePro.getSelectedRow(), 0).toString()); 
                     
-            proDao.alterarQtdPro(qtdProAlt, objTM.getValueAt(jTablePro.getSelectedRow(), 1).toString(), codPro);
+            proDao.alterarQtdPro(qtdProAlt, ""+codPro);
             jlValorTotal.setText(String.valueOf(valTotal2-valorPro));
             objDao.deletar(objTM.getValueAt(jTablePro.getSelectedRow(), 0).toString(),String.valueOf(codComp));
             objTM.removeRow(jTablePro.getSelectedRow());
@@ -3394,7 +3396,7 @@ public class SisPrinc extends javax.swing.JFrame {
                             + proDao.qtdPro(objTM.getValueAt(0, 0).toString());
             int codPro = Integer.parseInt(objTM.getValueAt(0, 0).toString()); 
                     
-            proDao.alterarQtdPro(qtdProAlt, objTM.getValueAt(0, 1).toString(), codPro);
+            proDao.alterarQtdPro(qtdProAlt, ""+codPro);
             objDao.deletar(jTablePro.getValueAt(0, 0).toString(),String.valueOf(codComp));
             //System.out.println(x);
             objTM.removeRow(0);
@@ -4179,6 +4181,7 @@ public class SisPrinc extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
+    private javax.swing.JMenu jMenu6;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;

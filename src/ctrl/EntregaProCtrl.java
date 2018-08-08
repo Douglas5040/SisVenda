@@ -9,7 +9,7 @@ package ctrl;
  *
  * @author Douglas
  */
-public class EntregaPro {
+public class EntregaProCtrl {
     private int id;
     private int cod_status_entre;
     private int cod_cli;
@@ -21,7 +21,7 @@ public class EntregaPro {
     private int cod_nf;
     private int serie_nf;
 
-    public EntregaPro(int id, int cod_status_entre, int cod_cli, int cod_func, String data_opem, String data_entrega, String hora_entrega, double frete, int cod_nf, int serie_nf) {
+    public EntregaProCtrl(int id, int cod_status_entre, int cod_cli, int cod_func, String data_opem, String data_entrega, String hora_entrega, double frete, int cod_nf, int serie_nf) {
         this.id = id;
         this.cod_status_entre = cod_status_entre;
         this.cod_cli = cod_cli;

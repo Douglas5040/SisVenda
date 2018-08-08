@@ -99,7 +99,7 @@ public class OrdemServiceDao {
                                                         + " DATA_HORA_OPEM=?,"
                                                         + " DATA_HORA_CLOSE=?,"
                                                         + " COD_VENDEDOR=?, "
-                                                        + " COD_CLI=?,"                                                        + " DATA_HORA_CLOSE=?, "
+                                                        + " COD_CLI=?,"                                             
                                                         + " DECONT=?,"
                                                         + " COD_STATUS_OS=?,"
                                                         + " OBS=? "
@@ -136,8 +136,8 @@ public class OrdemServiceDao {
 			
 			PreparedStatement ppStm = con.prepareStatement(queryInserir);
 			
-			ppStm.setString(1, String.valueOf(id));
-                        ppStm.setString(2, String.valueOf(cod_status));
+			ppStm.setString(1, String.valueOf(cod_status));
+                        ppStm.setString(2, String.valueOf(id));
                         
                         //JOptionPane.showMessageDialog(null, "Comando executado com sucesso");
                         
