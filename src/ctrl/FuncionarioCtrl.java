@@ -11,6 +11,7 @@ package ctrl;
  */
 public class FuncionarioCtrl {
     private int id;
+    private String codigo;
     private String nome;
     private int rg;
     private int cpf;
@@ -29,8 +30,9 @@ public class FuncionarioCtrl {
     private int cod_user;
 
     public FuncionarioCtrl(){}
-    public FuncionarioCtrl(int id, String nome, int rg, int cpf, int cart_trab, String data_nasc, int cep, String rua, int numero, String bairro, String complem, String celular, String tel1, String tel2, byte[] foto, String cargo, int cod_user) {
+    public FuncionarioCtrl(int id, String codigo, String nome, int rg, int cpf, int cart_trab, String data_nasc, int cep, String rua, int numero, String bairro, String complem, String celular, String tel1, String tel2, byte[] foto, String cargo, int cod_user) {
         this.id = id;
+        this.codigo = codigo;
         this.nome = nome;
         this.rg = rg;
         this.cpf = cpf;
@@ -55,6 +57,14 @@ public class FuncionarioCtrl {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
 
     public String getNome() {

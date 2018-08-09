@@ -11,6 +11,7 @@ package ctrl;
  */
 public class OrdemServiceCtrl {
     private int id;
+    private String codigo;
     private double valor;
     private String data_hora_opem;
     private String data_hora_close;
@@ -21,7 +22,7 @@ public class OrdemServiceCtrl {
     private String obs;
     
     public OrdemServiceCtrl(){}
-    public OrdemServiceCtrl(int id, double valor, String data_hora_opem, String data_hora_close, int cod_vendedor, int cod_cli, double descont, int cod_status_os, String obs) {
+    public OrdemServiceCtrl(int id, String codigo, double valor, String data_hora_opem, String data_hora_close, int cod_vendedor, int cod_cli, double descont, int cod_status_os, String obs) {
         this.id = id;
         this.valor = valor;
         this.data_hora_opem = data_hora_opem;
@@ -39,6 +40,14 @@ public class OrdemServiceCtrl {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
 
     public double getValor() {

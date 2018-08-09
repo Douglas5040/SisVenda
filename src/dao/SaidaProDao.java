@@ -88,6 +88,28 @@ public class SaidaProDao {
         }
         return null;
     }
+
+   /* public ResultSet selecionarLastCodSP() {
+        BancoMySql objBanco = new BancoMySql();
+        
+        try {
+            Connection con = objBanco.obtemConexao();
+            
+            String querySelectUser = "select * from saida_pro WHERE ID = ? or COD_PRO=? or COD_OS=?";
+			
+            PreparedStatement ppStm = con.prepareStatement(querySelectUser);
+            ppStm.setString(1, parametro);
+            ppStm.setString(2, parametro);
+            
+            ResultSet objRst = ppStm.executeQuery();
+            
+            //JOptionPane.showMessageDialog(null, "Comando executado com sucesso");
+            return objRst;
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "erro na execução do selecionar saida pro:  "+ex);
+        }
+        return null;
+    }*/
     
     
 

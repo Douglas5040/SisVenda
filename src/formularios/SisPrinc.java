@@ -13,12 +13,18 @@ import ctrl.ProdutoCtrl;
 import ctrl.VendaCtrl;
 import ctrl.DocumentJTextFIXACtrl;
 import ctrl.DocumentJTextNumerosCtrl;
+import ctrl.FuncionarioCtrl;
+import ctrl.OrdemServiceCtrl;
+import ctrl.SaidaProCtrl;
 import dao.AcessoDao;
 import dao.ClienteDao;
 import dao.CompraDao;
 import dao.ContasDao;
+import dao.FuncionarioDao;
+import dao.OrdemServiceDao;
 import dao.ProdutoDao;
 import dao.RelatorioDAO;
+import dao.SaidaProDao;
 import dao.VendaDao;
 import java.awt.Color;
 import java.awt.FocusTraversalPolicy;
@@ -54,8 +60,6 @@ public class SisPrinc extends javax.swing.JFrame {
     /**
      * Creates new form SisPrinc
      */
-   public GerirPro gerirPro = new GerirPro();
-   public GerirCliente gerirCliente = new GerirCliente();
    public PagCompra pagComp = new PagCompra();
    public PagConta pagConta = new PagConta();
    public AddProdutos AddPro = new AddProdutos();
@@ -66,14 +70,15 @@ public class SisPrinc extends javax.swing.JFrame {
    public int qtdPro, oldQtdPro;
    public int posiPro = 0, ctrlDoubleClick = 0;
    
-   public static int codComp = 0, codCli = 0, codPro = 0;
+   public static int codOS = 0, codCli = 0, codPro = 0;
    
    //public static boolean is_param_gerir_cli = false, is_param_gerir_pro = false;
 
    public static String nomeCli = null, hora;
    public boolean wasEdit = false, showMsg = true, addPro = false;
    
-   public static UsuarioCtrl userlogin;
+   public static UsuarioCtrl userlogin = new UsuarioCtrl();
+   public static FuncionarioCtrl func = new FuncionarioCtrl();
     public SisPrinc() {
         
         initComponents();
@@ -116,16 +121,16 @@ public class SisPrinc extends javax.swing.JFrame {
         jPanel60 = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
         jPanel61 = new javax.swing.JPanel();
-        jNomePro1 = new javax.swing.JTextField();
+        jNomeVend = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        jcbTipoVend = new javax.swing.JComboBox<>();
         jPanel63 = new javax.swing.JPanel();
         jNomePro3 = new javax.swing.JTextField();
         jLabel20 = new javax.swing.JLabel();
         jPanel62 = new javax.swing.JPanel();
-        jNomePro2 = new javax.swing.JTextField();
+        jNomeCli = new javax.swing.JTextField();
         jLabel17 = new javax.swing.JLabel();
-        jcombNome2 = new javax.swing.JComboBox<>();
+        jcombNomeCli = new javax.swing.JComboBox<>();
         jPanel9 = new javax.swing.JPanel();
         jPanel11 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
@@ -133,7 +138,7 @@ public class SisPrinc extends javax.swing.JFrame {
         jPanel12 = new javax.swing.JPanel();
         jNomePro = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        jcombNome = new javax.swing.JComboBox<>();
+        jcombNomePro = new javax.swing.JComboBox<>();
         jPanel15 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         jtQTD = new javax.swing.JTextField();
@@ -147,7 +152,7 @@ public class SisPrinc extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         jtDesc = new javax.swing.JFormattedTextField();
         jPanel13 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        jbAdd = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTablePro = new javax.swing.JTable();
         jScrollBar1 = new javax.swing.JScrollBar();
@@ -157,7 +162,7 @@ public class SisPrinc extends javax.swing.JFrame {
         jButton7 = new javax.swing.JButton();
         jSeparator12 = new javax.swing.JSeparator();
         jPanel20 = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
+        jbConcluir = new javax.swing.JButton();
         jSeparator11 = new javax.swing.JSeparator();
         jPanel18 = new javax.swing.JPanel();
         jButton4 = new javax.swing.JButton();
@@ -502,25 +507,25 @@ public class SisPrinc extends javax.swing.JFrame {
         jPanel61.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
         jPanel61.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jNomePro1.setDocument(new DocumentJTextFIXACtrl());
-        jNomePro1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jNomePro1.setPreferredSize(new java.awt.Dimension(100, 23));
-        jNomePro1.addKeyListener(new java.awt.event.KeyAdapter() {
+        jNomeVend.setDocument(new DocumentJTextFIXACtrl());
+        jNomeVend.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jNomeVend.setPreferredSize(new java.awt.Dimension(100, 23));
+        jNomeVend.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                jNomePro1KeyPressed(evt);
+                jNomeVendKeyPressed(evt);
             }
         });
-        jPanel61.add(jNomePro1, new org.netbeans.lib.awtextra.AbsoluteConstraints(13, 33, 460, 35));
+        jPanel61.add(jNomeVend, new org.netbeans.lib.awtextra.AbsoluteConstraints(13, 33, 460, 35));
 
         jLabel16.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
         jLabel16.setText("Nome Vendedor:");
         jPanel61.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 140, -1));
 
-        jComboBox1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Venda Produto", "Orçamento" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        jcbTipoVend.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jcbTipoVend.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Venda Produto", "Orçamento" }));
+        jcbTipoVend.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                jcbTipoVendActionPerformed(evt);
             }
         });
 
@@ -532,7 +537,7 @@ public class SisPrinc extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel60Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel13)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jcbTipoVend, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jPanel61, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
@@ -544,7 +549,7 @@ public class SisPrinc extends javax.swing.JFrame {
                     .addGroup(jPanel60Layout.createSequentialGroup()
                         .addComponent(jLabel13)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jcbTipoVend, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jPanel61, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(14, Short.MAX_VALUE))
         );
@@ -568,43 +573,43 @@ public class SisPrinc extends javax.swing.JFrame {
         jPanel62.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
         jPanel62.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jNomePro2.setDocument(new DocumentJTextFIXACtrl());
-        jNomePro2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jNomePro2.setBorder(null);
-        jNomePro2.setPreferredSize(new java.awt.Dimension(100, 23));
-        jNomePro2.addKeyListener(new java.awt.event.KeyAdapter() {
+        jNomeCli.setDocument(new DocumentJTextFIXACtrl());
+        jNomeCli.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jNomeCli.setBorder(null);
+        jNomeCli.setPreferredSize(new java.awt.Dimension(100, 23));
+        jNomeCli.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                jNomePro2KeyPressed(evt);
+                jNomeCliKeyPressed(evt);
             }
         });
-        jPanel62.add(jNomePro2, new org.netbeans.lib.awtextra.AbsoluteConstraints(13, 33, 340, 35));
+        jPanel62.add(jNomeCli, new org.netbeans.lib.awtextra.AbsoluteConstraints(13, 33, 340, 35));
 
         jLabel17.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
         jLabel17.setText("Nome Cliente:");
         jPanel62.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, -1, -1));
 
-        jcombNome2.setEditable(true);
-        jcombNome2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jcombNome2.setPreferredSize(new java.awt.Dimension(245, 35));
-        jcombNome2.addComponentListener(new java.awt.event.ComponentAdapter() {
+        jcombNomeCli.setEditable(true);
+        jcombNomeCli.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jcombNomeCli.setPreferredSize(new java.awt.Dimension(245, 35));
+        jcombNomeCli.addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentResized(java.awt.event.ComponentEvent evt) {
-                jcombNome2ComponentResized(evt);
+                jcombNomeCliComponentResized(evt);
             }
             public void componentShown(java.awt.event.ComponentEvent evt) {
-                jcombNome2ComponentShown(evt);
+                jcombNomeCliComponentShown(evt);
             }
         });
-        jcombNome2.addActionListener(new java.awt.event.ActionListener() {
+        jcombNomeCli.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jcombNome2ActionPerformed(evt);
+                jcombNomeCliActionPerformed(evt);
             }
         });
-        jcombNome2.addKeyListener(new java.awt.event.KeyAdapter() {
+        jcombNomeCli.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                jcombNome2KeyReleased(evt);
+                jcombNomeCliKeyReleased(evt);
             }
         });
-        jPanel62.add(jcombNome2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 370, 40));
+        jPanel62.add(jcombNomeCli, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 370, 40));
 
         javax.swing.GroupLayout jPanel59Layout = new javax.swing.GroupLayout(jPanel59);
         jPanel59.setLayout(jPanel59Layout);
@@ -686,28 +691,28 @@ public class SisPrinc extends javax.swing.JFrame {
         jLabel6.setText("Nome produto:");
         jPanel12.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, -1, -1));
 
-        jcombNome.setEditable(true);
-        jcombNome.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jcombNome.setPreferredSize(new java.awt.Dimension(245, 35));
-        jcombNome.addComponentListener(new java.awt.event.ComponentAdapter() {
+        jcombNomePro.setEditable(true);
+        jcombNomePro.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jcombNomePro.setPreferredSize(new java.awt.Dimension(245, 35));
+        jcombNomePro.addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentResized(java.awt.event.ComponentEvent evt) {
-                jcombNomeComponentResized(evt);
+                jcombNomeProComponentResized(evt);
             }
             public void componentShown(java.awt.event.ComponentEvent evt) {
-                jcombNomeComponentShown(evt);
+                jcombNomeProComponentShown(evt);
             }
         });
-        jcombNome.addActionListener(new java.awt.event.ActionListener() {
+        jcombNomePro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jcombNomeActionPerformed(evt);
+                jcombNomeProActionPerformed(evt);
             }
         });
-        jcombNome.addKeyListener(new java.awt.event.KeyAdapter() {
+        jcombNomePro.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                jcombNomeKeyReleased(evt);
+                jcombNomeProKeyReleased(evt);
             }
         });
-        jPanel12.add(jcombNome, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 480, 40));
+        jPanel12.add(jcombNomePro, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 480, 40));
 
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
         jPanel11.setLayout(jPanel11Layout);
@@ -830,6 +835,11 @@ public class SisPrinc extends javax.swing.JFrame {
         jtValorSubTotal.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jtValorSubTotal.setText("0,00");
         jtValorSubTotal.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jtValorSubTotal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jtValorSubTotalActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel16Layout = new javax.swing.GroupLayout(jPanel16);
         jPanel16.setLayout(jPanel16Layout);
@@ -896,12 +906,12 @@ public class SisPrinc extends javax.swing.JFrame {
 
         jPanel13.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
 
-        jButton1.setBackground(new java.awt.Color(173, 173, 173));
-        jButton1.setFont(new java.awt.Font("Comic Sans MS", 1, 18)); // NOI18N
-        jButton1.setText("Adicionar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jbAdd.setBackground(new java.awt.Color(173, 173, 173));
+        jbAdd.setFont(new java.awt.Font("Comic Sans MS", 1, 18)); // NOI18N
+        jbAdd.setText("Adicionar");
+        jbAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jbAddActionPerformed(evt);
             }
         });
 
@@ -911,14 +921,14 @@ public class SisPrinc extends javax.swing.JFrame {
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel13Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
+                .addComponent(jbAdd, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel13Layout.setVerticalGroup(
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel13Layout.createSequentialGroup()
                 .addGap(0, 0, 0)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jbAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(17, 17, 17))
         );
 
@@ -1037,14 +1047,14 @@ public class SisPrinc extends javax.swing.JFrame {
 
         jPanel20.setPreferredSize(new java.awt.Dimension(310, 99));
 
-        jButton2.setBackground(new java.awt.Color(43, 43, 43));
-        jButton2.setFont(new java.awt.Font("Arial Black", 0, 22)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(223, 223, 223));
-        jButton2.setText("ORDEM DE SERVIÇO");
-        jButton2.setBorder(null);
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        jbConcluir.setBackground(new java.awt.Color(43, 43, 43));
+        jbConcluir.setFont(new java.awt.Font("Arial Black", 0, 22)); // NOI18N
+        jbConcluir.setForeground(new java.awt.Color(223, 223, 223));
+        jbConcluir.setText("ORDEM DE SERVIÇO");
+        jbConcluir.setBorder(null);
+        jbConcluir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                jbConcluirActionPerformed(evt);
             }
         });
 
@@ -1052,13 +1062,13 @@ public class SisPrinc extends javax.swing.JFrame {
         jPanel20.setLayout(jPanel20Layout);
         jPanel20Layout.setHorizontalGroup(
             jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jbConcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         jPanel20Layout.setVerticalGroup(
             jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel20Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jbConcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -2477,10 +2487,34 @@ public class SisPrinc extends javax.swing.JFrame {
                     
                     ResultSet objRs = objDao.selecionarUser(objAcesso);
                     objRs.first();
+                    FuncionarioDao funcDao = new FuncionarioDao();
                     userlogin.setCargo(objRs.getString("CARGO"));
                     userlogin.setEmail(objRs.getString("EMAIL"));
                     userlogin.setId(objRs.getInt("ID"));
                     userlogin.setLogin(objRs.getString("LOGIN"));
+                    if(userlogin.getCargo().equals("GERENTE") || userlogin.getCargo().equals("PROGRAMADOR")){
+                        func = null;
+                    }else{
+                       ResultSet objFuncRs = funcDao.selectFuncForUser(objRs.getInt("ID"));
+                       func.setId(objFuncRs.getInt("ID"));
+                       func.setCodigo(objFuncRs.getString("CODIGO"));
+                       func.setNome(objFuncRs.getString("NOME"));
+                       func.setRg(objFuncRs.getInt("RG"));
+                       func.setCpf(objFuncRs.getInt("CPF"));
+                       func.setCart_trab(objFuncRs.getInt("CART_TRAB"));
+                       func.setData_nasc(objFuncRs.getString("DATA_NASC"));
+                       func.setCep(objFuncRs.getInt("CEP"));
+                       func.setRua(objFuncRs.getString("RUA"));
+                       func.setBairro(objFuncRs.getString("BAIRRO"));
+                       func.setNumero(objFuncRs.getInt("NUMERO"));
+                       func.setComplem(objFuncRs.getString("COMPLEMENTO"));
+                       func.setCelular(objFuncRs.getString("CELULAR"));
+                       func.setTel1(objFuncRs.getString("TEL1"));
+                       func.setTel2(objFuncRs.getString("TEL2"));
+                       func.setFoto(objFuncRs.getBytes("FOTO"));
+                       func.setCargo(objFuncRs.getString("CARGO"));
+                       func.setCod_user(objFuncRs.getInt("COD_USER"));
+                    }
                 }else{
                     JOptionPane.showMessageDialog(null, "Senha incorreta");
                     jbAcessar.setNextFocusableComponent(jPasswordField1);
@@ -2516,7 +2550,8 @@ public class SisPrinc extends javax.swing.JFrame {
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         codCli = 0;
-        gerirCliente.show();
+        GerirCliente gerirCliente = new GerirCliente();
+        gerirCliente.setVisible(true);
         
         
     }//GEN-LAST:event_jButton6ActionPerformed
@@ -2667,17 +2702,17 @@ public class SisPrinc extends javax.swing.JFrame {
         }else  JOptionPane.showMessageDialog(null, "Selecione um usuario para Consultar");
     }//GEN-LAST:event_jButton9ActionPerformed
 
-    private void jcombNomeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jcombNomeKeyReleased
+    private void jcombNomeProKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jcombNomeProKeyReleased
 
-    }//GEN-LAST:event_jcombNomeKeyReleased
+    }//GEN-LAST:event_jcombNomeProKeyReleased
 
-    private void jcombNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcombNomeActionPerformed
+    private void jcombNomeProActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcombNomeProActionPerformed
  
-       jNomePro.setText(jcombNome.getItemAt(jcombNome.getSelectedIndex()));
+       jNomePro.setText(jcombNomePro.getItemAt(jcombNomePro.getSelectedIndex()));
        
-       jcombNome.setNextFocusableComponent(jNomePro);
-       jcombNome.nextFocus();
-    }//GEN-LAST:event_jcombNomeActionPerformed
+       jcombNomePro.setNextFocusableComponent(jNomePro);
+       jcombNomePro.nextFocus();
+    }//GEN-LAST:event_jcombNomeProActionPerformed
 
     private void jtCodProKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtCodProKeyPressed
         ProdutoDao objDao = new ProdutoDao();
@@ -2693,29 +2728,29 @@ public class SisPrinc extends javax.swing.JFrame {
 
                     ResultSet objRs = objDao.selecionarPro(jtCodPro.getText());
                     try {
-                        objRs.next();
-                        qtdPro = objRs.getInt("qtd");
+                        objRs.first();
+                        qtdPro = objRs.getInt("ESTOQ_ATUAL");
                     } catch (SQLException ex) {
                         JOptionPane.showMessageDialog(null, "ERRO: PRODUTO NÃO ENCONTRADO "+ex);
                     }
                 }
               }
                 if(!isAddPro){     
-                    jcombNome.removeAllItems();
+                    jcombNomePro.removeAllItems();
                     ResultSet objRs = objDao.selecionarPro(jtCodPro.getText());
 
                       try {
 
-                           while(objRs.next()){jcombNome.addItem(objRs.getString("nomePro"));}
+                           while(objRs.next()){jcombNomePro.addItem(objRs.getString("NOME"));}
                            while(objRs.previous()){}
-                           objRs.next();
-                           jtValorUnit.setText(objRs.getString("valor"));
-                           qtdPro = objRs.getInt("qtd");
+                           objRs.first();
+                           jtValorUnit.setText(objRs.getString("PRECO_VAREJO"));
+                           qtdPro = objRs.getInt("ESTOQ_ATUAL");
 
                       } catch (SQLException ex) {
                           JOptionPane.showMessageDialog(null, "ERRO: PRODUTO NÃO ENCONTRADO "+ex);
-                          jButton1.setNextFocusableComponent(jtCodPro);
-                          jButton1.nextFocus();
+                          jbAdd.setNextFocusableComponent(jtCodPro);
+                          jbAdd.nextFocus();
                           jtCodPro.selectAll();
                       }
                       jtCodPro.setNextFocusableComponent(jtQTD);
@@ -2733,22 +2768,22 @@ public class SisPrinc extends javax.swing.JFrame {
                         jtCodPro.nextFocus();
                         jtQTD.selectAll();
                     }else{
-                        jButton1.setNextFocusableComponent(jtCodPro);
-                        jButton1.nextFocus();
+                        jbAdd.setNextFocusableComponent(jtCodPro);
+                        jbAdd.nextFocus();
                         jtCodPro.selectAll();
                         wasEdit = false;
                     }
                 }
             }else {
                 JOptionPane.showMessageDialog(null, "PRODUTO EM FALTA NO ESTOQUE");
-                jButton1.setNextFocusableComponent(jtCodPro);
-                jButton1.nextFocus();
+                jbAdd.setNextFocusableComponent(jtCodPro);
+                jbAdd.nextFocus();
                 jtCodPro.selectAll();
             }
         }else{
             JOptionPane.showMessageDialog(null, "PRODUTO NÃO ENCONTRADO");
-            jButton1.setNextFocusableComponent(jtCodPro);
-            jButton1.nextFocus();
+            jbAdd.setNextFocusableComponent(jtCodPro);
+            jbAdd.nextFocus();
             jtCodPro.selectAll();
         }
             
@@ -2782,158 +2817,199 @@ public class SisPrinc extends javax.swing.JFrame {
 
         if(evt.getKeyCode()==KeyEvent.VK_ENTER){
             ResultSet objRs = objDao.selecionarPro(jNomePro.getText());
-            jcombNome.removeAllItems();
+            jcombNomePro.removeAllItems();
             try {
-                while(objRs.next()){jcombNome.addItem(objRs.getString("nomePro"));}
+                while(objRs.next()){jcombNomePro.addItem(objRs.getString("NOME"));}
                 while(objRs.previous()){}
 
                 objRs.next();
-                qtdPro = objRs.getInt("qtd");
+                qtdPro = objRs.getInt("ESTOQ_ATUAL");
                  if(qtdPro == -1 || qtdPro == 0){           
                     JOptionPane.showMessageDialog(null, "PRODUTO EM FALTA NO ESTOQUE");
-                    jButton1.setNextFocusableComponent(jtCodPro);
-                    jButton1.nextFocus();
+                    jbAdd.setNextFocusableComponent(jtCodPro);
+                    jbAdd.nextFocus();
                     jtCodPro.selectAll();
                  }
-                jtValorUnit.setText(objRs.getString("valor"));
-                jtCodPro.setText(objRs.getString("cod"));
+                jtValorUnit.setText(objRs.getString("PRECO_VAREJO"));
+                jtCodPro.setText(objRs.getString("COD_BARRAS"));
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(null, "erro ao fazer cunsulta de produtos por Nome");
             }
-            jNomePro.setText(jcombNome.getItemAt(0));
+            jNomePro.setText(jcombNomePro.getItemAt(0));
             jNomePro.setNextFocusableComponent(jtQTD);
             jtDesc.select(0, 1);
             jNomePro.nextFocus();
             
-            if(jcombNome.getItemCount()<1) JOptionPane.showMessageDialog(null, "PRODUTO NÃO ENCONTRADO");
+            if(jcombNomePro.getItemCount()<1) JOptionPane.showMessageDialog(null, "PRODUTO NÃO ENCONTRADO");
             
         }
     }//GEN-LAST:event_jNomeProKeyPressed
 
-    private void jcombNomeComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jcombNomeComponentShown
+    private void jcombNomeProComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jcombNomeProComponentShown
        ProdutoDao objDao = new ProdutoDao();
 
             ResultSet objRs = objDao.selecionarPro("");
-           jcombNome.removeAllItems();
+           jcombNomePro.removeAllItems();
              try {
-                 while(objRs.next()){jcombNome.addItem(objRs.getString("nomePro"));}
+                 while(objRs.next()){jcombNomePro.addItem(objRs.getString("NOME"));}
              
              } catch (SQLException ex) {
                  JOptionPane.showMessageDialog(null, "erro ao fazer cunsulta de produtos test");
              }
-    }//GEN-LAST:event_jcombNomeComponentShown
+    }//GEN-LAST:event_jcombNomeProComponentShown
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        ProdutoDao objDaopro =new ProdutoDao();
-        CompraDao objDao = new CompraDao();
-        CompraCtrl objCtrl = new CompraCtrl();
+    private void jbAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAddActionPerformed
+        ProdutoDao objDaopro = new ProdutoDao();
+        OrdemServiceDao objOSDao = new OrdemServiceDao();
+        OrdemServiceCtrl objOSCtrl = new OrdemServiceCtrl();
+        SaidaProCtrl objSPCtrl = new SaidaProCtrl();
+        SaidaProDao objSpDao = new SaidaProDao();
         DoubleCtrl doubleCtrl = new DoubleCtrl();
+        
         if(!jNomePro.getText().equals("")){
           if(Double.valueOf(jtDesc.getText().replace(",", ".")) <= Double.valueOf(jtValorSubTotal.getText().replace(",", "."))){
             if(objDaopro.verificarPro(jtCodPro.getText())){
-                if(jTablePro.getRowCount()==0){
+                //tipo de venda orçamento ou venda balcão
+                if(jcbTipoVend.getSelectedIndex() == 0){
+                    if(jTablePro.getRowCount()==0){
 
 
-                    objCtrl.setCodCli(0);//caso tenha uma conta
-                    objCtrl.setDataCompra("0000/00/00");
-                    objCtrl.setHoraCompra("00:00:00");
-                    objCtrl.setValorTotal(0.0);
-                    objCtrl.setSituation("");
-                    objCtrl.setCodCli(0);
-                    objDao.inserir(objCtrl);
-                    codComp = objDao.selecionarCodComp();
+                        objOSCtrl.setId(0);//caso tenha uma conta
+                        objOSCtrl.setData_hora_opem("0000/00/00 00:00:00");
+                        objOSCtrl.setData_hora_close("0000/00/00 00:00:00");
+                        objOSCtrl.setValor(0.0);
+                        objOSCtrl.setCod_cli(0);
+                        objOSCtrl.setDescont(0.0);
+                        objOSCtrl.setCod_status_os(1);
+                        objOSCtrl.setObs("");
+
+                        objOSDao.inserir(objOSCtrl);
+                        codOS = objOSDao.selecionarCodOS();
+                    }
+
+                    String valSubPro = jtValorSubTotal.getText();
+                    String valTotal = jlValorTotal.getText();
+                    String valorPro = jtValorUnit.getText();
+                    String desc = jtDesc.getText();
+
+                    valSubPro = valSubPro.replace(",", ".");
+                    valTotal = valTotal.replace(",", ".");
+                    desc = desc.replace(",", ".");
+                    valorPro = valorPro.replace(",", ".");
+                    if(valorPro.substring(valorPro.length()-2,valorPro.length()-1).equals("."))  valorPro = valorPro+"0";
+
+                    Double desc2 = Double.valueOf(desc);
+                    Double valSubPro2 = Double.valueOf(valSubPro)-desc2;
+                    valSubPro = String.valueOf(valSubPro2);
+                    if(valSubPro.substring(valSubPro.length()-2,valSubPro.length()-1).equals("."))  valSubPro = valSubPro+"0";
+
+                    Double valTotal2 = Double.valueOf(valTotal);
+
+
+                    if(!wasEdit){
+                        jbAdd.setNextFocusableComponent(jTablePro);
+                        jbAdd.nextFocus();
+                        DefaultTableModel objTM = (DefaultTableModel) jTablePro.getModel();
+                        String linha[] = {
+                                     jtCodPro.getText(),
+                                     jNomePro.getText(),
+                                     valorPro,
+                                     jtQTD.getText(),
+                                     desc,
+                                     valSubPro
+                                };
+                            //objTM.setRowCount(0);                
+                            objTM.addRow(linha);
+
+                        objSPCtrl.setID(0);
+                        objSPCtrl.setCOD_PRO(objDaopro.selecionarID(jtCodPro.getText()));
+                        objSPCtrl.setVALOR_PRO(Double.valueOf(valorPro));
+                        objSPCtrl.setQTD(Integer.parseInt(jtQTD.getText()));
+                        objSPCtrl.setVALOR_TOTAL(valSubPro2);
+                        objSPCtrl.setDESCONT(desc2);
+                        objSPCtrl.setCOD_OS(codOS);
+                        objSPCtrl.setCOD_STATUS_SP(3);
+
+
+                        objSpDao.inserir(objSPCtrl);
+
+                        objDaopro.alterarQtdPro(qtdPro - Integer.parseInt(jtQTD.getText()), 
+                                                jtCodPro.getText());
+
+                        int qtdRows = jTablePro.getRowCount()-1;
+                        jTablePro.setRowSelectionInterval(qtdRows, qtdRows);
+                        jScrollBar1.getModel().setValue(jScrollBar1.getModel().getMaximum() - jScrollBar1.getModel().getExtent());
+                        jlValorTotal.setText(doubleCtrl.convertDoubleToString(valTotal2+(valSubPro2)));
+                    }else{
+                        objSPCtrl.setCOD_PRO(objDaopro.selecionarID(jtCodPro.getText()));
+                        objSPCtrl.setVALOR_PRO(Double.valueOf(valorPro));
+                        objSPCtrl.setQTD(Integer.parseInt(jtQTD.getText()));
+                        objSPCtrl.setVALOR_TOTAL(valSubPro2);
+                        objSPCtrl.setDESCONT(desc2);
+                        objSPCtrl.setCOD_OS(codOS);
+                        objSPCtrl.setCOD_STATUS_SP(3);
+
+                        objSpDao.alterarSP(objSPCtrl.getCOD_PRO(),objSPCtrl);
+
+                        objDaopro.alterarQtdPro(qtdPro + Integer.parseInt(jTablePro.getValueAt(posiPro, 3).toString()) - Integer.parseInt(jtQTD.getText()), 
+                                                jtCodPro.getText());
+
+                        jlValorTotal.setText(String.valueOf(valTotal2+(valSubPro2-desc2)-Double.valueOf(jTablePro.getValueAt(posiPro, 5).toString())));
+                        //jTablePro.setShowVerticalLines(true);
+                        jTablePro.setValueAt(jtQTD.getText(),posiPro, 3);
+                        jTablePro.setValueAt(desc,posiPro, 4);
+                        jTablePro.setValueAt(valSubPro2-desc2,posiPro, 5);
+                        wasEdit = false;
+                        jTablePro.setRowSelectionInterval(posiPro, posiPro);
+                        jScrollBar1.getModel().setValue(jScrollBar1.getModel().getMaximum() - jScrollBar1.getModel().getExtent());
+                    }
+
+                        jtValorSubTotal.setText("0.00");
+                        jtValorUnit.setText("0.00");
+                        jtDesc.setText("0.00");
+                        jtQTD.setText("1");
+                        jNomePro.setText("");
+
+                        jbAdd.setNextFocusableComponent(jtCodPro);
+                        jbAdd.nextFocus();
+                        jtCodPro.selectAll();
+                }else if(jcbTipoVend.getSelectedIndex() == 1){
+                    String valSubPro = jtValorSubTotal.getText();
+                    String valTotal = jlValorTotal.getText();
+                    String valorPro = jtValorUnit.getText();
+                    String desc = jtDesc.getText();
+
+                    valSubPro = valSubPro.replace(",", ".");
+                    valTotal = valTotal.replace(",", ".");
+                    desc = desc.replace(",", ".");
+                    valorPro = valorPro.replace(",", ".");
+                    if(valorPro.substring(valorPro.length()-2,valorPro.length()-1).equals("."))  valorPro = valorPro+"0";
+
+                    Double desc2 = Double.valueOf(desc);
+                    Double valSubPro2 = Double.valueOf(valSubPro)-desc2;
+                    valSubPro = String.valueOf(valSubPro2);
+                    if(valSubPro.substring(valSubPro.length()-2,valSubPro.length()-1).equals("."))  valSubPro = valSubPro+"0";
+
+                    Double valTotal2 = Double.valueOf(valTotal);
+
+                        jbAdd.setNextFocusableComponent(jTablePro);
+                        jbAdd.nextFocus();
+                        DefaultTableModel objTM = (DefaultTableModel) jTablePro.getModel();
+                        String linha[] = {
+                                     jtCodPro.getText(),
+                                     jNomePro.getText(),
+                                     valorPro,
+                                     jtQTD.getText(),
+                                     desc,
+                                     valSubPro
+                                };
+                            //objTM.setRowCount(0);                
+                            objTM.addRow(linha);
                 }
-
-                VendaDao objDaoVend = new VendaDao();
-                VendaCtrl objCtrlVend = new VendaCtrl();
-
-                String valSubPro = jtValorSubTotal.getText();
-                String valTotal = jlValorTotal.getText();
-                String valorPro = jtValorUnit.getText();
-                String desc = jtDesc.getText();
-
-                valSubPro = valSubPro.replace(",", ".");
-                valTotal = valTotal.replace(",", ".");
-                desc = desc.replace(",", ".");
-                valorPro = valorPro.replace(",", ".");
-                if(valorPro.substring(valorPro.length()-2,valorPro.length()-1).equals("."))  valorPro = valorPro+"0";
-                
-                Double desc2 = Double.valueOf(desc);
-                Double valSubPro2 = Double.valueOf(valSubPro)-desc2;
-                valSubPro = String.valueOf(valSubPro2);
-                if(valSubPro.substring(valSubPro.length()-2,valSubPro.length()-1).equals("."))  valSubPro = valSubPro+"0";
-                
-                Double valTotal2 = Double.valueOf(valTotal);
-                
-
-                if(!wasEdit){
-                    jButton1.setNextFocusableComponent(jTablePro);
-                    jButton1.nextFocus();
-                    DefaultTableModel objTM = (DefaultTableModel) jTablePro.getModel();
-                    String linha[] = {
-                                 jtCodPro.getText(),
-                                 jNomePro.getText(),
-                                 valorPro,
-                                 jtQTD.getText(),
-                                 desc,
-                                 valSubPro
-                            };
-                        //objTM.setRowCount(0);                
-                        objTM.addRow(linha);
-
-                    objCtrlVend.setCodPro(Integer.parseInt(jtCodPro.getText()));
-                    objCtrlVend.setValorUnit(Double.valueOf(valorPro));
-                    objCtrlVend.setQtd(Integer.parseInt(jtQTD.getText()));
-                    objCtrlVend.setDescont(Double.valueOf(desc));
-                    objCtrlVend.setValorPago(valSubPro2-desc2);
-
-                    objCtrlVend.setCodCompra(codComp);
-
-                    objDaoVend.inserir(objCtrlVend);
-
-                    objDaopro.alterarQtdPro(qtdPro - Integer.parseInt(jtQTD.getText()), 
-                                            jtCodPro.getText());
-                    
-                    int qtdRows = jTablePro.getRowCount()-1;
-                    jTablePro.setRowSelectionInterval(qtdRows, qtdRows);
-                    jScrollBar1.getModel().setValue(jScrollBar1.getModel().getMaximum() - jScrollBar1.getModel().getExtent());
-                    jlValorTotal.setText(doubleCtrl.convertDoubleToString(valTotal2+(valSubPro2)));
-                }else{
-                    objCtrlVend.setCodPro(Integer.parseInt(jtCodPro.getText()));
-                    objCtrlVend.setQtd(Integer.parseInt(jtQTD.getText()));
-                    objCtrlVend.setDescont(Double.valueOf(desc));
-                    objCtrlVend.setValorPago(valSubPro2-desc2);
-                    
-                    objCtrlVend.setCodCompra(codComp);
-
-                    objDaoVend.alterar(objCtrlVend);
-
-                    objDaopro.alterarQtdPro(qtdPro + Integer.parseInt(jTablePro.getValueAt(posiPro, 3).toString()) - Integer.parseInt(jtQTD.getText()), 
-                                            jtCodPro.getText());
-                    
-                    jlValorTotal.setText(String.valueOf(valTotal2+(valSubPro2-desc2)-Double.valueOf(jTablePro.getValueAt(posiPro, 5).toString())));
-                    //jTablePro.setShowVerticalLines(true);
-                    jTablePro.setValueAt(jtQTD.getText(),posiPro, 3);
-                    jTablePro.setValueAt(desc,posiPro, 4);
-                    jTablePro.setValueAt(valSubPro2-desc2,posiPro, 5);
-                    wasEdit = false;
-                    jTablePro.setRowSelectionInterval(posiPro, posiPro);
-                    jScrollBar1.getModel().setValue(jScrollBar1.getModel().getMaximum() - jScrollBar1.getModel().getExtent());
-                }
-                
-                    jtValorSubTotal.setText("0.00");
-                    jtValorUnit.setText("0.00");
-                    jtDesc.setText("0.00");
-                    jtQTD.setText("1");
-                    jNomePro.setText("");
-
-                    jButton1.setNextFocusableComponent(jtCodPro);
-                    jButton1.nextFocus();
-                    jtCodPro.selectAll();
             }else{
                 JOptionPane.showMessageDialog(null, "Adicione um produto valido");
-                jButton1.setNextFocusableComponent(jtCodPro);
-                jButton1.nextFocus();
+                jbAdd.setNextFocusableComponent(jtCodPro);
+                jbAdd.nextFocus();
                 jtCodPro.selectAll();
             }
           }else{
@@ -2944,13 +3020,13 @@ public class SisPrinc extends javax.swing.JFrame {
           }
         }else{
                 JOptionPane.showMessageDialog(null, "Ecolha um produto para Adicionar");
-                jButton1.setNextFocusableComponent(jtCodPro);
-                jButton1.nextFocus();
+                jbAdd.setNextFocusableComponent(jtCodPro);
+                jbAdd.nextFocus();
                 jtCodPro.selectAll();
         }    
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_jbAddActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void jbConcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbConcluirActionPerformed
         if(jTablePro.getRowCount()>0){
             CompraDao objDao = new CompraDao();
             JTextField text2 = new JTextField("00,00");;
@@ -3082,16 +3158,16 @@ public class SisPrinc extends javax.swing.JFrame {
             
             jpPag.setNextFocusableComponent(text1);
             jpPag.nextFocus();
-            jButton2.setNextFocusableComponent(text1);
-            jButton2.nextFocus();
+            jbConcluir.setNextFocusableComponent(text1);
+            jbConcluir.nextFocus();
                 /*
             */
         }else{
             JOptionPane.showMessageDialog(null, "Realize uma compra para efetuar um pagamento!!!");
-            jButton2.setNextFocusableComponent(jtCodPro);
-            jButton2.nextFocus();
+            jbConcluir.setNextFocusableComponent(jtCodPro);
+            jbConcluir.nextFocus();
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_jbConcluirActionPerformed
     
     
 
@@ -3143,8 +3219,8 @@ public class SisPrinc extends javax.swing.JFrame {
                 
                 System.out.println(wasEdit);
                 if(!wasEdit){
-                    jButton1.setNextFocusableComponent(jTablePro);
-                    jButton1.nextFocus();
+                    jbAdd.setNextFocusableComponent(jTablePro);
+                    jbAdd.nextFocus();
                     
                     DefaultTableModel objTM = (DefaultTableModel) jTablePro.getModel();
                     String linha[] = {
@@ -3216,8 +3292,8 @@ public class SisPrinc extends javax.swing.JFrame {
                     jtQTD.setText("1");
                     jNomePro.setText("");
                     addPro = true;
-                    jButton1.setNextFocusableComponent(jtCodPro);
-                    jButton1.nextFocus();
+                    jbAdd.setNextFocusableComponent(jtCodPro);
+                    jbAdd.nextFocus();
                     jtCodPro.selectAll();
             }else{
                 JOptionPane.showMessageDialog(null, "Adicione um produto valido");
@@ -3381,6 +3457,11 @@ public class SisPrinc extends javax.swing.JFrame {
             jPanel6.setNextFocusableComponent(jtCodPro);
             jPanel6.nextFocus();
             jtCodPro.setEditable(true);
+            
+            if(func.equals(null) || func.equals("")) jNomeVend.setText(userlogin.getCargo());
+            else {
+                jNomeVend.setText(func.getNome()+" / "+func.getCargo());
+            }
         }
     }//GEN-LAST:event_jPanel6KeyPressed
 
@@ -3431,7 +3512,7 @@ public class SisPrinc extends javax.swing.JFrame {
                 ResultSet objRs = objDao.selecionarPro(jTablePro.getValueAt(jTablePro.getSelectedRow(), 0).toString());
                 try {
                     objRs.next();
-                    qtdPro = objRs.getInt("qtd");
+                    qtdPro = objRs.getInt("ESTOQ_ATUAL");
                 } catch (SQLException ex) {
                     JOptionPane.showMessageDialog(null, "ERRO NA CONSULTA: PRODUTO NÃO ENCONTRADO");
                 }
@@ -3965,9 +4046,9 @@ public class SisPrinc extends javax.swing.JFrame {
       }
     }//GEN-LAST:event_jcbRelActionPerformed
 
-    private void jcombNomeComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jcombNomeComponentResized
+    private void jcombNomeProComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jcombNomeProComponentResized
         // TODO add your handling code here:
-    }//GEN-LAST:event_jcombNomeComponentResized
+    }//GEN-LAST:event_jcombNomeProComponentResized
 
     private void jrQtdBaixaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jrQtdBaixaActionPerformed
         // TODO add your handling code here:
@@ -4033,25 +4114,38 @@ public class SisPrinc extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jPanel60ComponentShown
 
-    private void jcombNome2ComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jcombNome2ComponentResized
+    private void jcombNomeCliComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jcombNomeCliComponentResized
         // TODO add your handling code here:
-    }//GEN-LAST:event_jcombNome2ComponentResized
+    }//GEN-LAST:event_jcombNomeCliComponentResized
 
-    private void jcombNome2ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jcombNome2ComponentShown
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jcombNome2ComponentShown
+    private void jcombNomeCliComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jcombNomeCliComponentShown
+        ClienteDao objDao = new ClienteDao();
 
-    private void jcombNome2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcombNome2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jcombNome2ActionPerformed
+            ResultSet objRs = objDao.selecionarTodos();
+           jcombNomeCli.removeAllItems();
+             try {
+                 while(objRs.next()){jcombNomeCli.addItem(objRs.getString("NOME"));}
+             
+             } catch (SQLException ex) {
+                 JOptionPane.showMessageDialog(null, "erro ao fazer cunsulta de clientes test");
+             }
+    }//GEN-LAST:event_jcombNomeCliComponentShown
 
-    private void jcombNome2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jcombNome2KeyReleased
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jcombNome2KeyReleased
+    private void jcombNomeCliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcombNomeCliActionPerformed
+       
+       jNomeCli.setText(jcombNomeCli.getItemAt(jcombNomeCli.getSelectedIndex()));
+       
+       jcombNomeCli.setNextFocusableComponent(jNomeCli);
+       jcombNomeCli.nextFocus();
+    }//GEN-LAST:event_jcombNomeCliActionPerformed
 
-    private void jNomePro2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jNomePro2KeyPressed
+    private void jcombNomeCliKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jcombNomeCliKeyReleased
         // TODO add your handling code here:
-    }//GEN-LAST:event_jNomePro2KeyPressed
+    }//GEN-LAST:event_jcombNomeCliKeyReleased
+
+    private void jNomeCliKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jNomeCliKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jNomeCliKeyPressed
 
     private void jtCodProInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_jtCodProInputMethodTextChanged
        
@@ -4066,11 +4160,11 @@ public class SisPrinc extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jtCodProActionPerformed
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        if (jComboBox1.getSelectedIndex() == 0) jButton2.setText("ORDEM DE SERVIÇO");
-        else if (jComboBox1.getSelectedIndex() == 1) jButton2.setText("ORÇAMENTO");
+    private void jcbTipoVendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbTipoVendActionPerformed
+        if (jcbTipoVend.getSelectedIndex() == 0) jbConcluir.setText("ORDEM DE SERVIÇO");
+        else if (jcbTipoVend.getSelectedIndex() == 1) jbConcluir.setText("ORÇAMENTO");
 
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+    }//GEN-LAST:event_jcbTipoVendActionPerformed
 
     private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
         // TODO add your handling code here:
@@ -4088,13 +4182,17 @@ public class SisPrinc extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTableProdutosKeyPressed
 
-    private void jNomePro1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jNomePro1KeyPressed
+    private void jNomeVendKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jNomeVendKeyPressed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jNomePro1KeyPressed
+    }//GEN-LAST:event_jNomeVendKeyPressed
 
     private void jNomePro3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jNomePro3KeyPressed
         // TODO add your handling code here:
     }//GEN-LAST:event_jNomePro3KeyPressed
+
+    private void jtValorSubTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtValorSubTotalActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jtValorSubTotalActionPerformed
 
 /**
      * @param args the command line arguments
@@ -4132,12 +4230,10 @@ public class SisPrinc extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton14;
     private javax.swing.JButton jButton15;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton23;
     private javax.swing.JButton jButton30;
     private javax.swing.JButton jButton32;
@@ -4147,7 +4243,6 @@ public class SisPrinc extends javax.swing.JFrame {
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JEditorPane jEditorPane1;
     private javax.swing.JLabel jLabel1;
@@ -4198,10 +4293,10 @@ public class SisPrinc extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JMenuItem jMenuItem9;
+    private javax.swing.JTextField jNomeCli;
     private javax.swing.JTextField jNomePro;
-    private javax.swing.JTextField jNomePro1;
-    private javax.swing.JTextField jNomePro2;
     private javax.swing.JTextField jNomePro3;
+    private javax.swing.JTextField jNomeVend;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
@@ -4295,14 +4390,17 @@ public class SisPrinc extends javax.swing.JFrame {
     private javax.swing.JTable jTablePro;
     private javax.swing.JTable jTableProdutos;
     private javax.swing.JButton jbAcessar;
+    private javax.swing.JButton jbAdd;
     private javax.swing.JButton jbCancel;
+    private javax.swing.JButton jbConcluir;
     private javax.swing.JButton jbPagar;
     private javax.swing.JButton jbPesqCli;
     private javax.swing.JButton jbPesqPro;
     private javax.swing.JComboBox<String> jcbRel;
     private javax.swing.JComboBox<String> jcbRelTipo;
-    private javax.swing.JComboBox<String> jcombNome;
-    private javax.swing.JComboBox<String> jcombNome2;
+    private javax.swing.JComboBox<String> jcbTipoVend;
+    private javax.swing.JComboBox<String> jcombNomeCli;
+    private javax.swing.JComboBox<String> jcombNomePro;
     private javax.swing.JFormattedTextField jfDataFIM;
     private javax.swing.JFormattedTextField jfDataINI;
     private javax.swing.JTextField jfFindRel;

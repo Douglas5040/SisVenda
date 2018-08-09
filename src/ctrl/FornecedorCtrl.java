@@ -12,6 +12,7 @@ package ctrl;
 public class FornecedorCtrl {
     
     private int ID;
+    private String codigo;
     private int Cpf_cnpj;
     private String razao_social;
     private String nome_fantazia;
@@ -20,8 +21,9 @@ public class FornecedorCtrl {
     private String cidade;
     private String uf;
 
-    public FornecedorCtrl(int ID, int Cpf_cnpj, String razao_social, String nome_fantazia, String bairro, String ender, String cidade, String uf) {
+    public FornecedorCtrl(int ID, String codigo, int Cpf_cnpj, String razao_social, String nome_fantazia, String bairro, String ender, String cidade, String uf) {
         this.ID = ID;
+        this.codigo = codigo;
         this.Cpf_cnpj = Cpf_cnpj;
         this.razao_social = razao_social;
         this.nome_fantazia = nome_fantazia;
@@ -39,6 +41,14 @@ public class FornecedorCtrl {
 
     public void setID(int ID) {
         this.ID = ID;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
 
     public int getCpf_cnpj() {

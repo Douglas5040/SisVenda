@@ -283,6 +283,29 @@ public class ProdutoDao {
         }
         return null;
     }
+
+    public int selecionarID(String consultPro) {
+        BancoMySql objBanco = new BancoMySql();
+        
+        try {
+            Connection con = objBanco.obtemConexao();
+            
+            String queryInserir = "select ID from produtos WHERE NOME LIKE ? OR COD_BARRAS = ?";
+			
+            PreparedStatement ppStm = con.prepareStatement(queryInserir);
+            ppStm.setString(1, consultPro+"%");
+            ppStm.setString(2, consultPro);
+            
+            ResultSet objRst = ppStm.executeQuery();
+            
+            //JOptionPane.showMessageDialog(null, "Comando executado com sucesso");
+            objRst.first();
+            return objRst.getInt("ID");
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "erro na execução do selecionar Produto, "+ex);
+        }
+        return -1;
+    }
     public boolean verificarPro(String consultPro) {
         BancoMySql objBanco = new BancoMySql();
         
@@ -378,15 +401,15 @@ public class ProdutoDao {
         try {
             Connection con = objBanco.obtemConexao();
             
-            String queryInserir = "select qtd from produtos WHERE COD_BARRAS = ? OR ID = ?";
+            String queryInserir = "select ESTOQ_ATUAL from produtos WHERE COD_BARRAS = ? OR ID = ?";
 			
             PreparedStatement ppStm = con.prepareStatement(queryInserir);
             ppStm.setString(1, consultPro);
             ppStm.setString(2, consultPro);
             
             ResultSet objRst = ppStm.executeQuery();
-            objRst.next();
-            return objRst.getInt("qtd");
+            objRst.first();
+            return objRst.getInt("ESTOQ_ATUAL");
            
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "erro na execução do selecionar quantidade Produto");

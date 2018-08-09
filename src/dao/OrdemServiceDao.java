@@ -48,7 +48,7 @@ public class OrdemServiceDao {
         }
     }
     
-    public ResultSet selecionar(){
+    public ResultSet selecionarAll(){
         BancoMySql objBanco = new BancoMySql();
         
         try {
@@ -87,6 +87,26 @@ public class OrdemServiceDao {
             JOptionPane.showMessageDialog(null, "erro na execução do selecionar ordem_service:  "+ex);
         }
         return null;
+    }
+    public int selecionarCodOS() {
+        BancoMySql objBanco = new BancoMySql();
+        
+        try {
+            Connection con = objBanco.obtemConexao();
+            
+            String querySelectUser = "select CODIGO from ordem_service";
+			
+            PreparedStatement ppStm = con.prepareStatement(querySelectUser);
+            
+            ResultSet objRst = ppStm.executeQuery();
+            
+            //JOptionPane.showMessageDialog(null, "Comando executado com sucesso");
+            objRst.last();
+            return objRst.getInt("CODIGO");
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "erro na execução do selecionar CODIGO ordem_service:  "+ex);
+        }
+        return -1;
     }
 
     

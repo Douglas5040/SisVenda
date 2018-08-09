@@ -11,6 +11,7 @@ package ctrl;
  */
 public class ClienteCtrl {
     private int id;
+    private String codigo;
     private String nome;
     private String data_nasc;
     private String apelido;
@@ -37,7 +38,7 @@ public class ClienteCtrl {
 
     public ClienteCtrl(){};
     
-    public ClienteCtrl(int id, String nome, String data_nasc, String apelido, String estado_civil, int cpf_cnpj, String cpf_or_cnpj, int rg, String celular, String tel_resi, String email, String tel_comer, Double valor_credito, int cep, String rua, int numero, String bairro, String complem, String cidade, String estado, String referencia, String foto, String obs, int cod_familia, int bonus_acumulado) {
+    public ClienteCtrl(int id, String codigo, String nome, String data_nasc, String apelido, String estado_civil, int cpf_cnpj, String cpf_or_cnpj, int rg, String celular, String tel_resi, String email, String tel_comer, Double valor_credito, int cep, String rua, int numero, String bairro, String complem, String cidade, String estado, String referencia, String foto, String obs, int cod_familia, int bonus_acumulado) {
         this.id = id;
         this.nome = nome;
         this.data_nasc = data_nasc;
@@ -62,6 +63,15 @@ public class ClienteCtrl {
         this.bonus_acumulado = bonus_acumulado;
         this.email = email;
         this.obs = obs;
+        this.codigo = codigo;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
 
     public int getId() {
@@ -72,6 +82,7 @@ public class ClienteCtrl {
         this.id = id;
     }
 
+    
     public String getNome() {
         return nome;
     }

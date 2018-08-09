@@ -49,38 +49,43 @@ public class ClienteDao {
         try {
             Connection con = objBanco.obtemConexao();
             
-            String queryInserir = "INSERT INTO clientes VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            String queryInserir = "INSERT INTO clientes VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			
 			PreparedStatement ppStm = con.prepareStatement(queryInserir);
 			
 			ppStm.setString(1, String.valueOf(id));
-                        ppStm.setString(2, nome);
-			ppStm.setString(3, data_nasc);
-                        ppStm.setString(4, estado_civil);
-			ppStm.setString(5, apelido);
-                        ppStm.setString(6, String.valueOf(rg));
-                        ppStm.setString(7, String.valueOf(cpf_cnpj));
-                        ppStm.setString(8, cpf_or_cnpj);
-                        ppStm.setString(9, String.valueOf(cep));
-                        ppStm.setString(10, rua);
-                        ppStm.setString(11, String.valueOf(numero));
-                        ppStm.setString(12, complem);
-                        ppStm.setString(13, bairro);
-                        ppStm.setString(14, cidade);
-                        ppStm.setString(15, estado);
-                        ppStm.setString(16, referencia);
-                        ppStm.setString(17, celular);
-                        ppStm.setString(18, tel_resi);
-                        ppStm.setString(19, tel_comer);
-                        ppStm.setString(20, String.valueOf(valor_credito));
-                        ppStm.setString(21, foto);
-                        ppStm.setString(22, String.valueOf(bonus_acumulado));
-                        ppStm.setString(23, email);
-                        ppStm.setString(24, obs);
+                        ppStm.setString(2, "");
+                        ppStm.setString(3, nome);
+			ppStm.setString(4, data_nasc);
+                        ppStm.setString(5, estado_civil);
+			ppStm.setString(6, apelido);
+                        ppStm.setString(7, String.valueOf(rg));
+                        ppStm.setString(8, String.valueOf(cpf_cnpj));
+                        ppStm.setString(9, cpf_or_cnpj);
+                        ppStm.setString(10, String.valueOf(cep));
+                        ppStm.setString(11, rua);
+                        ppStm.setString(12, String.valueOf(numero));
+                        ppStm.setString(13, complem);
+                        ppStm.setString(14, bairro);
+                        ppStm.setString(15, cidade);
+                        ppStm.setString(16, estado);
+                        ppStm.setString(17, referencia);
+                        ppStm.setString(18, celular);
+                        ppStm.setString(19, tel_resi);
+                        ppStm.setString(20, tel_comer);
+                        ppStm.setString(21, String.valueOf(valor_credito));
+                        ppStm.setString(22, foto);
+                        ppStm.setString(23, String.valueOf(bonus_acumulado));
+                        ppStm.setString(24, email);
+                        ppStm.setString(25, obs);
                         ppStm.execute();
                         
-                    
-                  return selecionarLastID();
+                 int lastId = selecionarLastID();
+                 PreparedStatement ppStmCod = con.prepareStatement("UPDATE clientes SET CODIGO = ? WHERE ID=?");   
+                 ppStmCod.setString(1, lastId+"CLI"); 
+                 ppStmCod.setString(2, ""+lastId);
+                 ppStmCod.execute();
+                 return lastId;
                   
                         
         } catch (SQLException ex) {

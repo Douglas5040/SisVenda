@@ -418,7 +418,6 @@ public class GerirCliente extends javax.swing.JFrame {
         jPanel1.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 183, 104, -1));
 
         edtCellCLi.setEditable(false);
-        edtCellCLi.setDocument(new DocumentJTextNumerosCtrl());
         try {
             edtCellCLi.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("(##)#####-####")));
         } catch (java.text.ParseException ex) {
@@ -440,7 +439,6 @@ public class GerirCliente extends javax.swing.JFrame {
         jPanel1.add(edtCellCLi, new org.netbeans.lib.awtextra.AbsoluteConstraints(136, 178, 250, -1));
 
         edtTelResiCli.setEditable(false);
-        edtTelResiCli.setDocument(new DocumentJTextNumerosCtrl());
         try {
             edtTelResiCli.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("(##)####-####")));
         } catch (java.text.ParseException ex) {
@@ -457,7 +455,6 @@ public class GerirCliente extends javax.swing.JFrame {
         jPanel1.add(edtTelResiCli, new org.netbeans.lib.awtextra.AbsoluteConstraints(136, 207, 250, -1));
 
         edtTelComerCli.setEditable(false);
-        edtTelComerCli.setDocument(new DocumentJTextNumerosCtrl());
         try {
             edtTelComerCli.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("(##)####-####")));
         } catch (java.text.ParseException ex) {
@@ -474,13 +471,13 @@ public class GerirCliente extends javax.swing.JFrame {
         jPanel1.add(edtTelComerCli, new org.netbeans.lib.awtextra.AbsoluteConstraints(136, 236, 250, -1));
 
         edtDNcli.setEditable(false);
-        edtDNcli.setDocument(new DocumentJTextNumerosCtrl());
         try {
             edtDNcli.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
         edtDNcli.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        edtDNcli.setText("");
         edtDNcli.setToolTipText("");
         edtDNcli.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         edtDNcli.addActionListener(new java.awt.event.ActionListener() {
@@ -620,7 +617,6 @@ public class GerirCliente extends javax.swing.JFrame {
         jPanel1.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 320, 104, 25));
 
         edtCepCli.setEditable(false);
-        edtCepCli.setDocument(new DocumentJTextNumerosCtrl());
         try {
             edtCepCli.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("#####-###")));
         } catch (java.text.ParseException ex) {
@@ -1057,6 +1053,13 @@ public class GerirCliente extends javax.swing.JFrame {
             }
             
                     jlMenssager.setText("Cliente cadastrado com Sucesso!!!"); 
+                try {
+                    SisPrinc.class.newInstance().clickBtnCli();
+                } catch (InstantiationException ex) {
+                    Logger.getLogger(GerirPro.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IllegalAccessException ex) {
+                    Logger.getLogger(GerirPro.class.getName()).log(Level.SEVERE, null, ex);
+                }
         }
             if(isFamilyAdd) setVisible(false);
     }//GEN-LAST:event_jbCadastrarActionPerformed
