@@ -94,7 +94,7 @@ public class OrdemServiceDao {
         try {
             Connection con = objBanco.obtemConexao();
             
-            String querySelectUser = "select CODIGO from ordem_service";
+            String querySelectUser = "select ID from ordem_service";
 			
             PreparedStatement ppStm = con.prepareStatement(querySelectUser);
             
@@ -102,7 +102,7 @@ public class OrdemServiceDao {
             
             //JOptionPane.showMessageDialog(null, "Comando executado com sucesso");
             objRst.last();
-            return objRst.getInt("CODIGO");
+            return objRst.getInt("ID");
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "erro na execução do selecionar CODIGO ordem_service:  "+ex);
         }
@@ -164,6 +164,26 @@ public class OrdemServiceDao {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "erro na execução do alterar status OS");
                         
+        }
+    }
+    
+    public void deletar(int cod, int codstatus){
+        BancoMySql objBanco = new BancoMySql();
+        
+        try {
+            Connection con = objBanco.obtemConexao();
+            
+            String queryInserir = "DELETE from ordem_service WHERE ID=? AND COD_STATUS_OS=?";
+		
+            PreparedStatement ppStm = con.prepareStatement(queryInserir);
+            ppStm.setString(1, String.valueOf(cod));
+            ppStm.setString(2, String.valueOf(codstatus));
+            ppStm.execute();
+                        
+            //JOptionPane.showMessageDialog(null, "Comando executado com sucesso");
+            
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "erro na execução do deletar ordem Service");
         }
     }
 }

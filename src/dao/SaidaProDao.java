@@ -192,4 +192,25 @@ public class SaidaProDao {
                         
         }
     }
+
+    public void deletar(int id, int os, int status){
+        BancoMySql objBanco = new BancoMySql();
+        
+        try {
+            Connection con = objBanco.obtemConexao();
+            
+            String queryInserir = "DELETE from saida_pro WHERE COD_PRO=? AND COD_OS=? AND COD_STATUS_SP=?";
+		
+            PreparedStatement ppStm = con.prepareStatement(queryInserir);
+            ppStm.setString(1, String.valueOf(id));
+            ppStm.setString(2, String.valueOf(os));
+            ppStm.setString(3, String.valueOf(status));
+            ppStm.execute();
+                        
+           // JOptionPane.showMessageDialog(null, "Comando executado com sucesso");
+            
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "erro na execução do deletar");
+        }
+    }
 }

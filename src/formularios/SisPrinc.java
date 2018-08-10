@@ -125,7 +125,7 @@ public class SisPrinc extends javax.swing.JFrame {
         jLabel16 = new javax.swing.JLabel();
         jcbTipoVend = new javax.swing.JComboBox<>();
         jPanel63 = new javax.swing.JPanel();
-        jNomePro3 = new javax.swing.JTextField();
+        jBomusCLi = new javax.swing.JTextField();
         jLabel20 = new javax.swing.JLabel();
         jPanel62 = new javax.swing.JPanel();
         jNomeCli = new javax.swing.JTextField();
@@ -159,13 +159,13 @@ public class SisPrinc extends javax.swing.JFrame {
         jPanel10 = new javax.swing.JPanel();
         jPanel24 = new javax.swing.JPanel();
         jPanel39 = new javax.swing.JPanel();
-        jButton7 = new javax.swing.JButton();
+        jbExcluir = new javax.swing.JButton();
         jSeparator12 = new javax.swing.JSeparator();
         jPanel20 = new javax.swing.JPanel();
         jbConcluir = new javax.swing.JButton();
         jSeparator11 = new javax.swing.JSeparator();
         jPanel18 = new javax.swing.JPanel();
-        jButton4 = new javax.swing.JButton();
+        jbCancelPro = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jSeparator13 = new javax.swing.JSeparator();
         jPanel26 = new javax.swing.JPanel();
@@ -557,14 +557,14 @@ public class SisPrinc extends javax.swing.JFrame {
         jPanel63.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
         jPanel63.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jNomePro3.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jNomePro3.setPreferredSize(new java.awt.Dimension(100, 23));
-        jNomePro3.addKeyListener(new java.awt.event.KeyAdapter() {
+        jBomusCLi.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jBomusCLi.setPreferredSize(new java.awt.Dimension(100, 23));
+        jBomusCLi.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                jNomePro3KeyPressed(evt);
+                jBomusCLiKeyPressed(evt);
             }
         });
-        jPanel63.add(jNomePro3, new org.netbeans.lib.awtextra.AbsoluteConstraints(13, 33, 190, 35));
+        jPanel63.add(jBomusCLi, new org.netbeans.lib.awtextra.AbsoluteConstraints(13, 33, 190, 35));
 
         jLabel20.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
         jLabel20.setText("Pontos Bonus Cliente:");
@@ -577,6 +577,11 @@ public class SisPrinc extends javax.swing.JFrame {
         jNomeCli.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jNomeCli.setBorder(null);
         jNomeCli.setPreferredSize(new java.awt.Dimension(100, 23));
+        jNomeCli.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jNomeCliActionPerformed(evt);
+            }
+        });
         jNomeCli.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 jNomeCliKeyPressed(evt);
@@ -653,10 +658,10 @@ public class SisPrinc extends javax.swing.JFrame {
 
         jtCodPro.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jtCodPro.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
-            }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
                 jtCodProInputMethodTextChanged(evt);
+            }
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
         jtCodPro.addActionListener(new java.awt.event.ActionListener() {
@@ -1008,15 +1013,15 @@ public class SisPrinc extends javax.swing.JFrame {
 
         jPanel39.setPreferredSize(new java.awt.Dimension(330, 102));
 
-        jButton7.setBackground(new java.awt.Color(32, 32, 32));
-        jButton7.setFont(new java.awt.Font("Arial Black", 0, 22)); // NOI18N
-        jButton7.setForeground(new java.awt.Color(239, 239, 239));
-        jButton7.setText("  EXCLUIR  ");
-        jButton7.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        jButton7.setPreferredSize(new java.awt.Dimension(121, 33));
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
+        jbExcluir.setBackground(new java.awt.Color(32, 32, 32));
+        jbExcluir.setFont(new java.awt.Font("Arial Black", 0, 22)); // NOI18N
+        jbExcluir.setForeground(new java.awt.Color(239, 239, 239));
+        jbExcluir.setText("  EXCLUIR  ");
+        jbExcluir.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jbExcluir.setPreferredSize(new java.awt.Dimension(121, 33));
+        jbExcluir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
+                jbExcluirActionPerformed(evt);
             }
         });
 
@@ -1026,14 +1031,14 @@ public class SisPrinc extends javax.swing.JFrame {
             jPanel39Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel39Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jbExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel39Layout.setVerticalGroup(
             jPanel39Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel39Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jbExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -1082,14 +1087,14 @@ public class SisPrinc extends javax.swing.JFrame {
 
         jPanel18.setPreferredSize(new java.awt.Dimension(330, 102));
 
-        jButton4.setBackground(new java.awt.Color(43, 43, 43));
-        jButton4.setFont(new java.awt.Font("Arial Black", 0, 22)); // NOI18N
-        jButton4.setForeground(new java.awt.Color(223, 223, 223));
-        jButton4.setText("CANCELAR");
-        jButton4.setPreferredSize(new java.awt.Dimension(167, 33));
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        jbCancelPro.setBackground(new java.awt.Color(43, 43, 43));
+        jbCancelPro.setFont(new java.awt.Font("Arial Black", 0, 22)); // NOI18N
+        jbCancelPro.setForeground(new java.awt.Color(223, 223, 223));
+        jbCancelPro.setText("CANCELAR");
+        jbCancelPro.setPreferredSize(new java.awt.Dimension(167, 33));
+        jbCancelPro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                jbCancelProActionPerformed(evt);
             }
         });
 
@@ -1098,14 +1103,14 @@ public class SisPrinc extends javax.swing.JFrame {
         jPanel18Layout.setHorizontalGroup(
             jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel18Layout.createSequentialGroup()
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jbCancelPro, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 244, Short.MAX_VALUE))
         );
         jPanel18Layout.setVerticalGroup(
             jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel18Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jbCancelPro, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(14, Short.MAX_VALUE))
         );
 
@@ -2859,7 +2864,50 @@ public class SisPrinc extends javax.swing.JFrame {
     }//GEN-LAST:event_jcombNomeProComponentShown
 
     private void jbAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAddActionPerformed
-        ProdutoDao objDaopro = new ProdutoDao();
+           addProList();
+    }//GEN-LAST:event_jbAddActionPerformed
+
+    private void jbConcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbConcluirActionPerformed
+        if(jTablePro.getRowCount()>0){
+                                               
+            ProdutoDao objDaopro = new ProdutoDao();
+            OrdemServiceDao objOSDao = new OrdemServiceDao();
+            OrdemServiceCtrl objOSCtrl = new OrdemServiceCtrl();
+            SaidaProCtrl objSPCtrl = new SaidaProCtrl();
+            SaidaProDao objSpDao = new SaidaProDao();
+            
+            JTextField text2 = new JTextField("00,00");;
+            JLabel labelTroco = new JLabel(jlValorTotal.getText().replace(",", "."));
+            JButton buttonFin = new JButton("Finalizar");
+            JTextField text1 = new JTextField();
+            setEnabled(false);
+
+
+            jfPagComp.setBounds(this.getWidth()/2-200, this.getHeight()/2-150, 400, 300);
+            jfPagComp.show();
+            jfPagComp.setVisible(true);
+            jfPagComp.setDefaultCloseOperation(HIDE_ON_CLOSE);
+            jfPagComp.setIconImage(null);
+            jfPagComp.setBackground(null);
+            jfPagComp.setResizable(false);
+            //setEnabled(false);
+
+
+            
+            jbConcluir.setNextFocusableComponent(text1);
+            jbConcluir.nextFocus();
+                /*
+            */
+        }else{
+            JOptionPane.showMessageDialog(null, "Realize uma compra para efetuar um pagamento!!!");
+            jbConcluir.setNextFocusableComponent(jtCodPro);
+            jbConcluir.nextFocus();
+        }
+    }//GEN-LAST:event_jbConcluirActionPerformed
+    
+    
+    public void addProList(){
+         ProdutoDao objDaopro = new ProdutoDao();
         OrdemServiceDao objOSDao = new OrdemServiceDao();
         OrdemServiceCtrl objOSCtrl = new OrdemServiceCtrl();
         SaidaProCtrl objSPCtrl = new SaidaProCtrl();
@@ -3023,318 +3071,42 @@ public class SisPrinc extends javax.swing.JFrame {
                 jbAdd.setNextFocusableComponent(jtCodPro);
                 jbAdd.nextFocus();
                 jtCodPro.selectAll();
-        }    
-    }//GEN-LAST:event_jbAddActionPerformed
-
-    private void jbConcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbConcluirActionPerformed
-        if(jTablePro.getRowCount()>0){
-            CompraDao objDao = new CompraDao();
-            JTextField text2 = new JTextField("00,00");;
-            JLabel labelTroco = new JLabel(jlValorTotal.getText().replace(",", "."));
-            JButton buttonFin = new JButton("Finalizar");
-            JTextField text1 = new JTextField();
-            setEnabled(false);
-
-
-            jfPagComp.setBounds(this.getWidth()/2-200, this.getHeight()/2-150, 400, 300);
-            jfPagComp.show();
-            jfPagComp.setVisible(true);
-            jfPagComp.setDefaultCloseOperation(HIDE_ON_CLOSE);
-            jfPagComp.setIconImage(null);
-            jfPagComp.setBackground(null);
-            jfPagComp.setResizable(false);
-            //setEnabled(false);
-
-
-            JTabbedPane jtpOP = new JTabbedPane();
-            jtpOP.setFont(new java.awt.Font("Comic Sans MS", 1, 22)); // NOI18N
-            jtpOP.setBackground(null);
-            jtpOP.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
-
-            JPanel jpPag = new JPanel(new org.netbeans.lib.awtextra.AbsoluteLayout());
-                jpPag.setBackground(null);
-                jtpOP.addTab(" DINHEIRO ", jpPag);
-                
-                JLabel label1 = new JLabel("Dinheiro R$: ");
-                label1.setForeground(new java.awt.Color(43, 43, 43));
-                label1.setFont(new java.awt.Font("Comic Sans MS", 1, 20));
-                jpPag.add(label1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 12, -1, -1));
-
-                
-                text1.setFont(new java.awt.Font("Arial", 0, 18));
-                text1.setVisible(true);
-                text1.setFocusable(true);
-                
-                text1.addKeyListener(new java.awt.event.KeyAdapter() {
-                @Override
-                public void keyPressed(java.awt.event.KeyEvent evt) {
-                    if(evt.getKeyCode()==KeyEvent.VK_ENTER){
-                        DoubleCtrl doubleCtrl = new DoubleCtrl();
-                        labelTroco.setText(doubleCtrl.convertDoubleToString(Double.valueOf(text1.getText().replace(",", "."))-Double.valueOf(jlValorTotal.getText().replace(",", "."))));
-                        if(labelTroco.getText().substring(labelTroco.getText().length()-2,labelTroco.getText().length()-1).equals("."))  labelTroco.setText(labelTroco.getText()+"0");
-                        
-                        text1.setNextFocusableComponent(buttonFin);
-                        text1.nextFocus();
-                    }
-                }
-                });
-                jpPag.add(text1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 10, 200, 35));
-
-                                
-                JLabel label2 = new JLabel("Valor....R$: ");
-                label2.setForeground(new java.awt.Color(43, 43, 43));
-                label2.setFont(new java.awt.Font("Comic Sans MS", 1, 20));
-                jpPag.add(label2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 53, -1, -1));
-
-                text2.setFont(new java.awt.Font("Arial", 1, 24));
-                text2.setText(jlValorTotal.getText().replace(",", "."));
-                text2.setEditable(false);
-                text2.setVisible(true);
-                jpPag.add(text2, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 51, 200, 35));
-
-                JLabel label3 = new JLabel("Troco....R$: ");
-                label3.setForeground(new java.awt.Color(43, 43, 43));
-                label3.setFont(new java.awt.Font("Comic Sans MS", 1, 20));
-                jpPag.add(label3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 94, -1, -1));
-
-
-                labelTroco.setForeground(new java.awt.Color(145, 0, 0));
-                labelTroco.setFont(new java.awt.Font("Arial Black", 1, 24));
-                labelTroco.setVisible(true);
-                jpPag.add(labelTroco, new org.netbeans.lib.awtextra.AbsoluteConstraints(152, 92, 200, 35));
-
-
-                buttonFin.setFont(new java.awt.Font("Comic Sans MS", 1, 24));
-                buttonFin.setBackground(new java.awt.Color(43, 43, 43));
-                buttonFin.setForeground(Color.white);
-
-                buttonFin.addActionListener(new java.awt.event.ActionListener() {
-                @Override
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    String dataANO=jlData.getText().substring(6, 10);
-                    String dataMes=jlData.getText().substring(2, 6);
-                    String dataDia=jlData.getText().substring(0, 2);
-                    
-                    objDao.alterar(codComp, 0,Double.valueOf(jlValorTotal.getText().replace(",", ".")), dataANO+dataMes+dataDia, jlHora.getText(), "PAGO");
-                    
-                    text1.setText("");
-                    text2.setText("00,00");
-                    labelTroco.setText("00,00");
-                    
-                    JOptionPane.showMessageDialog(null, "VENDA REALIZADA COM SUCESSO!!!");
-                    DefaultTableModel objTM = (DefaultTableModel) jTablePro.getModel();
-                    objTM.setRowCount(0); 
-                    jTablePro.setNextFocusableComponent(jtCodPro);
-                    jTablePro.nextFocus();
-                    setEnabled(true);
-                    jfPagComp.dispose();
-                    jlValorTotal.setText("000,00");
-
-                 }});  
-                jpPag.add(buttonFin, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 150, 130, 55));
-
-                JButton buttonCancel = new JButton("Cancelar");
-                buttonCancel.setFont(new java.awt.Font("Comic Sans MS", 1, 24));
-                buttonCancel.setBackground(new java.awt.Color(43, 43, 43));
-                buttonCancel.setForeground(Color.white);
-                buttonCancel.addActionListener(new java.awt.event.ActionListener() {
-                @Override
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-
-                    setEnabled(true);
-                    jfPagComp.dispose();
-                }});
-                jpPag.add(buttonCancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 150, 130, 55));
-
-                
-
-
-            JPanel jpConta = new JPanel(new org.netbeans.lib.awtextra.AbsoluteLayout());
-                jpConta.setBackground(Color.blue);
-                jtpOP.addTab(" CARTÃO ", jpConta);
-
-
-            jfPagComp.getContentPane().add(jtpOP, java.awt.BorderLayout.CENTER);
-            
-            jpPag.setNextFocusableComponent(text1);
-            jpPag.nextFocus();
-            jbConcluir.setNextFocusableComponent(text1);
-            jbConcluir.nextFocus();
-                /*
-            */
-        }else{
-            JOptionPane.showMessageDialog(null, "Realize uma compra para efetuar um pagamento!!!");
-            jbConcluir.setNextFocusableComponent(jtCodPro);
-            jbConcluir.nextFocus();
         }
-    }//GEN-LAST:event_jbConcluirActionPerformed
-    
-    
-
+    }
     
 
     private void jtDescKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtDescKeyPressed
-        ProdutoDao objDaopro =new ProdutoDao();
-        CompraDao objDao = new CompraDao();
-        CompraCtrl objCtrl = new CompraCtrl();
-        DoubleCtrl doubleCtrl = new DoubleCtrl();
         
       if(evt.getKeyCode()==KeyEvent.VK_ENTER){
-        if(!jNomePro.getText().equals("")){
-          if(Double.valueOf(jtDesc.getText().replace(",", ".")) <= Double.valueOf(jtValorSubTotal.getText().replace(",", "."))){
-            if(objDaopro.verificarPro(jtCodPro.getText())){
-                if(jTablePro.getRowCount()==0){
-
-
-                    objCtrl.setCodCli(0);//caso tenha uma conta
-                    objCtrl.setDataCompra("0000/00/00");
-                    objCtrl.setHoraCompra("00:00:00");
-                    objCtrl.setValorTotal(0.0);
-                    objCtrl.setSituation("");
-                    objCtrl.setCodCli(0);
-                    objDao.inserir(objCtrl);
-                    codComp = objDao.selecionarCodComp();
-                }
-
-                VendaDao objDaoVend = new VendaDao();
-                VendaCtrl objCtrlVend = new VendaCtrl();
-
-                String valSubPro = jtValorSubTotal.getText();
-                String valTotal = jlValorTotal.getText();
-                String valorPro = jtValorUnit.getText();
-                String desc = jtDesc.getText();
-
-                valSubPro = valSubPro.replace(",", ".");
-                valTotal = valTotal.replace(",", ".");
-                desc = desc.replace(",", ".");
-                valorPro = valorPro.replace(",", ".");
-                if(valorPro.substring(valorPro.length()-2,valorPro.length()-1).equals("."))  valorPro = valorPro+"0";
-                
-                Double desc2 = Double.valueOf(desc);
-                Double valSubPro2 = Double.valueOf(valSubPro)-desc2;
-                valSubPro = String.valueOf(valSubPro2);
-                if(valSubPro.substring(valSubPro.length()-2,valSubPro.length()-1).equals("."))  valSubPro = valSubPro+"0";
-                
-                Double valTotal2 = Double.valueOf(valTotal);
-                
-                System.out.println(wasEdit);
-                if(!wasEdit){
-                    jbAdd.setNextFocusableComponent(jTablePro);
-                    jbAdd.nextFocus();
-                    
-                    DefaultTableModel objTM = (DefaultTableModel) jTablePro.getModel();
-                    String linha[] = {
-                                 jtCodPro.getText(),
-                                 jNomePro.getText(),
-                                 valorPro,
-                                 jtQTD.getText(),
-                                 desc,
-                                 valSubPro
-                            };
-                        //objTM.setRowCount(0);                
-                        objTM.addRow(linha);
-                    System.out.println(linha);
-                    
-                    objCtrlVend.setCodPro(Integer.parseInt(jtCodPro.getText()));
-                    objCtrlVend.setValorUnit(Double.valueOf(valorPro));
-                    objCtrlVend.setQtd(Integer.parseInt(jtQTD.getText()));
-                    objCtrlVend.setDescont(Double.valueOf(desc));
-                    objCtrlVend.setValorPago(valSubPro2-desc2);
-
-                    objCtrlVend.setCodCompra(codComp);
-
-                    objDaoVend.inserir(objCtrlVend);
-
-                    objDaopro.alterarQtdPro(qtdPro - Integer.parseInt(jtQTD.getText()), 
-                                            jtCodPro.getText());
-                    
-                    int qtdRows = jTablePro.getRowCount()-1;
-                    jTablePro.setRowSelectionInterval(qtdRows, qtdRows);
-                    jScrollBar1.getModel().setValue(jScrollBar1.getModel().getMaximum() - jScrollBar1.getModel().getExtent());
-                    jlValorTotal.setText(doubleCtrl.convertDoubleToString(valTotal2+(valSubPro2)));
-                    addPro = true;
-               
-                }else{
-                    desc2 = Double.valueOf(desc);
-                    valSubPro2 = Double.valueOf(valSubPro)-desc2;
-                    valSubPro = String.valueOf(valSubPro2);
-                    if(valSubPro.substring(valSubPro.length()-2,valSubPro.length()-1).equals("."))  valSubPro = valSubPro+"0";
-                    
-                    objCtrlVend.setCodPro(Integer.parseInt(jtCodPro.getText()));
-                    objCtrlVend.setQtd(Integer.parseInt(jtQTD.getText()));
-                    objCtrlVend.setDescont(desc2);
-                    objCtrlVend.setValorPago(valSubPro2);
-                    
-                    objCtrlVend.setCodCompra(codComp);
-
-                    objDaoVend.alterar(objCtrlVend);
-
-                    objDaopro.alterarQtdPro(qtdPro + Integer.parseInt(jTablePro.getValueAt(posiPro, 3).toString()) - Integer.parseInt(jtQTD.getText()), 
-                                            jtCodPro.getText());
-                   
-                    
-                    jlValorTotal.setText(doubleCtrl.convertDoubleToString(valTotal2+valSubPro2-Double.valueOf(jTablePro.getValueAt(posiPro, 5).toString())));
-                    //jTablePro.setShowVerticalLines(true);
-                    
-                    jTablePro.setValueAt(jtQTD.getText(),posiPro, 3);
-                    jTablePro.setValueAt(desc,posiPro, 4);
-                    jTablePro.setValueAt(valSubPro,posiPro, 5);
-         
-                    wasEdit = false;
-                    addPro = true;
-                    jTablePro.setRowSelectionInterval(posiPro, posiPro);
-                   jScrollBar1.getModel().setValue(jScrollBar1.getModel().getMaximum() - jScrollBar1.getModel().getExtent());
-                }
-                
-                    jtValorSubTotal.setText("0.00");
-                    jtValorUnit.setText("0.00");
-                    jtDesc.setText("0.00");
-                    jtQTD.setText("1");
-                    jNomePro.setText("");
-                    addPro = true;
-                    jbAdd.setNextFocusableComponent(jtCodPro);
-                    jbAdd.nextFocus();
-                    jtCodPro.selectAll();
-            }else{
-                JOptionPane.showMessageDialog(null, "Adicione um produto valido");
-                jTablePro.setNextFocusableComponent(jtCodPro);
-                jTablePro.nextFocus();
-                jtCodPro.selectAll();
-            }
-          }else{
-            JOptionPane.showMessageDialog(null, "DESCONTO INVALIDO");
-            jtQTD.setNextFocusableComponent(jtDesc);
-            jtDesc.select(0, 1);
-            jtQTD.nextFocus();
-          }
-        }else{
-                JOptionPane.showMessageDialog(null, "Ecolha um produto para Adicionar");
-                jTablePro.setNextFocusableComponent(jtCodPro);
-                jTablePro.nextFocus();
-                jtCodPro.selectAll();
-        }    
+            addProList();
       }
     }//GEN-LAST:event_jtDescKeyPressed
 
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+    private void jbExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbExcluirActionPerformed
        if(jTablePro.getSelectedRow() != -1){
         if(JOptionPane.showConfirmDialog(jPanel6, "Confirme a Exclusão", "Deseja excluir produto?", 0)==0){
             DefaultTableModel objTM = (DefaultTableModel) jTablePro.getModel();
-            VendaDao objDao = new VendaDao();
+            SaidaProDao objSpDao = new SaidaProDao();
             ProdutoDao proDao = new ProdutoDao();
-            Double valTotal2 = Double.valueOf(jlValorTotal.getText());
-            Double valorPro = Double.valueOf(objTM.getValueAt(jTablePro.getSelectedRow(), 5).toString());
-            int qtdProAlt = Integer.parseInt(objTM.getValueAt(jTablePro.getSelectedRow(), 3).toString()) 
-                            + proDao.qtdPro(objTM.getValueAt(jTablePro.getSelectedRow(), 0).toString());
-            int codPro = Integer.parseInt(objTM.getValueAt(jTablePro.getSelectedRow(), 0).toString()); 
-                    
-            proDao.alterarQtdPro(qtdProAlt, ""+codPro);
-            jlValorTotal.setText(String.valueOf(valTotal2-valorPro));
-            objDao.deletar(objTM.getValueAt(jTablePro.getSelectedRow(), 0).toString(),String.valueOf(codComp));
-            objTM.removeRow(jTablePro.getSelectedRow());
+            
+            if(jcbTipoVend.getSelectedIndex()==0){
+                Double valTotal2 = Double.valueOf(jlValorTotal.getText());
+                Double valorPro = Double.valueOf(objTM.getValueAt(jTablePro.getSelectedRow(), 5).toString());
+                int qtdProAlt = Integer.parseInt(objTM.getValueAt(jTablePro.getSelectedRow(), 3).toString()) 
+                                + proDao.qtdPro(objTM.getValueAt(jTablePro.getSelectedRow(), 0).toString());
+                int codPro = Integer.parseInt(objTM.getValueAt(jTablePro.getSelectedRow(), 0).toString()); 
+
+                proDao.alterarQtdPro(qtdProAlt, ""+codPro);
+
+                jlValorTotal.setText(String.valueOf(valTotal2-valorPro));
+
+                objSpDao.deletar(proDao.selecionarID(""+codCli), codOS, 1); //apagar uma saida de produto Pendente
+
+                objTM.removeRow(jTablePro.getSelectedRow());
+            }else objTM.removeRow(jTablePro.getSelectedRow());
         }
        }else JOptionPane.showMessageDialog(jPanel6, "Selecione um item para EXCLUIR!!!");
-    }//GEN-LAST:event_jButton7ActionPerformed
+    }//GEN-LAST:event_jbExcluirActionPerformed
 
     private void jTabbedPane1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPane1MousePressed
         
@@ -3465,24 +3237,26 @@ public class SisPrinc extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jPanel6KeyPressed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void jbCancelProActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbCancelProActionPerformed
       if(jTablePro.getRowCount()>0){  
         DefaultTableModel objTM = (DefaultTableModel) jTablePro.getModel();
         int tamTable = objTM.getRowCount();
-        VendaDao objDao = new VendaDao();
+        OrdemServiceDao objOsDao = new OrdemServiceDao();
         ProdutoDao proDao = new ProdutoDao();
-        CompraDao compraDao = new CompraDao();
+        SaidaProDao saidaProDao = new SaidaProDao();
         for(int x=0;x < tamTable; x++){
-            int qtdProAlt = Integer.parseInt(objTM.getValueAt(0, 3).toString()) 
-                            + proDao.qtdPro(objTM.getValueAt(0, 0).toString());
-            int codPro = Integer.parseInt(objTM.getValueAt(0, 0).toString()); 
-                    
-            proDao.alterarQtdPro(qtdProAlt, ""+codPro);
-            objDao.deletar(jTablePro.getValueAt(0, 0).toString(),String.valueOf(codComp));
+            if(jcbTipoVend.getSelectedIndex()==0){
+                int qtdProAlt = Integer.parseInt(objTM.getValueAt(0, 3).toString()) 
+                                + proDao.qtdPro(objTM.getValueAt(0, 0).toString());
+                int codPro = Integer.parseInt(objTM.getValueAt(0, 0).toString()); 
+
+                proDao.alterarQtdPro(qtdProAlt, ""+codPro);
+                saidaProDao.deletar(proDao.selecionarID(""+codCli), codOS, 1); //apagar uma saida de produto Pendente
             //System.out.println(x);
-            objTM.removeRow(0);
+                objTM.removeRow(0);
+            }else objTM.removeRow(0);
         }
-        compraDao.deletar(codComp);
+        objOsDao.deletar(codOS, 6);
          jlValorTotal.setText("00,00");
         jTabbedPane1.setNextFocusableComponent(jtCodPro);
         jTabbedPane1.nextFocus();
@@ -3490,7 +3264,7 @@ public class SisPrinc extends javax.swing.JFrame {
         jTabbedPane1.setNextFocusableComponent(jtCodPro);
         jTabbedPane1.nextFocus();
       }
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_jbCancelProActionPerformed
 
     private void jTableProMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableProMouseReleased
         if(jTablePro.getSelectedRow() > -1){
@@ -4144,7 +3918,23 @@ public class SisPrinc extends javax.swing.JFrame {
     }//GEN-LAST:event_jcombNomeCliKeyReleased
 
     private void jNomeCliKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jNomeCliKeyPressed
-        // TODO add your handling code here:
+        ClienteDao objDao = new ClienteDao();
+
+        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+            ResultSet objRs = objDao.selecionarCliente(jNomeCli.getText());
+            jcombNomeCli.removeAllItems();
+            try {
+                while(objRs.next()){jcombNomeCli.addItem(objRs.getString("NOME"));}
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "erro ao fazer cunsulta de Clientes por Nome");
+            }
+            jNomeCli.setText(jcombNomeCli.getItemAt(0));
+            jNomeCli.setNextFocusableComponent(jBomusCLi);
+            jNomeCli.nextFocus();
+            
+            if(jcombNomePro.getItemCount()<1) JOptionPane.showMessageDialog(null, "PRODUTO NÃO ENCONTRADO");
+            
+        }
     }//GEN-LAST:event_jNomeCliKeyPressed
 
     private void jtCodProInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_jtCodProInputMethodTextChanged
@@ -4186,13 +3976,17 @@ public class SisPrinc extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jNomeVendKeyPressed
 
-    private void jNomePro3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jNomePro3KeyPressed
+    private void jBomusCLiKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jBomusCLiKeyPressed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jNomePro3KeyPressed
+    }//GEN-LAST:event_jBomusCLiKeyPressed
 
     private void jtValorSubTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtValorSubTotalActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jtValorSubTotalActionPerformed
+
+    private void jNomeCliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jNomeCliActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jNomeCliActionPerformed
 
 /**
      * @param args the command line arguments
@@ -4230,6 +4024,7 @@ public class SisPrinc extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField jBomusCLi;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton14;
@@ -4238,9 +4033,7 @@ public class SisPrinc extends javax.swing.JFrame {
     private javax.swing.JButton jButton30;
     private javax.swing.JButton jButton32;
     private javax.swing.JButton jButton33;
-    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
     private javax.swing.JComboBox<String> jComboBox3;
@@ -4295,7 +4088,6 @@ public class SisPrinc extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JTextField jNomeCli;
     private javax.swing.JTextField jNomePro;
-    private javax.swing.JTextField jNomePro3;
     private javax.swing.JTextField jNomeVend;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
@@ -4392,7 +4184,9 @@ public class SisPrinc extends javax.swing.JFrame {
     private javax.swing.JButton jbAcessar;
     private javax.swing.JButton jbAdd;
     private javax.swing.JButton jbCancel;
+    private javax.swing.JButton jbCancelPro;
     private javax.swing.JButton jbConcluir;
+    private javax.swing.JButton jbExcluir;
     private javax.swing.JButton jbPagar;
     private javax.swing.JButton jbPesqCli;
     private javax.swing.JButton jbPesqPro;
