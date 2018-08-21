@@ -32,6 +32,10 @@ import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -41,6 +45,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -48,7 +53,12 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.Timer;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.sl.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Cell;
 
 /**
  *
@@ -70,7 +80,7 @@ public class SisPrinc extends javax.swing.JFrame {
    public int qtdPro, oldQtdPro;
    public int posiPro = 0, ctrlDoubleClick = 0;
    
-   public static int codOS = 0, codCli = 0, codPro = 0;
+   public static int codOS = 0, codCli = 0, codPro = 0, codParametro = 0;
    
    //public static boolean is_param_gerir_cli = false, is_param_gerir_pro = false;
 
@@ -183,7 +193,9 @@ public class SisPrinc extends javax.swing.JFrame {
         jPanel36 = new javax.swing.JPanel();
         jbPesqCli = new javax.swing.JButton();
         jSeparator4 = new javax.swing.JSeparator();
-        jSeparator9 = new javax.swing.JSeparator();
+        jPanel19 = new javax.swing.JPanel();
+        jbImportExcelCli = new javax.swing.JButton();
+        jbExportExcelCli = new javax.swing.JButton();
         jPanel21 = new javax.swing.JPanel();
         jPanel49 = new javax.swing.JPanel();
         jPanel50 = new javax.swing.JPanel();
@@ -213,6 +225,10 @@ public class SisPrinc extends javax.swing.JFrame {
         jbPesqPro = new javax.swing.JButton();
         jPanel33 = new javax.swing.JPanel();
         jButton15 = new javax.swing.JButton();
+        jPanel64 = new javax.swing.JPanel();
+        jbImportExcelPro = new javax.swing.JButton();
+        jbExportExcelPro = new javax.swing.JButton();
+        jSeparator7 = new javax.swing.JSeparator();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTableProdutos = new javax.swing.JTable();
         jPanel31 = new javax.swing.JPanel();
@@ -658,10 +674,10 @@ public class SisPrinc extends javax.swing.JFrame {
 
         jtCodPro.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jtCodPro.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
                 jtCodProInputMethodTextChanged(evt);
-            }
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
         jtCodPro.addActionListener(new java.awt.event.ActionListener() {
@@ -1239,7 +1255,43 @@ public class SisPrinc extends javax.swing.JFrame {
 
         jSeparator4.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
-        jSeparator9.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        jPanel19.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel19.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1), "Operações Excel", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 16))); // NOI18N
+
+        jbImportExcelCli.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        jbImportExcelCli.setText("IMPORTAR");
+        jbImportExcelCli.setPreferredSize(new java.awt.Dimension(93, 53));
+        jbImportExcelCli.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbImportExcelCliActionPerformed(evt);
+            }
+        });
+
+        jbExportExcelCli.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        jbExportExcelCli.setText("EXPORTAR");
+        jbExportExcelCli.setPreferredSize(new java.awt.Dimension(93, 53));
+        jbExportExcelCli.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbExportExcelCliActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel19Layout = new javax.swing.GroupLayout(jPanel19);
+        jPanel19.setLayout(jPanel19Layout);
+        jPanel19Layout.setHorizontalGroup(
+            jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel19Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jbImportExcelCli, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jbExportExcelCli, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(45, Short.MAX_VALUE))
+        );
+        jPanel19Layout.setVerticalGroup(
+            jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jbImportExcelCli, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jbExportExcelCli, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout jPanel36Layout = new javax.swing.GroupLayout(jPanel36);
         jPanel36.setLayout(jPanel36Layout);
@@ -1250,19 +1302,21 @@ public class SisPrinc extends javax.swing.JFrame {
                 .addComponent(jbPesqCli, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26)
                 .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(178, 178, 178)
-                .addComponent(jSeparator9, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(268, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel19, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(109, Short.MAX_VALUE))
         );
         jPanel36Layout.setVerticalGroup(
             jPanel36Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel36Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel36Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jSeparator9, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jbPesqCli, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addContainerGap(12, Short.MAX_VALUE))
+            .addGroup(jPanel36Layout.createSequentialGroup()
+                .addComponent(jPanel19, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel25Layout = new javax.swing.GroupLayout(jPanel25);
@@ -1278,23 +1332,23 @@ public class SisPrinc extends javax.swing.JFrame {
                         .addComponent(jSeparator6, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jRadioButton5))
-                    .addComponent(jtNomeCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 1000, Short.MAX_VALUE))
+                    .addComponent(jtNomeCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 995, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel36, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(296, Short.MAX_VALUE))
+                .addContainerGap(291, Short.MAX_VALUE))
         );
         jPanel25Layout.setVerticalGroup(
             jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel25Layout.createSequentialGroup()
                 .addGroup(jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jRadioButton5)
-                    .addComponent(jSeparator6)
-                    .addComponent(jLabel14))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jtNomeCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(22, 22, 22))
-            .addGroup(jPanel25Layout.createSequentialGroup()
-                .addComponent(jPanel36, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel25Layout.createSequentialGroup()
+                        .addGroup(jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jRadioButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel14)
+                            .addComponent(jSeparator6))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jtNomeCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel36, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -1620,6 +1674,46 @@ public class SisPrinc extends javax.swing.JFrame {
             .addComponent(jPanel33, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
+        jPanel64.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel64.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1), "Operações Excel", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 16))); // NOI18N
+
+        jbImportExcelPro.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        jbImportExcelPro.setText("IMPORTAR");
+        jbImportExcelPro.setPreferredSize(new java.awt.Dimension(93, 53));
+        jbImportExcelPro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbImportExcelProActionPerformed(evt);
+            }
+        });
+
+        jbExportExcelPro.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        jbExportExcelPro.setText("EXPORTAR");
+        jbExportExcelPro.setPreferredSize(new java.awt.Dimension(93, 53));
+        jbExportExcelPro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbExportExcelProActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel64Layout = new javax.swing.GroupLayout(jPanel64);
+        jPanel64.setLayout(jPanel64Layout);
+        jPanel64Layout.setHorizontalGroup(
+            jPanel64Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel64Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jbImportExcelPro, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jbExportExcelPro, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(45, Short.MAX_VALUE))
+        );
+        jPanel64Layout.setVerticalGroup(
+            jPanel64Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jbImportExcelPro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jbExportExcelPro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        jSeparator7.setOrientation(javax.swing.SwingConstants.VERTICAL);
+
         javax.swing.GroupLayout jPanel29Layout = new javax.swing.GroupLayout(jPanel29);
         jPanel29.setLayout(jPanel29Layout);
         jPanel29Layout.setHorizontalGroup(
@@ -1627,24 +1721,33 @@ public class SisPrinc extends javax.swing.JFrame {
             .addGroup(jPanel29Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel29Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel29Layout.createSequentialGroup()
-                        .addComponent(jLabel15)
-                        .addGap(0, 1240, Short.MAX_VALUE))
-                    .addComponent(jtNomePro))
-                .addGap(61, 61, 61)
-                .addComponent(jPanel30, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                    .addComponent(jLabel15)
+                    .addComponent(jtNomePro, javax.swing.GroupLayout.PREFERRED_SIZE, 549, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel30, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(jSeparator7, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel64, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(631, Short.MAX_VALUE))
         );
         jPanel29Layout.setVerticalGroup(
             jPanel29Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel29Layout.createSequentialGroup()
                 .addGroup(jPanel29Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel29Layout.createSequentialGroup()
-                        .addComponent(jLabel15)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jtNomePro, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jPanel30, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jPanel30, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel29Layout.createSequentialGroup()
+                        .addGroup(jPanel29Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel29Layout.createSequentialGroup()
+                                .addComponent(jLabel15)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jtNomePro, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jPanel64, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jSeparator7))
+                .addContainerGap())
         );
 
         jPanel28.add(jPanel29, java.awt.BorderLayout.CENTER);
@@ -2193,11 +2296,13 @@ public class SisPrinc extends javax.swing.JFrame {
 
         jMenuBar1.setAlignmentX(500);
         jMenuBar1.setAutoscrolls(true);
+        jMenuBar1.setEnabled(false);
         jMenuBar1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
         jMenu1.setText("Sistema");
         jMenu1.setEnabled(false);
         jMenu1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jMenu1.setPreferredSize(new java.awt.Dimension(80, 25));
 
         jMenuItem6.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
         jMenuItem6.setText("Loja");
@@ -2257,7 +2362,9 @@ public class SisPrinc extends javax.swing.JFrame {
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Login");
+        jMenu2.setEnabled(false);
         jMenu2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jMenu2.setPreferredSize(new java.awt.Dimension(62, 25));
 
         jMenuItem7.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F9, 0));
         jMenuItem7.setText("Entrar");
@@ -2279,8 +2386,10 @@ public class SisPrinc extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu2);
 
-        jMenu4.setText("Cadastros");
+        jMenu4.setText("Controle");
+        jMenu4.setEnabled(false);
         jMenu4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jMenu4.setPreferredSize(new java.awt.Dimension(90, 25));
 
         jMenuItem10.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.ALT_MASK));
         jMenuItem10.setText("Marcas");
@@ -2293,6 +2402,11 @@ public class SisPrinc extends javax.swing.JFrame {
 
         jMenuItem11.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_MASK));
         jMenuItem11.setText("Categorias");
+        jMenuItem11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem11ActionPerformed(evt);
+            }
+        });
         jMenu4.add(jMenuItem11);
 
         jMenuItem12.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.ALT_MASK));
@@ -2306,6 +2420,11 @@ public class SisPrinc extends javax.swing.JFrame {
 
         jMenuItem13.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.ALT_MASK));
         jMenuItem13.setText("Fornecedores");
+        jMenuItem13.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem13ActionPerformed(evt);
+            }
+        });
         jMenu4.add(jMenuItem13);
         jMenu4.add(jSeparator5);
 
@@ -2324,9 +2443,11 @@ public class SisPrinc extends javax.swing.JFrame {
 
         jMenu3.setText("Configurações");
         jMenu3.setContentAreaFilled(false);
+        jMenu3.setEnabled(false);
         jMenu3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jMenu3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jMenu3.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jMenu3.setPreferredSize(new java.awt.Dimension(135, 25));
 
         jMenu6.setText("Configurar IP Sistema");
         jMenu3.add(jMenu6);
@@ -2340,7 +2461,7 @@ public class SisPrinc extends javax.swing.JFrame {
         jMenu5.setFont(new java.awt.Font("Comic Sans MS", 1, 24)); // NOI18N
         jMenu5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jMenu5.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        jMenu5.setMargin(new java.awt.Insets(0, 450, 0, 0));
+        jMenu5.setMargin(new java.awt.Insets(0, 250, 0, 0));
         jMenu5.setPreferredSize(new java.awt.Dimension(1135, 34));
         jMenu5.setRequestFocusEnabled(false);
         jMenu5.setVerticalAlignment(javax.swing.SwingConstants.TOP);
@@ -2353,11 +2474,6 @@ public class SisPrinc extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jbPesqCliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbPesqCliActionPerformed
-       pesquisarCliente();
-        
-    }//GEN-LAST:event_jbPesqCliActionPerformed
 
     private void pesquisarCliente(){
         ClienteDao objDao = new ClienteDao();
@@ -2485,7 +2601,12 @@ public class SisPrinc extends javax.swing.JFrame {
         try {
                 if(objDao.verificarUser(jComboBox3.getSelectedItem().toString(), jPasswordField1.getText())){
                     jTabbedPane1.setEnabled(true);
+                    jMenuBar1.setEnabled(true);
                     jMenu1.setEnabled(true);
+                    jMenu2.setEnabled(true);
+                    jMenu3.setEnabled(true);
+                    jMenu4.setEnabled(true);
+                    jMenu5.setEnabled(true);
                     jPanel37.setVisible(false);
                     jPanel38.setVisible(false);
                     
@@ -3957,11 +4078,17 @@ public class SisPrinc extends javax.swing.JFrame {
     }//GEN-LAST:event_jcbTipoVendActionPerformed
 
     private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
-        // TODO add your handling code here:
+        codParametro = 1;
+        GerirParametros gp = new GerirParametros();
+        gp.setLocation(Math.round((getSize().width/2)-205),Math.round((getSize().height/2)-177));
+        gp.setVisible(true);
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 
     private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
-        // TODO add your handling code here:
+        codParametro = 3;
+        GerirParametros gp = new GerirParametros();
+        gp.setLocation(Math.round((getSize().width/2)-205),Math.round((getSize().height/2)-177));
+        gp.setVisible(true);
     }//GEN-LAST:event_jMenuItem12ActionPerformed
 
     private void jMenuItem14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem14ActionPerformed
@@ -3987,6 +4114,108 @@ public class SisPrinc extends javax.swing.JFrame {
     private void jNomeCliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jNomeCliActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jNomeCliActionPerformed
+
+    private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
+        codParametro = 2;
+        GerirParametros gp = new GerirParametros();
+        gp.setLocation(Math.round((getSize().width/2)-205),Math.round((getSize().height/2)-177));
+        gp.setVisible(true);
+    }//GEN-LAST:event_jMenuItem11ActionPerformed
+
+    private void jMenuItem13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem13ActionPerformed
+        GerirFornecedor gf = new GerirFornecedor();
+        gf.setLocation(Math.round((getSize().width/2)-458),Math.round((getSize().height/2)-280));
+        gf.setVisible(true);
+    }//GEN-LAST:event_jMenuItem13ActionPerformed
+
+    private void jbPesqCliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbPesqCliActionPerformed
+        pesquisarCliente();
+
+    }//GEN-LAST:event_jbPesqCliActionPerformed
+
+    private void jbImportExcelCliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbImportExcelCliActionPerformed
+        JFileChooser arquivo = new JFileChooser();
+        File file = new File("");
+        //FileNameExtensionFilter filtroPDF = new FileNameExtensionFilter("Arquivos PDF", "pdf");  
+        //arquivo.addChoosableFileFilter(filtroPDF);
+        arquivo.setAcceptAllFileFilterUsed(true);
+        if(arquivo.showOpenDialog(this) == JFileChooser.APPROVE_OPTION){
+             file = arquivo.getSelectedFile();
+            JOptionPane.showMessageDialog(null, "Arquivo: "+arquivo.getSelectedFile().getAbsolutePath());
+        }
+        try (
+            HSSFWorkbook workbook = new HSSFWorkbook(new FileInputStream(file));
+        ) {
+            HSSFSheet sheet = workbook.getSheet("teste");
+            for(int x=0; x >= sheet.getPhysicalNumberOfRows(); x++){
+                Cell CPF_CNPJ = sheet.getRow(x).getCell(4);
+                Cell NOME_RAZAO = sheet.getRow(x).getCell(5);
+                Cell ENDER_RUA = sheet.getRow(x).getCell(7);
+                Cell NUMERO = sheet.getRow(x).getCell(8);
+                Cell BAIRRO = sheet.getRow(x).getCell(9);
+                Cell COMPLEM = sheet.getRow(x).getCell(10);
+                Cell CEP = sheet.getRow(x).getCell(11);
+                Cell CIDADE = sheet.getRow(x).getCell(12);
+                Cell ESTADO = sheet.getRow(x).getCell(14);
+                Cell TELE = sheet.getRow(x).getCell(17);
+                Cell CELU = sheet.getRow(x).getCell(19);
+                Cell TELE_COMER = sheet.getRow(x).getCell(21);
+                Cell EMAIL = sheet.getRow(x).getCell(23);
+                Cell RG = sheet.getRow(x).getCell(24);
+                Cell OBS = sheet.getRow(x).getCell(25);
+                Cell ESTADO_CIVIL = sheet.getRow(x).getCell(33);
+                Cell DATA_NASC = sheet.getRow(x).getCell(34);
+                Cell REFERENCIA = sheet.getRow(x).getCell(35);
+                
+                DefaultTableModel objTM = (DefaultTableModel) jTableCliente.getModel();
+                
+                    String linha[] = {
+                         String.valueOf(objRs.getInt("ID")),
+                         objRs.getString("NOME"),
+                         objRs.getString("CELULAR"),
+                         
+                         objRs.getString("RUA")+", "
+                        +objRs.getString("NUMERO")+", "
+                        +objRs.getString("BAIRRO")+", "
+                        +objRs.getString("CEP")
+                    };
+                    objTM.addRow(linha);
+            }
+            ClienteCtrl cliCtrl = new ClienteCtrl();
+            ClienteDao cliDao = new ClienteDao();
+            
+            
+            //Campo normal
+            System.out.println("Nome Comum: " + nomeComum.getStringCellValue());
+            //Combobox
+            System.out.println("Classificação Espécie: " + classificacaoEspecie.getStringCellValue());
+            //Checkbox
+            System.out.println("Evenenamento: " + envenenamento.getBooleanCellValue());
+        } catch (IOException ex) {
+           Logger.getLogger(SisPrinc.class.getName()).log(Level.SEVERE, null, ex);
+       }
+    
+    }//GEN-LAST:event_jbImportExcelCliActionPerformed
+
+    private void jbExportExcelCliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbExportExcelCliActionPerformed
+       JFileChooser arquivo = new JFileChooser();
+        arquivo.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int i = arquivo.showSaveDialog(this);
+        if(i == 1) JOptionPane.showMessageDialog(null, "Arquivo: nenhum local selecionado!");
+        else{
+            File file = arquivo.getSelectedFile();
+            JOptionPane.showMessageDialog(null, "Arquivo: "+file.getPath());
+        }
+        
+    }//GEN-LAST:event_jbExportExcelCliActionPerformed
+
+    private void jbImportExcelProActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbImportExcelProActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jbImportExcelProActionPerformed
+
+    private void jbExportExcelProActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbExportExcelProActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jbExportExcelProActionPerformed
 
 /**
      * @param args the command line arguments
@@ -4099,6 +4328,7 @@ public class SisPrinc extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel18;
+    private javax.swing.JPanel jPanel19;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel20;
     private javax.swing.JPanel jPanel21;
@@ -4148,6 +4378,7 @@ public class SisPrinc extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel61;
     private javax.swing.JPanel jPanel62;
     private javax.swing.JPanel jPanel63;
+    private javax.swing.JPanel jPanel64;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
@@ -4175,8 +4406,8 @@ public class SisPrinc extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JPopupMenu.Separator jSeparator5;
     private javax.swing.JSeparator jSeparator6;
+    private javax.swing.JSeparator jSeparator7;
     private javax.swing.JSeparator jSeparator8;
-    private javax.swing.JSeparator jSeparator9;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTableCliente;
     private javax.swing.JTable jTablePro;
@@ -4187,6 +4418,10 @@ public class SisPrinc extends javax.swing.JFrame {
     private javax.swing.JButton jbCancelPro;
     private javax.swing.JButton jbConcluir;
     private javax.swing.JButton jbExcluir;
+    private javax.swing.JButton jbExportExcelCli;
+    private javax.swing.JButton jbExportExcelPro;
+    private javax.swing.JButton jbImportExcelCli;
+    private javax.swing.JButton jbImportExcelPro;
     private javax.swing.JButton jbPagar;
     private javax.swing.JButton jbPesqCli;
     private javax.swing.JButton jbPesqPro;

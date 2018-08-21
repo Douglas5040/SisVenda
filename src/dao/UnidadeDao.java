@@ -41,7 +41,32 @@ public class UnidadeDao {
                         
         }
     }
-    
+      
+    public boolean alterar(UnidadeMedCtrl obj){
+        BancoMySql objBanco = new BancoMySql();
+        
+        try {
+            Connection con = objBanco.obtemConexao();
+            
+           String queryAlterar = "UPDATE unidade_medida SET ABREV = ?, "
+                                                    + "NOME = ? "
+                                 + "WHERE ID=?";
+			
+                    PreparedStatement ppStm = con.prepareStatement(queryAlterar);
+                    
+                    ppStm.setString(1, obj.getAbrev());
+                    ppStm.setString(2, obj.getNome());
+                    ppStm.setString(3, String.valueOf(obj.getID()));
+                    ppStm.execute();
+                    
+                    return true;
+	
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "erro na execução DO Alterar Unidade de Medida, "+ex);
+                        
+        }
+        return false;
+    }
     public ResultSet selecionar(){
         BancoMySql objBanco = new BancoMySql();
         
@@ -99,7 +124,6 @@ public class UnidadeDao {
             
             //JOptionPane.showMessageDialog(null, "Comando executado com sucesso");
             
-            objRst.first();
             return objRst;
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "erro na execução do selecionar cod unidade, "+ex);

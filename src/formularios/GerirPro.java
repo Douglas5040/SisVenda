@@ -1540,7 +1540,7 @@ public class GerirPro extends javax.swing.JFrame {
         objProduto.setCod_barras(Integer.parseInt(jtCodBarras.getText()));
         objProduto.setNome(jtNome.getText());
         objProduto.setCod_categoria(cateDao.selecionarCategoCod(jtCatego.getText()));
-        objProduto.setCod_fornecedor(forneDao.selectCodFornece(jtFornece.getText()));
+        objProduto.setCod_fornecedor(forneDao.selectCodForneceID(jtFornece.getText()));
         objProduto.setCod_und_med(undDao.selecionarUnidadeMedCod(jtUnid.getText()));
         objProduto.setCod_marca(marcaDao.selectCodMarca(jtMarca.getText()));
         objProduto.setPeso(Integer.parseInt(jtPeso.getText()));
@@ -1617,7 +1617,7 @@ public class GerirPro extends javax.swing.JFrame {
             opEst.codPro = Integer.parseInt(jtCodBarras.getText());
             opEst.qtd = Integer.parseInt(jtCodBarras.getText());
             opEst.codOpera = 1;
-            opEst.forneceCtrl.setID(forneDao.selectCodFornece(jtFornece.getText()));
+            opEst.forneceCtrl.setID(forneDao.selectCodForneceID(jtFornece.getText()));
             opEst.codUser = SisPrinc.userlogin.getId();
             
             //dar pause no processo dessa tela para esperar resposta do Operations Estoque
@@ -1663,7 +1663,7 @@ public class GerirPro extends javax.swing.JFrame {
             objProduto.setCod_barras(Integer.parseInt(jtCodBarras.getText()));
             objProduto.setNome(jtNome.getText());
             objProduto.setCod_categoria(cateDao.selecionarCategoCod(jtCatego.getText()));
-            objProduto.setCod_fornecedor(forneDao.selectCodFornece(jtFornece.getText()));
+            objProduto.setCod_fornecedor(forneDao.selectCodForneceID(jtFornece.getText()));
             objProduto.setCod_und_med(undDao.selecionarUnidadeMedCod(jtUnid.getText()));
             objProduto.setCod_marca(marcaDao.selectCodMarca(jtMarca.getText()));
             objProduto.setPeso(Integer.parseInt(jtPeso.getText()));
@@ -1738,7 +1738,7 @@ public class GerirPro extends javax.swing.JFrame {
                 opEst.codPro = objProduto.getCod_barras();
                 opEst.qtd = objProduto.getEstoq_atual();
                 opEst.codOpera = 6;
-                opEst.forneceCtrl.setID(forneDao.selectCodFornece(jtFornece.getText()));
+                opEst.forneceCtrl.setID(forneDao.selectCodForneceID(jtFornece.getText()));
                 opEst.codUser = SisPrinc.userlogin.getId();
                 while(!okOperation){}
                 if(okOperation){

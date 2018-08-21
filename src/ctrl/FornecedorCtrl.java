@@ -13,24 +13,39 @@ public class FornecedorCtrl {
     
     private int ID;
     private String codigo;
-    private int Cpf_cnpj;
+    private int cpf_cnpj;
+    private String cpf_or_cnpj;
     private String razao_social;
     private String nome_fantazia;
     private String ender;
     private String bairro;
     private String cidade;
-    private String uf;
+    private String estado;
+    private int cep;
+    private String email;
+    private String obs;
+    private String celular;
+    private String telefone;
 
-    public FornecedorCtrl(int ID, String codigo, int Cpf_cnpj, String razao_social, String nome_fantazia, String bairro, String ender, String cidade, String uf) {
+
+   
+    
+    public FornecedorCtrl(int ID, String codigo, int cpf_cnpj, String cpf_or_cnpj, String email, String obs, String celular, String telefone, int cep, String razao_social, String nome_fantazia, String bairro, String ender, String cidade, String estado) {
         this.ID = ID;
         this.codigo = codigo;
-        this.Cpf_cnpj = Cpf_cnpj;
+        this.cpf_cnpj = cpf_cnpj;
+        this.cpf_or_cnpj = cpf_or_cnpj;
         this.razao_social = razao_social;
         this.nome_fantazia = nome_fantazia;
         this.ender = ender;
         this.bairro = bairro;
         this.cidade = cidade;
-        this.uf = uf;
+        this.estado = estado;
+        this.cep = cep;
+        this.email = email;
+        this.obs = obs;
+        this.celular = celular;
+        this.telefone = telefone;
     }
     
     public FornecedorCtrl(){}
@@ -52,11 +67,19 @@ public class FornecedorCtrl {
     }
 
     public int getCpf_cnpj() {
-        return Cpf_cnpj;
+        return cpf_cnpj;
     }
 
-    public void setCpf_cnpj(int Cpf_cnpj) {
-        this.Cpf_cnpj = Cpf_cnpj;
+    public void setCpf_cnpj(int cpf_cnpj) {
+        this.cpf_cnpj = cpf_cnpj;
+    }
+
+    public String getCpf_or_cnpj() {
+        return cpf_or_cnpj;
+    }
+
+    public void setCpf_or_cnpj(String cpf_or_cnpj) {
+        this.cpf_or_cnpj = cpf_or_cnpj;
     }
 
     public String getRazao_social() {
@@ -99,12 +122,52 @@ public class FornecedorCtrl {
         this.cidade = cidade;
     }
 
-    public String getUf() {
-        return uf;
+    public String getEstado() {
+        return estado;
     }
 
-    public void setUf(String uf) {
-        this.uf = uf;
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public int getCep() {
+        return cep;
+    }
+
+    public void setCep(int cep) {
+        this.cep = cep;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getObs() {
+        return obs;
+    }
+
+    public void setObs(String obs) {
+        this.obs = obs;
+    }
+
+    public String getCelular() {
+        return celular;
+    }
+
+    public void setCelular(String celular) {
+        this.celular = celular;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
     }
     
     

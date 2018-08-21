@@ -42,6 +42,31 @@ public class MarcaDao {
                         
         }
     }
+    public boolean alterar(MarcaCtrl obj){
+        BancoMySql objBanco = new BancoMySql();
+        
+        try {
+            Connection con = objBanco.obtemConexao();
+            
+           String queryAlterar = "UPDATE marca SET NOME = ?, "
+                                                + "DESCRI = ? "
+                                 + "WHERE ID=?";
+			
+                    PreparedStatement ppStm = con.prepareStatement(queryAlterar);
+                    
+                    ppStm.setString(1, obj.getNome());
+                    ppStm.setString(2, obj.getDescri());
+                    ppStm.setString(3, ""+obj.getID());
+                    ppStm.execute();
+                    
+                    return true;
+	
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "erro na execução DO Alterar Marca, "+ex);
+                        
+        }
+        return false;
+    }
     
     public ResultSet selecionar(){
         BancoMySql objBanco = new BancoMySql();
@@ -100,7 +125,6 @@ public class MarcaDao {
             ResultSet objRst = ppStm.executeQuery();
             
             //JOptionPane.showMessageDialog(null, "Comando executado com sucesso");
-            objRst.first();
             return objRst;
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "erro na execução do selecionar cod Marca, "+ex);
