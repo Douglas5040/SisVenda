@@ -89,6 +89,9 @@ public class SisPrinc extends javax.swing.JFrame {
    
    public static UsuarioCtrl userlogin = new UsuarioCtrl();
    public static FuncionarioCtrl func = new FuncionarioCtrl();
+   
+   public static File fileExportCli = new File("");
+   
     public SisPrinc() {
         
         initComponents();
@@ -4135,65 +4138,16 @@ public class SisPrinc extends javax.swing.JFrame {
 
     private void jbImportExcelCliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbImportExcelCliActionPerformed
         JFileChooser arquivo = new JFileChooser();
-        File file = new File("");
-        //FileNameExtensionFilter filtroPDF = new FileNameExtensionFilter("Arquivos PDF", "pdf");  
-        //arquivo.addChoosableFileFilter(filtroPDF);
+        FileNameExtensionFilter filtroPDF = new FileNameExtensionFilter("Arquivos Excel", "xlsx");  
+        arquivo.addChoosableFileFilter(filtroPDF);
         arquivo.setAcceptAllFileFilterUsed(true);
         if(arquivo.showOpenDialog(this) == JFileChooser.APPROVE_OPTION){
-             file = arquivo.getSelectedFile();
-            JOptionPane.showMessageDialog(null, "Arquivo: "+arquivo.getSelectedFile().getAbsolutePath());
+             fileExportCli = arquivo.getSelectedFile();
+            JOptionPane.showMessageDialog(null, "Arquivo: "+fileExportCli.getPath());
+            CadExcelCli cEc = new CadExcelCli();
+            cEc.setVisible(true);
         }
-        try (
-            HSSFWorkbook workbook = new HSSFWorkbook(new FileInputStream(file));
-        ) {
-            HSSFSheet sheet = workbook.getSheet("teste");
-            for(int x=0; x >= sheet.getPhysicalNumberOfRows(); x++){
-                Cell CPF_CNPJ = sheet.getRow(x).getCell(4);
-                Cell NOME_RAZAO = sheet.getRow(x).getCell(5);
-                Cell ENDER_RUA = sheet.getRow(x).getCell(7);
-                Cell NUMERO = sheet.getRow(x).getCell(8);
-                Cell BAIRRO = sheet.getRow(x).getCell(9);
-                Cell COMPLEM = sheet.getRow(x).getCell(10);
-                Cell CEP = sheet.getRow(x).getCell(11);
-                Cell CIDADE = sheet.getRow(x).getCell(12);
-                Cell ESTADO = sheet.getRow(x).getCell(14);
-                Cell TELE = sheet.getRow(x).getCell(17);
-                Cell CELU = sheet.getRow(x).getCell(19);
-                Cell TELE_COMER = sheet.getRow(x).getCell(21);
-                Cell EMAIL = sheet.getRow(x).getCell(23);
-                Cell RG = sheet.getRow(x).getCell(24);
-                Cell OBS = sheet.getRow(x).getCell(25);
-                Cell ESTADO_CIVIL = sheet.getRow(x).getCell(33);
-                Cell DATA_NASC = sheet.getRow(x).getCell(34);
-                Cell REFERENCIA = sheet.getRow(x).getCell(35);
-                
-                DefaultTableModel objTM = (DefaultTableModel) jTableCliente.getModel();
-                
-                    String linha[] = {
-                         String.valueOf(objRs.getInt("ID")),
-                         objRs.getString("NOME"),
-                         objRs.getString("CELULAR"),
-                         
-                         objRs.getString("RUA")+", "
-                        +objRs.getString("NUMERO")+", "
-                        +objRs.getString("BAIRRO")+", "
-                        +objRs.getString("CEP")
-                    };
-                    objTM.addRow(linha);
-            }
-            ClienteCtrl cliCtrl = new ClienteCtrl();
-            ClienteDao cliDao = new ClienteDao();
-            
-            
-            //Campo normal
-            System.out.println("Nome Comum: " + nomeComum.getStringCellValue());
-            //Combobox
-            System.out.println("Classificação Espécie: " + classificacaoEspecie.getStringCellValue());
-            //Checkbox
-            System.out.println("Evenenamento: " + envenenamento.getBooleanCellValue());
-        } catch (IOException ex) {
-           Logger.getLogger(SisPrinc.class.getName()).log(Level.SEVERE, null, ex);
-       }
+        
     
     }//GEN-LAST:event_jbImportExcelCliActionPerformed
 
