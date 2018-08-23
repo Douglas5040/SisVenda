@@ -50,7 +50,7 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JTable" name="jtableExcelCli">
+        <Component class="javax.swing.JTable" name="jtableExcelPro">
           <Properties>
             <Property name="autoCreateRowSorter" type="boolean" value="true"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
@@ -58,53 +58,73 @@
             </Property>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
               <Table columnCount="23" rowCount="2">
-                <Column editable="true" title="NOME" type="java.lang.Object">
+                <Column editable="true" title="COD BARRAS" type="java.lang.Object">
                   <Data value="o&#xe7;p"/>
                   <Data value="iopio"/>
                 </Column>
-                <Column editable="true" title="APELIDO" type="java.lang.Object"/>
-                <Column editable="true" title="CREDITO R$" type="java.lang.Object"/>
-                <Column editable="true" title="BONUS" type="java.lang.Object"/>
-                <Column editable="true" title="FOTO" type="java.lang.Object"/>
-                <Column editable="true" title="NASCIMENTO" type="java.lang.Object"/>
-                <Column editable="true" title="ESTADO CIVIL" type="java.lang.Object"/>
-                <Column editable="true" title="RG" type="java.lang.Object"/>
-                <Column editable="true" title="TIPO" type="java.lang.Object"/>
-                <Column editable="true" title="CPF/CNPJ" type="java.lang.Object"/>
-                <Column editable="true" title="CEP" type="java.lang.Object"/>
-                <Column editable="true" title="RUA" type="java.lang.Object"/>
-                <Column editable="true" title="NUMERO" type="java.lang.Object"/>
-                <Column editable="true" title="BAIRRO" type="java.lang.Object"/>
-                <Column editable="true" title="COMPLEMENTO" type="java.lang.Object"/>
-                <Column editable="true" title="CIDADE" type="java.lang.Object"/>
-                <Column editable="true" title="ESTADO" type="java.lang.Object"/>
-                <Column editable="true" title="REFERENCIA" type="java.lang.Object"/>
-                <Column editable="true" title="CELULAR" type="java.lang.Object"/>
-                <Column editable="true" title="TELEFONE 1" type="java.lang.Object"/>
-                <Column editable="true" title="TELEFONE 2" type="java.lang.Object"/>
-                <Column editable="true" title="EMAIL" type="java.lang.Object"/>
-                <Column editable="true" title="OBSERVA&#xc7;&#xc3;O" type="java.lang.Object"/>
+                <Column editable="true" title="NOME" type="java.lang.Object"/>
+                <Column editable="true" title="ESTOQ MINIMO" type="java.lang.Object"/>
+                <Column editable="true" title="ESTOQ MAXIMO" type="java.lang.Object"/>
+                <Column editable="true" title="ESTOQ ATUAL" type="java.lang.Object"/>
+                <Column editable="true" title="CUSTO FABRICA" type="java.lang.Object"/>
+                <Column editable="true" title="PRE&#xc7;O VAREJO" type="java.lang.Object"/>
+                <Column editable="true" title="PRE&#xc7;O ATACADO" type="java.lang.Object"/>
+                <Column editable="true" title="PESO" type="java.lang.Object"/>
+                <Column editable="true" title="PONTO BONUS" type="java.lang.Object"/>
+                <Column editable="true" title="VALOR BONUS" type="java.lang.Object"/>
+                <Column editable="true" title="LUCRO" type="java.lang.Object"/>
+                <Column editable="true" title="IPI" type="java.lang.Object"/>
+                <Column editable="true" title="CEST" type="java.lang.Object"/>
+                <Column editable="true" title="ICMS" type="java.lang.Object"/>
+                <Column editable="true" title="NCM" type="java.lang.Object"/>
+                <Column editable="true" title="FORNECEDOR" type="java.lang.Object"/>
+                <Column editable="true" title="UND MEDIDA" type="java.lang.Object"/>
+                <Column editable="true" title="MARCA" type="java.lang.Object"/>
+                <Column editable="true" title="CATEGORIA" type="java.lang.Object"/>
+                <Column editable="true" title="DATA FABRICA" type="java.lang.Object"/>
+                <Column editable="true" title="VALIDADE" type="java.lang.Object"/>
+                <Column editable="true" title="DESCRI&#xc7;&#xc3;O" type="java.lang.Object"/>
               </Table>
             </Property>
             <Property name="autoResizeMode" type="int" value="0"/>
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
               <TableColumnModel selectionModel="0">
-                <Column maxWidth="195" minWidth="195" prefWidth="195" resizable="true">
+                <Column maxWidth="100" minWidth="100" prefWidth="100" resizable="true">
                   <Title/>
                   <Editor/>
                   <Renderer/>
                 </Column>
-                <Column maxWidth="150" minWidth="150" prefWidth="150" resizable="true">
+                <Column maxWidth="250" minWidth="250" prefWidth="250" resizable="true">
                   <Title/>
                   <Editor/>
                   <Renderer/>
                 </Column>
-                <Column maxWidth="90" minWidth="90" prefWidth="90" resizable="true">
+                <Column maxWidth="100" minWidth="100" prefWidth="100" resizable="true">
                   <Title/>
                   <Editor/>
                   <Renderer/>
                 </Column>
-                <Column maxWidth="90" minWidth="90" prefWidth="90" resizable="true">
+                <Column maxWidth="100" minWidth="100" prefWidth="100" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="100" minWidth="100" prefWidth="100" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="110" minWidth="110" prefWidth="110" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="110" minWidth="110" prefWidth="110" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="110" minWidth="110" prefWidth="110" resizable="true">
                   <Title/>
                   <Editor/>
                   <Renderer/>
@@ -114,17 +134,12 @@
                   <Editor/>
                   <Renderer/>
                 </Column>
-                <Column maxWidth="130" minWidth="130" prefWidth="130" resizable="true">
+                <Column maxWidth="100" minWidth="100" prefWidth="100" resizable="true">
                   <Title/>
                   <Editor/>
                   <Renderer/>
                 </Column>
-                <Column maxWidth="130" minWidth="130" prefWidth="130" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-                <Column maxWidth="102" minWidth="120" prefWidth="120" resizable="true">
+                <Column maxWidth="100" minWidth="100" prefWidth="100" resizable="true">
                   <Title/>
                   <Editor/>
                   <Renderer/>
@@ -134,32 +149,37 @@
                   <Editor/>
                   <Renderer/>
                 </Column>
-                <Column maxWidth="150" minWidth="150" prefWidth="150" resizable="true">
+                <Column maxWidth="80" minWidth="80" prefWidth="80" resizable="true">
                   <Title/>
                   <Editor/>
                   <Renderer/>
                 </Column>
-                <Column maxWidth="140" minWidth="140" prefWidth="140" resizable="true">
+                <Column maxWidth="80" minWidth="80" prefWidth="80" resizable="true">
                   <Title/>
                   <Editor/>
                   <Renderer/>
                 </Column>
-                <Column maxWidth="170" minWidth="170" prefWidth="170" resizable="true">
+                <Column maxWidth="80" minWidth="80" prefWidth="80" resizable="true">
                   <Title/>
                   <Editor/>
                   <Renderer/>
                 </Column>
-                <Column maxWidth="70" minWidth="70" prefWidth="70" resizable="true">
+                <Column maxWidth="80" minWidth="80" prefWidth="80" resizable="true">
                   <Title/>
                   <Editor/>
                   <Renderer/>
                 </Column>
-                <Column maxWidth="150" minWidth="150" prefWidth="150" resizable="true">
+                <Column maxWidth="100" minWidth="100" prefWidth="100" resizable="true">
                   <Title/>
                   <Editor/>
                   <Renderer/>
                 </Column>
-                <Column maxWidth="170" minWidth="170" prefWidth="170" resizable="true">
+                <Column maxWidth="50" minWidth="50" prefWidth="50" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="100" minWidth="100" prefWidth="100" resizable="true">
                   <Title/>
                   <Editor/>
                   <Renderer/>
@@ -175,26 +195,6 @@
                   <Renderer/>
                 </Column>
                 <Column maxWidth="90" minWidth="90" prefWidth="90" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-                <Column maxWidth="150" minWidth="150" prefWidth="150" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-                <Column maxWidth="150" minWidth="150" prefWidth="150" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-                <Column maxWidth="150" minWidth="150" prefWidth="150" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-                <Column maxWidth="105" minWidth="150" prefWidth="150" resizable="true">
                   <Title/>
                   <Editor/>
                   <Renderer/>
@@ -228,7 +228,7 @@
           <Color blue="da" green="da" red="db" type="rgb"/>
         </Property>
         <Property name="horizontalAlignment" type="int" value="0"/>
-        <Property name="text" type="java.lang.String" value="Listas de Cliente"/>
+        <Property name="text" type="java.lang.String" value="Lista de Produtos"/>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
             <BevelBorder/>

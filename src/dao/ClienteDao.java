@@ -26,9 +26,9 @@ public class ClienteDao {
         String data_nasc = obj.getData_nasc();
         String apelido = obj.getApelido();
         String estado_civil = obj.getEstado_civil();
-        int cpf_cnpj = obj.getCpf_cnpj();
+        long cpf_cnpj = obj.getCpf_cnpj();
         String cpf_or_cnpj = obj.getCpf_or_cnpj();
-        int rg = obj.getRg();
+        long rg = obj.getRg();
         String celular = obj.getCelular();
         String tel_resi = obj.getTel_resi();
         String tel_comer = obj.getTel_comer();
@@ -104,9 +104,9 @@ public class ClienteDao {
         String data_nasc = obj.getData_nasc();
         String apelido = obj.getApelido();
         String estado_civil = obj.getEstado_civil();
-        int cpf_cnpj = obj.getCpf_cnpj();
+        long cpf_cnpj = obj.getCpf_cnpj();
         String cpf_or_cnpj = obj.getCpf_or_cnpj();
-        int rg = obj.getRg();
+        long rg = obj.getRg();
         String celular = obj.getCelular();
         String tel_resi = obj.getTel_resi();
         String tel_comer = obj.getTel_comer();
@@ -241,7 +241,7 @@ public class ClienteDao {
         try {
             Connection con = objBanco.obtemConexao();
             
-            String queryInserir = "DELETE from clientes WHERE NOME=? OR ID=?";
+            String queryInserir = "DELETE from clientes WHERE NOME LIKE ? OR ID=?";
 		
             PreparedStatement ppStm = con.prepareStatement(queryInserir);
             ppStm.setString(1, nome);

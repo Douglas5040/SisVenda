@@ -16,9 +16,9 @@ public class ClienteCtrl {
     private String data_nasc;
     private String apelido;
     private String estado_civil;
-    private int cpf_cnpj;
+    private long cpf_cnpj;
     private String cpf_or_cnpj;
-    private int rg;
+    private long rg;
     private String celular;
     private String tel_resi;
     private String tel_comer;
@@ -38,7 +38,7 @@ public class ClienteCtrl {
 
     public ClienteCtrl(){};
     
-    public ClienteCtrl(int id, String codigo, String nome, String data_nasc, String apelido, String estado_civil, int cpf_cnpj, String cpf_or_cnpj, int rg, String celular, String tel_resi, String email, String tel_comer, Double valor_credito, int cep, String rua, int numero, String bairro, String complem, String cidade, String estado, String referencia, String foto, String obs, int cod_familia, int bonus_acumulado) {
+    public ClienteCtrl(int id, String codigo, String nome, String data_nasc, String apelido, String estado_civil, long cpf_cnpj, String cpf_or_cnpj, long rg, String celular, String tel_resi, String email, String tel_comer, Double valor_credito, int cep, String rua, int numero, String bairro, String complem, String cidade, String estado, String referencia, String foto, String obs, int cod_familia, int bonus_acumulado) {
         this.id = id;
         this.nome = nome;
         this.data_nasc = data_nasc;
@@ -115,11 +115,11 @@ public class ClienteCtrl {
         this.estado_civil = estado_civil;
     }
 
-    public int getCpf_cnpj() {
+    public long getCpf_cnpj() {
         return cpf_cnpj;
     }
 
-    public void setCpf_cnpj(int cpf_cnpj) {
+    public void setCpf_cnpj(long cpf_cnpj) {
         this.cpf_cnpj = cpf_cnpj;
     }
 
@@ -131,11 +131,11 @@ public class ClienteCtrl {
         this.cpf_or_cnpj = cpf_or_cnpj;
     }
     
-     public int getRg() {
+     public long getRg() {
         return rg;
     }
 
-    public void setRg(int rg) {
+    public void setRg(long rg) {
         this.rg = rg;
     }
 

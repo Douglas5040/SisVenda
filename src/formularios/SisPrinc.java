@@ -91,6 +91,7 @@ public class SisPrinc extends javax.swing.JFrame {
    public static FuncionarioCtrl func = new FuncionarioCtrl();
    
    public static File fileExportCli = new File("");
+   public static File fileExportPro = new File("");
    
     public SisPrinc() {
         
@@ -1515,6 +1516,9 @@ public class SisPrinc extends javax.swing.JFrame {
 
         jPanel7.add(jPanel21, java.awt.BorderLayout.PAGE_END);
 
+        jScrollPane2.setAutoscrolls(true);
+
+        jTableCliente.setAutoCreateRowSorter(true);
         jTableCliente.setFont(new java.awt.Font("Arial", 0, 21)); // NOI18N
         jTableCliente.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -1532,6 +1536,7 @@ public class SisPrinc extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTableCliente.setDragEnabled(true);
         jTableCliente.setRowHeight(30);
         jTableCliente.setRowMargin(3);
         jTableCliente.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -1851,7 +1856,7 @@ public class SisPrinc extends javax.swing.JFrame {
         jButton14.setBackground(new java.awt.Color(43, 43, 43));
         jButton14.setFont(new java.awt.Font("Arial Black", 0, 24)); // NOI18N
         jButton14.setForeground(new java.awt.Color(223, 223, 223));
-        jButton14.setText("CONSULTAR");
+        jButton14.setText("2");
         jButton14.setPreferredSize(new java.awt.Dimension(160, 80));
         jButton14.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2512,13 +2517,15 @@ public class SisPrinc extends javax.swing.JFrame {
        ClienteDao objDao = new ClienteDao();
         if(jTableCliente.getSelectedRow() != -1){
             if(JOptionPane.showConfirmDialog(jPanel6, "Confirme a Exclusão", "Deseja excluir o Cliente?", 0)==0){
-                DefaultTableModel objTM = (DefaultTableModel) jTableCliente.getModel();
-                int id = (Integer.parseInt(objTM.getValueAt(jTableCliente.getSelectedRow(), 0).toString()));
-                String nome = objTM.getValueAt(jTableCliente.getSelectedRow(), 1).toString();
-                
+                //DefaultTableModel objTM = (DefaultTableModel) jTableCliente.getModel();
+                int id = (Integer.parseInt(jTableCliente.getValueAt(jTableCliente.getSelectedRow(), 0).toString()));
+                String nome = jTableCliente.getValueAt(jTableCliente.getSelectedRow(), 1).toString();
+
                 objDao.deletar(id, nome);
-                objTM.removeRow(jTableCliente.getSelectedRow());
-        }
+                System.out.println("Cliente excluido: "+id+"-"+nome);
+                jTableCliente.removeRowSelectionInterval(jTableCliente.getSelectedRow(),jTableCliente.getSelectedRow());
+                jbPesqCli.doClick();
+        }else System.out.println("Cliente NÃO excluido!!!");
        }else JOptionPane.showMessageDialog(jPanel6, "Selecione um Cliente para EXCLUIR!!!");
     }//GEN-LAST:event_jButton8ActionPerformed
 
@@ -4164,7 +4171,16 @@ public class SisPrinc extends javax.swing.JFrame {
     }//GEN-LAST:event_jbExportExcelCliActionPerformed
 
     private void jbImportExcelProActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbImportExcelProActionPerformed
-        // TODO add your handling code here:
+        JFileChooser arquivo = new JFileChooser();
+        FileNameExtensionFilter filtroPDF = new FileNameExtensionFilter("Arquivos Excel", "xlsx");  
+        arquivo.addChoosableFileFilter(filtroPDF);
+        arquivo.setAcceptAllFileFilterUsed(true);
+        if(arquivo.showOpenDialog(this) == JFileChooser.APPROVE_OPTION){
+             fileExportPro = arquivo.getSelectedFile();
+            JOptionPane.showMessageDialog(null, "Arquivo: "+fileExportPro.getPath());
+            CadExcelPro cEp = new CadExcelPro();
+            cEp.setVisible(true);
+        }
     }//GEN-LAST:event_jbImportExcelProActionPerformed
 
     private void jbExportExcelProActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbExportExcelProActionPerformed
