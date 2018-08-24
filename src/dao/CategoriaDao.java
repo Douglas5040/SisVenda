@@ -101,8 +101,8 @@ public class CategoriaDao {
             ResultSet objRst = ppStm.executeQuery();
             
             //JOptionPane.showMessageDialog(null, "Comando executado com sucesso");
-            objRst.first();
-            return objRst.getInt("ID");
+            if(objRst.first()) return objRst.getInt("ID");
+            else return -1;
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "erro na execução do selecionar COD CATEGORIA:  "+ex);
         }

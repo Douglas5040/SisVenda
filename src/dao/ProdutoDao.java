@@ -23,7 +23,7 @@ public class ProdutoDao {
         BancoMySql objBanco = new BancoMySql();
 
         int ID = obj.getID();
-        int cod_barras = obj.getCod_barras();
+        String cod_barras = obj.getCod_barras();
         String nome = obj.getNome();
         int estoq_min = obj.getEstoq_min();
         int estoq_max = obj.getEstoq_max();
@@ -53,7 +53,7 @@ public class ProdutoDao {
         try {
             Connection con = objBanco.obtemConexao();
             
-            String queryInserir = "INSERT INTO produtos VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            String queryInserir = "INSERT INTO produtos VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			
 			PreparedStatement ppStm = con.prepareStatement(queryInserir);
 			
@@ -82,12 +82,14 @@ public class ProdutoDao {
                         ppStm.setString(23, String.valueOf(cod_status));
                         ppStm.setString(24, data_fabrica);
                         ppStm.setString(25, validade);
+                        ppStm.setString(26, null);
+                        ppStm.setString(27, null);
                         ppStm.execute();
                         
                         //JOptionPane.showMessageDialog(null, "Comando executado com sucesso");
                         
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "erro na execução do inserir PRODUTO, "+ex);
+            System.out.println("erro na execução do inserir PRODUTO, "+ex);
                         
         }
     }
@@ -96,7 +98,7 @@ public class ProdutoDao {
         BancoMySql objBanco = new BancoMySql();
          
         int ID = obj.getID();
-        int cod_barras = obj.getCod_barras();
+        String cod_barras = obj.getCod_barras();
         String nome = obj.getNome();
         int estoq_min = obj.getEstoq_min();
         int estoq_max = obj.getEstoq_max();

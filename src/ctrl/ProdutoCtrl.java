@@ -11,7 +11,7 @@ package ctrl;
  */
 public class ProdutoCtrl {
     private int ID;    
-    private int cod_barras;
+    private String cod_barras;
     private String nome;
     private int estoq_min;
     private int estoq_max;
@@ -39,7 +39,7 @@ public class ProdutoCtrl {
     private byte[] img2;
 
     public ProdutoCtrl(){};
-    public ProdutoCtrl(int ID, int cod_barras, String nome, int estoq_min, int estoq_max, int estoq_atual, String descri, double custo_fabrica, double preco_varejo, double preco_atacado, int peso, int pontos_bonus, double valor_bonus, double markup_lucro, byte[] img1, byte[] img2, double ipi_impost, double cest_impost, double icms_impost, double ncm_impost, int cod_fornecedor, int cod_categoria, int cod_und_med, int cod_marca, int cod_status, String data_fabrica, String validade) {
+    public ProdutoCtrl(int ID, String cod_barras, String nome, int estoq_min, int estoq_max, int estoq_atual, String descri, double custo_fabrica, double preco_varejo, double preco_atacado, int peso, int pontos_bonus, double valor_bonus, double markup_lucro, byte[] img1, byte[] img2, double ipi_impost, double cest_impost, double icms_impost, double ncm_impost, int cod_fornecedor, int cod_categoria, int cod_und_med, int cod_marca, int cod_status, String data_fabrica, String validade) {
         this.ID = ID;
         this.cod_barras = cod_barras;
         this.nome = nome;
@@ -78,11 +78,11 @@ public class ProdutoCtrl {
         this.ID = ID;
     }
 
-    public int getCod_barras() {
+    public String getCod_barras() {
         return cod_barras;
     }
 
-    public void setCod_barras(int cod_barras) {
+    public void setCod_barras(String cod_barras) {
         this.cod_barras = cod_barras;
     }
 

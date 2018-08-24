@@ -6,22 +6,39 @@
 package formularios;
 
 import ctrl.ClienteCtrl;
+import ctrl.ControleProCtrl;
 import ctrl.FamiliaCliCtrl;
 import ctrl.FormatacaoConteudoCtrl;
 import ctrl.ProdutoCtrl;
+import dao.CategoriaDao;
 import dao.ClienteDao;
+import dao.ControleProDAO;
 import dao.FamiliaCliDAO;
+import dao.FornecedorDao;
+import dao.MarcaDao;
 import dao.ProdutoDao;
+import dao.UnidadeDao;
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Container;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.LayoutManager;
+import java.awt.LayoutManager2;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
@@ -58,8 +75,10 @@ public class CadExcelPro extends javax.swing.JFrame {
         jScrollPane1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         jtableExcelPro.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         //jScrollPane1.setHorizontalScrollBar(new JScrollBar());
+        Alertas alerta = new Alertas("Aguarde", "CARREGAMDO...", getWidth(), getHeight());
         try{
-            
+
+        
             XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(SisPrinc.fileExportPro));
             
             
@@ -113,13 +132,16 @@ public class CadExcelPro extends javax.swing.JFrame {
                                 sNOME = celula.toString();
                             break;
                             case 4:
-                                sESTOQ_MIN = celula.toString();
+                                if(celula.toString().isEmpty()) sESTOQ_MIN = "0.0";
+                                else sESTOQ_MIN = celula.toString();
                             break;
                             case 5:
-                                sESTOQ_MAX = celula.toString();
+                                if(celula.toString().isEmpty()) sESTOQ_MAX = "0.0";
+                                else sESTOQ_MAX = celula.toString();
                             break;
                             case 6:
-                                sESTOQ_ATUAL = celula.toString();
+                                if(celula.toString().isEmpty()) sESTOQ_ATUAL = "0.0";
+                                else sESTOQ_ATUAL = celula.toString();
                             break;
                             case 7:
                                 sUND_MED = celula.toString();
@@ -134,7 +156,8 @@ public class CadExcelPro extends javax.swing.JFrame {
                                 sCUSTO_FAB = celula.toString();
                             break;
                             case 11:
-                                sPESO = celula.toString();
+                                if(sPESO.isEmpty()) sPESO = "0.0";
+                                else sPESO = celula.toString();
                             break;
                             case 12:
                                 sIPI = celula.toString();
@@ -168,20 +191,20 @@ public class CadExcelPro extends javax.swing.JFrame {
                         String linhaTable[] = {
                              ""+sCOD_BARRAS,
                              ""+sNOME,
-                             ""+sESTOQ_MIN,
-                             ""+sESTOQ_MAX,
-                             ""+sESTOQ_ATUAL,
-                             ""+sCUSTO_FAB,
-                             ""+sPRECO_VARE,
-                             ""+sPRECO_ATAC,
-                             ""+sPESO,
+                             ""+Math.round(Double.valueOf(sESTOQ_MIN+"0")),
+                             ""+Math.round(Double.valueOf(sESTOQ_MAX+"0")),
+                             ""+Math.round(Double.valueOf(sESTOQ_ATUAL+"0")),
+                             ""+sCUSTO_FAB+"0",
+                             ""+sPRECO_VARE+"0",
+                             ""+sPRECO_ATAC+"0",
+                             ""+Math.round(Double.valueOf(sPESO+"0")),
                              ""+sBONUS,
-                             ""+sVALOR_BONUS,
-                             ""+sLUCRO,
-                             ""+sIPI,
-                             ""+sCEST,
-                             ""+sICMS,
-                             ""+sNCM,
+                             ""+sVALOR_BONUS+"0",
+                             ""+sLUCRO+"0",
+                             ""+sIPI+"0",
+                             ""+sCEST+"0",
+                             ""+sICMS+"0",
+                             ""+sNCM+"0",
                              ""+sFORNECEDOR,
                              ""+sUND_MED,
                              ""+sMARCA,
@@ -202,12 +225,13 @@ public class CadExcelPro extends javax.swing.JFrame {
                         //System.out.println(linha.getRowNum()+""+Arrays.toString(linhaTable));
 
             }
-            
         } catch (IOException ex) {
            Logger.getLogger(SisPrinc.class.getName()).log(Level.SEVERE, null, ex);
+            alerta.sumir();
        }
-        
-        
+       
+            
+            alerta.sumir();
     }
 
     /**
@@ -381,97 +405,157 @@ public class CadExcelPro extends javax.swing.JFrame {
 
     private void jbCadClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbCadClientesActionPerformed
         DefaultTableModel objTM = (DefaultTableModel) jtableExcelPro.getModel();
-        ProdutoCtrl objCliente = new ProdutoCtrl();
-        ProdutoDao objDao = new ProdutoDao();
-        int codCli=0, tamTable = objTM.getRowCount(), posiLinha = 0;
+        ProdutoCtrl objProduto = new ProdutoCtrl();
+        ProdutoDao objProDao = new ProdutoDao();
+        CategoriaDao cateDao = new CategoriaDao();
+        MarcaDao marcaDao = new MarcaDao();
+        UnidadeDao undDao = new UnidadeDao();
+        FornecedorDao forneDao = new FornecedorDao();
+        
+        
+        Alertas alerta = new Alertas("Aguarde", "CADASTRANDO...", getWidth(), getHeight());
+        
+        int tamTable = objTM.getRowCount(), posiLinha = 0;
         boolean isCad = false;
         System.out.println("tamanho Tabela: "+tamTable);
         for(int l = 0; l < tamTable; l++){
-        try{   
+//        try{   
             System.out.println("indice Tabela: "+l);
 
-                //DADOS PESSOAIS
-                objCliente.setId(0);
-                objCliente.setNome(objTM.getValueAt(posiLinha, 0).toString());
-                objCliente.setApelido(objTM.getValueAt(posiLinha, 1).toString());
-                objCliente.setData_nasc(objTM.getValueAt(posiLinha, 5).toString());
-                objCliente.setEstado_civil(objTM.getValueAt(posiLinha, 6).toString());
+                ///DADOS PRODUTO
+                objProduto.setID(0);
+                objProduto.setCod_barras(objTM.getValueAt(posiLinha, 0).toString());
+                objProduto.setNome(objTM.getValueAt(posiLinha, 1).toString());
+                if(objTM.getValueAt(posiLinha, 19).toString().isEmpty()) objProduto.setCod_categoria(-1);
+                else objProduto.setCod_categoria(cateDao.selecionarCategoCod(objTM.getValueAt(posiLinha, 19).toString()));
+                if(objTM.getValueAt(posiLinha, 16).toString().isEmpty()) objProduto.setCod_fornecedor(-1);
+                else objProduto.setCod_fornecedor(forneDao.selectCodForneceID(objTM.getValueAt(posiLinha, 16).toString()));
+                if(objTM.getValueAt(posiLinha, 17).toString().isEmpty()) objProduto.setCod_und_med(-1);
+                else objProduto.setCod_und_med(undDao.selecionarUnidadeMedCod(objTM.getValueAt(posiLinha, 17).toString()));
+                if(objTM.getValueAt(posiLinha, 16).toString().isEmpty()) objProduto.setCod_marca(-1);
+                else objProduto.setCod_marca(marcaDao.selectCodMarca(objTM.getValueAt(posiLinha, 16).toString()));
+                if(objTM.getValueAt(posiLinha, 8).toString().isEmpty()) objProduto.setPeso(0);
+                else objProduto.setPeso(Integer.parseInt(objTM.getValueAt(posiLinha, 8).toString()));
 
-                //CONTATOS
-                objCliente.setCelular(objTM.getValueAt(posiLinha, 18).toString());
-                objCliente.setTel_resi(objTM.getValueAt(posiLinha, 19).toString());
-                objCliente.setTel_comer(objTM.getValueAt(posiLinha, 20).toString());
-                objCliente.setEmail(objTM.getValueAt(posiLinha, 21).toString());
+                //PREÇO
+                String priceFabric = objTM.getValueAt(posiLinha, 5).toString(),
+                priceVarejo = objTM.getValueAt(posiLinha, 6).toString(),
+                priceAtacado = objTM.getValueAt(posiLinha, 7).toString(),
+                lucroMarkup  = objTM.getValueAt(posiLinha, 11).toString(),
+                valorBonus = objTM.getValueAt(posiLinha, 10).toString();
 
-                //ENDEREÇOS
-                objCliente.setCep(Integer.parseInt(objTM.getValueAt(posiLinha, 10).toString()));
-                objCliente.setRua(objTM.getValueAt(posiLinha, 11).toString());
-                if(objTM.getValueAt(posiLinha, 12).toString().equals("")) objCliente.setNumero(0);
-                else objCliente.setNumero(Integer.parseInt(objTM.getValueAt(posiLinha, 12).toString()));
-                objCliente.setComplem(objTM.getValueAt(posiLinha, 14).toString());
-                objCliente.setBairro(objTM.getValueAt(posiLinha, 13).toString());
-                objCliente.setCidade(objTM.getValueAt(posiLinha, 15).toString());
-                objCliente.setEstado(objTM.getValueAt(posiLinha, 16).toString());
-                objCliente.setReferencia(objTM.getValueAt(posiLinha, 17).toString());
+                priceFabric = priceFabric.replace(",", ".");
+                priceVarejo = priceVarejo.replace(",", ".");
+                priceAtacado = priceAtacado.replace(",", ".");
+                lucroMarkup = lucroMarkup.replace(",", ".");
+                valorBonus = valorBonus.replace(",", ".");
+        
+                if(priceFabric.isEmpty()) objProduto.setCusto_fabrica(0.0);
+                else objProduto.setCusto_fabrica(Double.valueOf(priceFabric));
+                if(priceVarejo.isEmpty()) objProduto.setPreco_varejo(0.0);
+                else  objProduto.setPreco_varejo(Double.valueOf(priceVarejo));
+                if(priceAtacado.isEmpty()) objProduto.setPreco_atacado(0.0);
+                else  objProduto.setPreco_atacado(Double.valueOf(priceAtacado));
+                if(lucroMarkup.isEmpty()) objProduto.setMarkup_lucro(0.0);
+                else  objProduto.setMarkup_lucro(Double.valueOf(lucroMarkup));
+                if(objTM.getValueAt(posiLinha, 9).toString().isEmpty()) objProduto.setPontos_bonus(0);
+                else  objProduto.setPontos_bonus(Integer.parseInt(objTM.getValueAt(posiLinha, 9).toString()));
+                if(valorBonus.isEmpty()) objProduto.setValor_bonus(0.0);
+                else objProduto.setValor_bonus(Double.valueOf(valorBonus));
 
-                //DOCUMENTOS
-                if(objTM.getValueAt(posiLinha, 7).toString().equals("")) objCliente.setRg(0);
-                else{
-                    String[] rg = objTM.getValueAt(posiLinha, 7).toString().split("[-]");
-                    if(rg.length > 1){
-                        objCliente.setRg(Integer.parseInt(rg[0]+rg[1]));
-                    }else objCliente.setRg(Integer.parseInt(objTM.getValueAt(posiLinha, 7).toString()));
-                }
-                if(objTM.getValueAt(posiLinha, 9).toString().equals("")){
-                    objCliente.setCpf_cnpj(0);
-                }else{
-                    String[] cpf = objTM.getValueAt(posiLinha, 9).toString().split("[-]");
-                    String[] cpf_1 = cpf[0].split("[.]");
-                    objCliente.setCpf_cnpj(Long.parseLong(""+cpf_1[0]+cpf_1[1]+cpf_1[2]+cpf[1]));
-                }
-                if(objTM.getValueAt(posiLinha, 8).toString().equals("CPF")){
-                    objCliente.setCpf_or_cnpj("CPF");
-                }else{
-                    objCliente.setCpf_or_cnpj("CNPJ");
-                }
-                //CREDITO
-                if(objTM.getValueAt(posiLinha, 2).toString().equals("")){
-                    objCliente.setValor_credito(0.0);                                       
-                }else{
-                    String limCompra = objTM.getValueAt(posiLinha, 2).toString();
-                    limCompra = limCompra.replace(",", ".");
-                    objCliente.setValor_credito(Double.valueOf(limCompra));                   
-                }
+                //ESTOQUE
+                if(objTM.getValueAt(posiLinha, 3).toString().isEmpty()) objProduto.setEstoq_max(0);
+                else objProduto.setEstoq_max(Integer.parseInt(objTM.getValueAt(posiLinha, 3).toString()));
+                if(objTM.getValueAt(posiLinha, 2).toString().isEmpty()) objProduto.setEstoq_min(0);
+                else  objProduto.setEstoq_min(Integer.parseInt(objTM.getValueAt(posiLinha, 2).toString()));
+                if(objTM.getValueAt(posiLinha, 4).toString().isEmpty()) objProduto.setEstoq_atual(0);
+                else objProduto.setEstoq_atual(Integer.parseInt(objTM.getValueAt(posiLinha, 4).toString()));
 
-                //FOTO
-                objCliente.setFoto(null);
+                //DADOS FISCAIS
+                String    impIPI = objTM.getValueAt(posiLinha, 12).toString(),
+                          impCEST = objTM.getValueAt(posiLinha, 13).toString(),
+                          impICMS = objTM.getValueAt(posiLinha, 14).toString(),
+                          impNCM  = objTM.getValueAt(posiLinha, 15).toString();
 
-                //ANOTAÇÕES
-                objCliente.setObs(objTM.getValueAt(posiLinha, 22).toString());
+                          impIPI = impIPI.replace(",", ".");
+                          impCEST = impCEST.replace(",", ".");
+                          impICMS = impICMS.replace(",", ".");
+                          impNCM = impNCM.replace(",", ".");
 
-                 if(objDao.verificarRgCpf(objTM.getValueAt(posiLinha, 7).toString(),objTM.getValueAt(posiLinha, 9).toString())){
+                if(impIPI.isEmpty())objProduto.setIpi_impost(0.0);
+                else objProduto.setIpi_impost(Double.valueOf(impIPI));
+                if(impIPI.isEmpty())  objProduto.setCest_impost(0.0);
+                else objProduto.setCest_impost(Double.valueOf(impCEST));
+                if(impIPI.isEmpty()) objProduto.setIcms_impost(0.0);
+                else objProduto.setIcms_impost(Double.valueOf(impICMS));
+                if(impIPI.isEmpty()) objProduto.setNcm_impost(0.0);
+                else objProduto.setNcm_impost(Double.valueOf(impNCM));
+                        
+                //DESCRIÇÃO
+                objProduto.setDescri(objTM.getValueAt(posiLinha, 22).toString());
+
+                //IMAGENS
+                objProduto.setImg1(null);
+                objProduto.setImg2(null);
+
+                //DATAS PRODUTO
+                if(objTM.getValueAt(posiLinha, 20).toString().isEmpty()) objProduto.setData_fabrica("0001-00-00");
+                else objProduto.setData_fabrica(objTM.getValueAt(posiLinha, 20).toString().substring(6,10)+"/"+
+                                            objTM.getValueAt(posiLinha, 20).toString().substring(3,5)+"/"+
+                                            objTM.getValueAt(posiLinha, 20).toString().substring(0,2));
+                if(objTM.getValueAt(posiLinha, 21).toString().isEmpty()) objProduto.setValidade("0001-00-00");
+                else objProduto.setValidade(objTM.getValueAt(posiLinha, 21).toString().substring(6,10)+"/"+
+                                        objTM.getValueAt(posiLinha, 21).toString().substring(3,5)+"/"+
+                                        objTM.getValueAt(posiLinha, 21).toString().substring(0,2));
+                //STATUS
+                objProduto.setCod_status(1);
+                        
+                if(objProDao.verificarPro(""+objProduto.getCod_barras())){
                     posiLinha++;
                     isCad = true;
                 }else{    
-                    codCli = objDao.inserir(objCliente);    
+                    ControleProDAO ctrlProDao = new ControleProDAO();
+                    ControleProCtrl ctrlProCtrl = new ControleProCtrl();
+
+                    objProDao.inserir(objProduto);
+                    
+                    ctrlProCtrl.setCodPro(objProDao.selecionarID(objProduto.getCod_barras()));
+                    ctrlProCtrl.setCodOpera(6);
+                    ctrlProCtrl.setCodUser(SisPrinc.userlogin.getId());
+                    ctrlProCtrl.setCodCli(-1);
+                    ctrlProCtrl.setCodFornece(objProduto.getCod_fornecedor());
+                    ctrlProCtrl.setQtd(objProduto.getEstoq_atual());
+                    ctrlProCtrl.setHora(SisPrinc.hora);
+                    Date dataSistema = new Date();
+                    SimpleDateFormat formato = new SimpleDateFormat("yyyy/MM/dd");
+                    ctrlProCtrl.setDate(formato.format(dataSistema));
+                    ctrlProCtrl.setObs(objProduto.getDescri());
+
+                    ctrlProDao.inserir(ctrlProCtrl);
+ 
                     objTM.removeRow(posiLinha);
                 }
-                System.out.println("codCLi: "+codCli);
-        }catch(Exception e){System.out.println("Error no inserir: "+e);}
+
+                
+//        }catch(Exception e){System.out.println("Error no inserir: "+e);}
         }
         if(isCad){
-            JOptionPane.showMessageDialog(this, "Os Clientes que estão na Lista já foram cadastrados noSistema!!!");
+            JOptionPane.showMessageDialog(this, "Os Produtos que estão na Lista já foram cadastrados noSistema!!!");
             isCad = false;
+            alerta.sumir();
         }
         if(objTM.getRowCount()<0) {
             try {
-            SisPrinc.class.newInstance().clickBtnCli();
+            SisPrinc.class.newInstance().clickBtnPro();
+            alerta.sumir();
         } catch (InstantiationException ex) {
             Logger.getLogger(CadExcelPro.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
             Logger.getLogger(CadExcelPro.class.getName()).log(Level.SEVERE, null, ex);
         }
         }
+        
+            alerta.sumir();
     }//GEN-LAST:event_jbCadClientesActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed

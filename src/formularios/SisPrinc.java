@@ -1856,7 +1856,7 @@ public class SisPrinc extends javax.swing.JFrame {
         jButton14.setBackground(new java.awt.Color(43, 43, 43));
         jButton14.setFont(new java.awt.Font("Arial Black", 0, 24)); // NOI18N
         jButton14.setForeground(new java.awt.Color(223, 223, 223));
-        jButton14.setText("2");
+        jButton14.setText("CONSULTAR");
         jButton14.setPreferredSize(new java.awt.Dimension(160, 80));
         jButton14.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

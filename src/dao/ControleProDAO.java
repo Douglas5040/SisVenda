@@ -44,10 +44,10 @@ public class ControleProDAO {
 			ppStm.setString(2, ""+qtd);
 			ppStm.setString(3, ""+codOp);
 			ppStm.setString(4, ""+codUser);
-			ppStm.setString(5, ""+codCli);
-			ppStm.setString(6, ""+codForence);
-			ppStm.setString(7, date+" "+hora);
-			ppStm.setString(8, obs);
+			ppStm.setString(5, date+" "+hora);
+			ppStm.setString(6, obs);
+			ppStm.setString(7, ""+codCli);
+			ppStm.setString(8, ""+codForence);
                         ppStm.execute();
                         
                         //JOptionPane.showMessageDialog(null, "Comando executado com sucesso");

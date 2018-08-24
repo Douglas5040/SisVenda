@@ -1537,7 +1537,7 @@ public class GerirPro extends javax.swing.JFrame {
         
         //DADOS PRODUTO
         objProduto.setID(0);
-        objProduto.setCod_barras(Integer.parseInt(jtCodBarras.getText()));
+        objProduto.setCod_barras(jtCodBarras.getText());
         objProduto.setNome(jtNome.getText());
         objProduto.setCod_categoria(cateDao.selecionarCategoCod(jtCatego.getText()));
         objProduto.setCod_fornecedor(forneDao.selectCodForneceID(jtFornece.getText()));
@@ -1660,7 +1660,7 @@ public class GerirPro extends javax.swing.JFrame {
         
             //DADOS PRODUTO
             objProduto.setID(SisPrinc.codPro);
-            objProduto.setCod_barras(Integer.parseInt(jtCodBarras.getText()));
+            objProduto.setCod_barras(jtCodBarras.getText());
             objProduto.setNome(jtNome.getText());
             objProduto.setCod_categoria(cateDao.selecionarCategoCod(jtCatego.getText()));
             objProduto.setCod_fornecedor(forneDao.selectCodForneceID(jtFornece.getText()));
@@ -1735,7 +1735,7 @@ public class GerirPro extends javax.swing.JFrame {
                    
                 OperationsEstoque opEst = new OperationsEstoque();
                 opEst.setVisible(true);
-                opEst.codPro = objProduto.getCod_barras();
+                opEst.codPro =  Integer.parseInt(objProduto.getCod_barras());
                 opEst.qtd = objProduto.getEstoq_atual();
                 opEst.codOpera = 6;
                 opEst.forneceCtrl.setID(forneDao.selectCodForneceID(jtFornece.getText()));
