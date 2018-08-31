@@ -37,7 +37,7 @@ public class SaidaProDao {
 			ppStm.setString(5, ""+obj.getDESCONT());
 			ppStm.setString(6, ""+obj.getCOD_OS());
 			ppStm.setString(7, ""+obj.getCOD_STATUS_SP());
-                        ppStm.execute();
+                        ppStm.execute(); ppStm.close();
                         
                         //JOptionPane.showMessageDialog(null, "Comando executado com sucesso");
                         
@@ -136,33 +136,29 @@ public class SaidaProDao {
     }
 
     
-    public void alterarSP(int parametro, SaidaProCtrl obj){
+    public void alterarSP(SaidaProCtrl obj){
         BancoMySql objBanco = new BancoMySql();
         try {
             Connection con = objBanco.obtemConexao();
             
-            String queryInserir = "UPDATE saida_pro SET COD_PRO=?,"
-                                                        + " VALOR_PRO=?,"
+            String queryInserir = "UPDATE saida_pro SET VALOR_PRO=?,"
                                                         + " QTD=?, "
                                                         + " VALOR_TOTAL=?,"                                                        
                                                         + " DESCONT=?,"
-                                                        + " COD_OS=?,"
                                                         + " COD_STATUS_SP=? "
 
-                                 + "WHERE ID =? or COD_PRO=?";
+                                 + "WHERE COD_PRO =? or COD_OS=?";
 			
 			PreparedStatement ppStm = con.prepareStatement(queryInserir);
-			
-			ppStm.setString(1, ""+obj.getCOD_PRO());
-			ppStm.setString(2, ""+obj.getVALOR_PRO());
-			ppStm.setString(3, ""+obj.getQTD());
-			ppStm.setString(4, ""+obj.getVALOR_TOTAL());
-			ppStm.setString(5, ""+obj.getDESCONT());
-			ppStm.setString(6, ""+obj.getCOD_OS());
-			ppStm.setString(7, ""+obj.getCOD_STATUS_SP());
-                        ppStm.setString(8, String.valueOf(parametro));
-                        ppStm.setString(9, String.valueOf(parametro));
-                        ppStm.execute();
+
+			ppStm.setString(1, ""+obj.getVALOR_PRO());
+			ppStm.setString(2, ""+obj.getQTD());
+			ppStm.setString(3, ""+obj.getVALOR_TOTAL());
+			ppStm.setString(4, ""+obj.getDESCONT());
+			ppStm.setString(5, ""+obj.getCOD_STATUS_SP());
+                        ppStm.setString(6, String.valueOf(obj.getCOD_PRO()));
+                        ppStm.setString(7, String.valueOf(obj.getCOD_OS()));
+                        ppStm.execute(); ppStm.close();
                         
                         //JOptionPane.showMessageDialog(null, "Comando executado com sucesso");
                         
@@ -205,12 +201,12 @@ public class SaidaProDao {
             ppStm.setString(1, String.valueOf(id));
             ppStm.setString(2, String.valueOf(os));
             ppStm.setString(3, String.valueOf(status));
-            ppStm.execute();
+            ppStm.execute(); ppStm.close();
                         
            // JOptionPane.showMessageDialog(null, "Comando executado com sucesso");
             
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "erro na execução do deletar");
+            JOptionPane.showMessageDialog(null, "erro na execução do deletar saida_pro, "+ex);
         }
     }
 }

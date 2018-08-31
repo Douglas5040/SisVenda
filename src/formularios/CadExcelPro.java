@@ -66,6 +66,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  */
 public class CadExcelPro extends javax.swing.JFrame {
 
+    ProdutoCtrl objProduto = new ProdutoCtrl();
+    ProdutoDao objProDao = new ProdutoDao();
     /**
      * Creates new form CadExcelCli
      */
@@ -75,7 +77,7 @@ public class CadExcelPro extends javax.swing.JFrame {
         jScrollPane1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         jtableExcelPro.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         //jScrollPane1.setHorizontalScrollBar(new JScrollBar());
-        Alertas alerta = new Alertas("Aguarde", "CARREGAMDO...", getWidth(), getHeight());
+        //Alertas alerta = new Alertas("Aguarde", "CARREGAMDO...", getWidth(), getHeight());
         try{
 
         
@@ -227,11 +229,11 @@ public class CadExcelPro extends javax.swing.JFrame {
             }
         } catch (IOException ex) {
            Logger.getLogger(SisPrinc.class.getName()).log(Level.SEVERE, null, ex);
-            alerta.sumir();
+            //alerta.sumir();
        }
        
             
-            alerta.sumir();
+            //alerta.sumir();
     }
 
     /**
@@ -405,15 +407,14 @@ public class CadExcelPro extends javax.swing.JFrame {
 
     private void jbCadClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbCadClientesActionPerformed
         DefaultTableModel objTM = (DefaultTableModel) jtableExcelPro.getModel();
-        ProdutoCtrl objProduto = new ProdutoCtrl();
-        ProdutoDao objProDao = new ProdutoDao();
+        
         CategoriaDao cateDao = new CategoriaDao();
         MarcaDao marcaDao = new MarcaDao();
         UnidadeDao undDao = new UnidadeDao();
         FornecedorDao forneDao = new FornecedorDao();
         
         
-        Alertas alerta = new Alertas("Aguarde", "CADASTRANDO...", getWidth(), getHeight());
+       // Alertas alerta = new Alertas("Aguarde", "CADASTRANDO...", getWidth(), getHeight());
         
         int tamTable = objTM.getRowCount(), posiLinha = 0;
         boolean isCad = false;
@@ -514,11 +515,12 @@ public class CadExcelPro extends javax.swing.JFrame {
                     posiLinha++;
                     isCad = true;
                 }else{    
+                    
                     ControleProDAO ctrlProDao = new ControleProDAO();
                     ControleProCtrl ctrlProCtrl = new ControleProCtrl();
 
                     objProDao.inserir(objProduto);
-                    
+
                     ctrlProCtrl.setCodPro(objProDao.selecionarID(objProduto.getCod_barras()));
                     ctrlProCtrl.setCodOpera(6);
                     ctrlProCtrl.setCodUser(SisPrinc.userlogin.getId());
@@ -532,22 +534,31 @@ public class CadExcelPro extends javax.swing.JFrame {
                     ctrlProCtrl.setObs(objProduto.getDescri());
 
                     ctrlProDao.inserir(ctrlProCtrl);
- 
+//                    Thread t = new Thread(new processoBanco(), 
+//                                                "Processo banco produtos");
+//                                                t.setDaemon(true);
+//                                                t.start();
+//                                                
+//                    
+//                    
+                    jtableExcelPro.setRowSelectionInterval(posiLinha, posiLinha);
                     objTM.removeRow(posiLinha);
+                    
+                    
                 }
 
                 
 //        }catch(Exception e){System.out.println("Error no inserir: "+e);}
         }
         if(isCad){
+            System.out.println("Finalizado");
             JOptionPane.showMessageDialog(this, "Os Produtos que estão na Lista já foram cadastrados noSistema!!!");
             isCad = false;
-            alerta.sumir();
-        }
-        if(objTM.getRowCount()<0) {
+            //alerta.sumir();
+        }else {
             try {
             SisPrinc.class.newInstance().clickBtnPro();
-            alerta.sumir();
+            System.out.println("Finalizado");
         } catch (InstantiationException ex) {
             Logger.getLogger(CadExcelPro.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
@@ -555,9 +566,36 @@ public class CadExcelPro extends javax.swing.JFrame {
         }
         }
         
-            alerta.sumir();
+            //alerta.sumir();
     }//GEN-LAST:event_jbCadClientesActionPerformed
 
+    private class processoBanco implements Runnable {
+                    public void run() {
+                        try{
+//                            ControleProDAO ctrlProDao = new ControleProDAO();
+//                            ControleProCtrl ctrlProCtrl = new ControleProCtrl();
+//
+//                            objProDao.inserir(objProduto);
+//
+//                            ctrlProCtrl.setCodPro(objProDao.selecionarID(objProduto.getCod_barras()));
+//                            ctrlProCtrl.setCodOpera(6);
+//                            ctrlProCtrl.setCodUser(SisPrinc.userlogin.getId());
+//                            ctrlProCtrl.setCodCli(-1);
+//                            ctrlProCtrl.setCodFornece(objProduto.getCod_fornecedor());
+//                            ctrlProCtrl.setQtd(objProduto.getEstoq_atual());
+//                            ctrlProCtrl.setHora(SisPrinc.hora);
+//                            Date dataSistema = new Date();
+//                            SimpleDateFormat formato = new SimpleDateFormat("yyyy/MM/dd");
+//                            ctrlProCtrl.setDate(formato.format(dataSistema));
+//                            ctrlProCtrl.setObs(objProduto.getDescri());
+//
+//                            ctrlProDao.inserir(ctrlProCtrl);
+                        }catch(Exception e){
+                            System.out.println("Erro no reocesso execução: "+e);
+                        }
+                    }
+    }
+    
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         try {
             SisPrinc.class.newInstance().clickBtnCli();

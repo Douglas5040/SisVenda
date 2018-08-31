@@ -50,7 +50,7 @@ public class FuncionarioDao {
 			ppStm.setString(17, ""+obj.getCod_user());
                         
                         
-                        ppStm.execute();
+                        ppStm.execute(); ppStm.close();
                         
                         //JOptionPane.showMessageDialog(null, "Comando executado com sucesso");
                         

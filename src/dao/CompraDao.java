@@ -41,7 +41,7 @@ public class CompraDao {
                         ppStm.setString(4, horaCompra);
                         ppStm.setString(5, situation);
 
-                        ppStm.execute();
+                        ppStm.execute(); ppStm.close();
                         
                         //JOptionPane.showMessageDialog(null, "Comando executado com sucesso");
                         
@@ -68,7 +68,7 @@ public class CompraDao {
                         ppStm.setString(4, situation);
                         ppStm.setString(5, String.valueOf(codCli));
                         ppStm.setString(6, String.valueOf(cod));
-                        ppStm.execute();
+                        ppStm.execute(); ppStm.close();
                         
                         //JOptionPane.showMessageDialog(null, "Comando executado com sucesso");
                         
@@ -131,7 +131,7 @@ public class CompraDao {
 		
             PreparedStatement ppStm = con.prepareStatement(queryInserir);
             ppStm.setString(1, String.valueOf(cod));
-            ppStm.execute();
+            ppStm.execute(); ppStm.close();
                         
             //JOptionPane.showMessageDialog(null, "Comando executado com sucesso");
             

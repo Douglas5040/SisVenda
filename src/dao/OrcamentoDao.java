@@ -19,19 +19,23 @@ import javax.swing.JOptionPane;
  *
  * @author Adm
  */
-public class CategoriaDao {
-    public void inserir(CategoriaCtrl obj){
+public class OrcamentoDao {
+    public void inserir(OrcamentoCtrl obj){
         BancoMySql objBanco = new BancoMySql();
        
         try {
             Connection con = objBanco.obtemConexao();
             
-            String queryInserir = "INSERT INTO categoria VALUES(0,?,?)";
+            String queryInserir = "INSERT INTO orcamento VALUES(0,?,?,?,?,?,?)";
 			
 			PreparedStatement ppStm = con.prepareStatement(queryInserir);
 			
-			ppStm.setString(1, obj.getNome());
-			ppStm.setString(2, obj.getDescri());
+			ppStm.setString(1, obj.getData_orc());
+			ppStm.setString(2, ""+obj.getCodCli());
+			ppStm.setString(3, ""+obj.getCod_vendedor());
+			ppStm.setString(4, ""+obj.getValor_total());
+			ppStm.setString(5, ""+obj.getDescont());
+			ppStm.setString(6, ""+obj.getObs());
                         ppStm.execute(); ppStm.close();
                         
                         //JOptionPane.showMessageDialog(null, "Comando executado com sucesso");
@@ -42,27 +46,35 @@ public class CategoriaDao {
         }
     }
     
-    public boolean alterar(CategoriaCtrl obj){
+    public boolean alterar(OrcamentoCtrl obj){
         BancoMySql objBanco = new BancoMySql();
         
         try {
             Connection con = objBanco.obtemConexao();
             
-           String queryAlterar = "UPDATE categoria SET NOME = ?, "
-                                                    + "DESCRI = ? "
+           String queryAlterar = "UPDATE orcamento SET DATA_ORC = ?, "
+                                                    + "COD_CLI = ?, "
+                                                    + "COD_VEND = ?, "
+                                                    + "VALOR_TOTAL = ?, "
+                                                    + "DESCONT = ?, "
+                                                    + "OBS = ? "
                                  + "WHERE ID=?";
 			
                     PreparedStatement ppStm = con.prepareStatement(queryAlterar);
                     
-                    ppStm.setString(1, obj.getNome());
-                    ppStm.setString(2, obj.getDescri());
-                    ppStm.setString(3, String.valueOf(obj.getID()));
+                    ppStm.setString(1, obj.getData_orc());
+			ppStm.setString(2, ""+obj.getCodCli());
+			ppStm.setString(3, ""+obj.getCod_vendedor());
+			ppStm.setString(4, ""+obj.getValor_total());
+			ppStm.setString(5, ""+obj.getDescont());
+			ppStm.setString(6, ""+obj.getObs());
+			ppStm.setString(7, ""+obj.getId());
                     ppStm.execute(); ppStm.close();
                     
                     return true;
 	
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "erro na execução DO Alterar CAtegoria, "+ex);
+            JOptionPane.showMessageDialog(null, "erro na execução DO Alterar Orçamento, "+ex);
                         
         }
         return false;
@@ -73,7 +85,7 @@ public class CategoriaDao {
         try {
             Connection con = objBanco.obtemConexao();
             
-            String querySelect = "select * from categoria";
+            String querySelect = "select * from orcamento";
 			
             PreparedStatement ppStm = con.prepareStatement(querySelect);
 			
@@ -82,53 +94,49 @@ public class CategoriaDao {
             
             return objRst;
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "erro na execução do selecionar categoria, "+ex);
+            JOptionPane.showMessageDialog(null, "erro na execução do selecionar orcamento, "+ex);
         }
         return null;
     }
 
-    public int selecionarCategoCod(String parametro) {
+    public int selectLastCodOrc() {
         BancoMySql objBanco = new BancoMySql();
         
         try {
             Connection con = objBanco.obtemConexao();
             
-            String querySelectUser = "select * from categoria WHERE NOME LIKE ?";
+            String querySelectUser = "select ID from orcamento";
 			
             PreparedStatement ppStm = con.prepareStatement(querySelectUser);
-            ppStm.setString(1, parametro);
             
             ResultSet objRst = ppStm.executeQuery();
             
             //JOptionPane.showMessageDialog(null, "Comando executado com sucesso");
-            if(objRst.first()) return objRst.getInt("ID");
-            else return -1;
+            objRst.last();
+            return objRst.getInt("ID");
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "erro na execução do selecionar COD CATEGORIA:  "+ex);
+            JOptionPane.showMessageDialog(null, "erro na execução do selecionar CODIGO orcamento:  "+ex);
         }
         return -1;
     }
-
-    public ResultSet selecionarCatego(String parametro) {
+    
+       public void deletar(int cod){
         BancoMySql objBanco = new BancoMySql();
         
         try {
             Connection con = objBanco.obtemConexao();
             
-            String querySelectUser = "select * from categoria WHERE NOME LIKE ? OR ID = ?";
-			
-            PreparedStatement ppStm = con.prepareStatement(querySelectUser);
-            ppStm.setString(1, parametro+"%");
-            ppStm.setString(2, parametro);
-            
-            ResultSet objRst = ppStm.executeQuery();
-            
+            String queryInserir = "DELETE from orcamento WHERE ID=?";
+		
+            PreparedStatement ppStm = con.prepareStatement(queryInserir);
+            ppStm.setString(1, String.valueOf(cod));
+            ppStm.execute(); ppStm.close();
+                        
             //JOptionPane.showMessageDialog(null, "Comando executado com sucesso");
-            if(objRst.first() && objRst != null) return objRst;
+            
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "erro na execução do selecionar COD CATEGORIA:  "+ex);
+            JOptionPane.showMessageDialog(null, "erro na execução do deletar orcamento, "+ex);
         }
-        return null;
     }
 
 }

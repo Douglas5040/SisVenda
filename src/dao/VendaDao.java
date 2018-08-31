@@ -43,7 +43,7 @@ public class VendaDao {
                         ppStm.setString(5, String.valueOf(valorPago));
                         ppStm.setString(6, String.valueOf(idCli));
                         ppStm.setString(7, String.valueOf(codCompra));
-                        ppStm.execute();
+                        ppStm.execute(); ppStm.close();
                         
                         //JOptionPane.showMessageDialog(null, "Comando executado com sucesso");
                         
@@ -84,7 +84,7 @@ public class VendaDao {
             PreparedStatement ppStm = con.prepareStatement(queryInserir);
             ppStm.setString(1, codPro);
             ppStm.setString(2, codComp);
-            ppStm.execute();
+            ppStm.execute(); ppStm.close();
                         
             //JOptionPane.showMessageDialog(null, "Comando executado com sucesso");
             
@@ -134,7 +134,7 @@ public class VendaDao {
                         ppStm.setString(3, String.valueOf(valPag));
                         ppStm.setString(4, String.valueOf(cod));
                         ppStm.setString(5, String.valueOf(codComp));
-                        ppStm.execute();
+                        ppStm.execute(); ppStm.close();
                         
                         //JOptionPane.showMessageDialog(null, "Comando executado com sucesso");
                         

@@ -32,7 +32,8 @@ public class UnidadeDao {
 			
 			ppStm.setString(1, obj.getAbrev());
 			ppStm.setString(2, obj.getNome());
-                        ppStm.execute();
+                        ppStm.execute(); ppStm.close();
+                        con.close();
                         
                         //JOptionPane.showMessageDialog(null, "Comando executado com sucesso");
                         
@@ -57,7 +58,8 @@ public class UnidadeDao {
                     ppStm.setString(1, obj.getAbrev());
                     ppStm.setString(2, obj.getNome());
                     ppStm.setString(3, String.valueOf(obj.getID()));
-                    ppStm.execute();
+                    ppStm.execute(); ppStm.close();
+                        con.close();
                     
                     return true;
 	
@@ -124,7 +126,7 @@ public class UnidadeDao {
             
             //JOptionPane.showMessageDialog(null, "Comando executado com sucesso");
             
-            return objRst;
+             if(objRst.first() && objRst != null) return objRst;
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "erro na execução do selecionar cod unidade, "+ex);
         }

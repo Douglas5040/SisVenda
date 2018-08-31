@@ -39,7 +39,7 @@ public class ContasDao {
                         ppStm.setString(3, data);
                         ppStm.setString(4, obj.getData_pag());
                         ppStm.setString(5, obj.getStatus());
-                        ppStm.execute();
+                        ppStm.execute(); ppStm.close();
                         
                         //JOptionPane.showMessageDialog(null, "Comando executado com sucesso");
                         
@@ -65,7 +65,7 @@ public class ContasDao {
                         ppStm.setString(3, data);
                         ppStm.setString(4, status);
                         ppStm.setString(5, String.valueOf(codCli));
-                        ppStm.execute();
+                        ppStm.execute(); ppStm.close();
                         
                         //JOptionPane.showMessageDialog(null, "Comando executado com sucesso");
                         
@@ -106,7 +106,7 @@ public class ContasDao {
             PreparedStatement ppStm = con.prepareStatement(queryInserir);
             ppStm.setString(1, String.valueOf(cod));
             ppStm.setString(2, String.valueOf(id));
-            ppStm.execute();
+            ppStm.execute(); ppStm.close();
            // JOptionPane.showMessageDialog(null, "Comando executado com sucesso");
             
         } catch (SQLException ex) {

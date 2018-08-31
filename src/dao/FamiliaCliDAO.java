@@ -41,7 +41,7 @@ public class FamiliaCliDAO {
                     ppStm.setString(3, String.valueOf(nome));
                     ppStm.setString(4, String.valueOf(relacao));
                     ppStm.setString(5, String.valueOf(cod_cli));
-                    ppStm.execute();
+                    ppStm.execute(); ppStm.close();
                     
                     System.out.println("menbo familia add com sucesso!!!");
                     
@@ -80,7 +80,7 @@ public class FamiliaCliDAO {
                     ppStm.setString(3, String.valueOf(nome));
                     ppStm.setString(4, String.valueOf(relacao));
                     ppStm.setString(5, String.valueOf(cod_cli));
-                    ppStm.execute();
+                    ppStm.execute(); ppStm.close();
                     
                     return true;
 	
@@ -144,7 +144,7 @@ public class FamiliaCliDAO {
 		
             PreparedStatement ppStm = con.prepareStatement(queryInserir);
             ppStm.setString(1, String.valueOf(codCli));
-            ppStm.execute();
+            ppStm.execute(); ppStm.close();
             
             System.out.println("membro familia deletado com sucesso!!!");
                         

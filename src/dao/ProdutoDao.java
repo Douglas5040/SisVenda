@@ -84,7 +84,8 @@ public class ProdutoDao {
                         ppStm.setString(25, validade);
                         ppStm.setString(26, null);
                         ppStm.setString(27, null);
-                        ppStm.execute();
+                        ppStm.execute(); ppStm.close();
+                        //con.close();
                         
                         //JOptionPane.showMessageDialog(null, "Comando executado com sucesso");
                         
@@ -181,7 +182,7 @@ public class ProdutoDao {
                         ppStm.setString(24, validade);
                         ppStm.setString(25, String.valueOf(ID));
 			ppStm.setString(26, String.valueOf(cod_barras));
-                        ppStm.execute();
+                        ppStm.execute(); ppStm.close();
                         
                         //JOptionPane.showMessageDialog(null, "Comando executado com sucesso");
                         
@@ -206,7 +207,7 @@ public class ProdutoDao {
 			ppStm.setString(2, parametro);
                         ppStm.setString(3, String.valueOf(parametro));
                         ppStm.setString(4, String.valueOf(parametro));
-                        ppStm.execute();
+                        ppStm.execute(); ppStm.close();
                         
                         return true;
                         
@@ -233,7 +234,7 @@ public class ProdutoDao {
             ppStm.setString(1, nome);
             ppStm.setString(2, String.valueOf(cod));
             ppStm.setString(3, String.valueOf(cod));
-            ppStm.execute();
+            ppStm.execute(); ppStm.close();
                         
             //JOptionPane.showMessageDialog(null, "Comando executado com sucesso");
             
@@ -257,7 +258,7 @@ public class ProdutoDao {
             
             return objRst;
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "erro na execução do selecionar");
+            JOptionPane.showMessageDialog(null, "erro na execução do selecionar produto, "+ex);
         }
         return null;
     }
@@ -277,11 +278,16 @@ public class ProdutoDao {
             
             ResultSet objRst = ppStm.executeQuery();
             
+            //ppStm.close();
             //JOptionPane.showMessageDialog(null, "Comando executado com sucesso");
             
-            return objRst;
+            if(objRst.first() && objRst != null) {
+                System.out.println("Cod: "+objRst.getInt("ID")+" - nome, "+objRst.getString("NOME"));
+                return objRst;
+            }
+            else System.out.println("select vazio selecionarPro");
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "erro na execução do selecionar Produto, "+ex);
+            JOptionPane.showMessageDialog(null, "erro na execução do selecionarPro banco, "+ex);
         }
         return null;
     }
@@ -292,19 +298,20 @@ public class ProdutoDao {
         try {
             Connection con = objBanco.obtemConexao();
             
-            String queryInserir = "select ID from produtos WHERE NOME LIKE ? OR COD_BARRAS = ?";
+            String queryInserir = "select * from produtos WHERE NOME LIKE ? OR COD_BARRAS LIKE ? OR ID = ?";
 			
             PreparedStatement ppStm = con.prepareStatement(queryInserir);
             ppStm.setString(1, consultPro+"%");
             ppStm.setString(2, consultPro);
+            ppStm.setString(3, consultPro);
             
             ResultSet objRst = ppStm.executeQuery();
             
             //JOptionPane.showMessageDialog(null, "Comando executado com sucesso");
-            objRst.first();
-            return objRst.getInt("ID");
+            if(objRst.first())  return objRst.getInt("ID");
+            
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "erro na execução do selecionar Produto, "+ex);
+            JOptionPane.showMessageDialog(null, "erro na execução do selecionarID:, "+ex);
         }
         return -1;
     }
@@ -324,7 +331,7 @@ public class ProdutoDao {
             
             return objRst.first();
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "erro na execução do selecionar Produto: "+ex);
+            JOptionPane.showMessageDialog(null, "erro na execução do verificarPro: "+ex);
         }
         return false;
     }
@@ -346,7 +353,7 @@ public class ProdutoDao {
             objRst.first();
             return objRst;
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "erro na execução do selecionar Produto");
+            JOptionPane.showMessageDialog(null, "erro na execução do verificarProduto, "+ex);
         }
         return null;
     }

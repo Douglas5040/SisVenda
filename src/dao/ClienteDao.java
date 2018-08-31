@@ -78,7 +78,7 @@ public class ClienteDao {
                         ppStm.setString(23, String.valueOf(bonus_acumulado));
                         ppStm.setString(24, email);
                         ppStm.setString(25, obs);
-                        ppStm.execute();
+                        ppStm.execute(); ppStm.close();
                         
                  int lastId = selecionarLastID();
                  PreparedStatement ppStmCod = con.prepareStatement("UPDATE clientes SET CODIGO = ? WHERE ID=?");   
@@ -179,7 +179,7 @@ public class ClienteDao {
 			ppStm.setString(23, email);
 			ppStm.setString(24, nome);
 			ppStm.setString(25, String.valueOf(id));
-                        ppStm.execute();
+                        ppStm.execute(); ppStm.close();
                         
                         //JOptionPane.showMessageDialog(null, "Comando executado com sucesso");
                         
@@ -225,7 +225,7 @@ public class ClienteDao {
 			ppStm.setString(2, nome);
                         ppStm.setString(3, String.valueOf(id));
 			
-                        ppStm.execute();
+                        ppStm.execute(); ppStm.close();
                         
                         //JOptionPane.showMessageDialog(null, "Comando executado com sucesso");
                         
@@ -246,7 +246,8 @@ public class ClienteDao {
             PreparedStatement ppStm = con.prepareStatement(queryInserir);
             ppStm.setString(1, nome);
             ppStm.setString(2, String.valueOf(id));
-            ppStm.execute();
+            ppStm.execute(); ppStm.close();
+            con.close();
                         
            // JOptionPane.showMessageDialog(null, "Comando executado com sucesso");
             
@@ -297,7 +298,7 @@ public class ClienteDao {
         }
         return null;
     }
-    public ResultSet selecionarCli(String consultCli) {
+    public int selectIdCli(String consultCli) {
         BancoMySql objBanco = new BancoMySql();
         //JOptionPane.showMessageDialog(null,consultCli);
         try {
@@ -312,13 +313,11 @@ public class ClienteDao {
             ResultSet objRst = ppStm.executeQuery();
             
             //JOptionPane.showMessageDialog(null, "Comando executado com sucesso");
-            objRst.first();
-            //JOptionPane.showMessageDialog(null,"--"+objRst.getInt("id"));
-            return objRst;
+            if(objRst.first()) return objRst.getInt("id");
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "erro na execução do selecionar user DAO "+ex);
         }
-        return null;
+        return -1;
     }
     public String selecionarStatusUser(String consultCli) {
         BancoMySql objBanco = new BancoMySql();

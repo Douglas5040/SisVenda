@@ -41,7 +41,7 @@ public class AcessoDao {
 			ppStm.setString(3, lsenha);
 			ppStm.setString(4, lsalt);
 			ppStm.setString(5, lemail);
-                        ppStm.execute();
+                        ppStm.execute(); ppStm.close();
                         
                         //JOptionPane.showMessageDialog(null, "Comando executado com sucesso");
                         

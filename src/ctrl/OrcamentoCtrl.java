@@ -13,17 +13,17 @@ public class OrcamentoCtrl {
     private int id;
     private String data_orc;
     private int cod_vendedor;
-    private String nomeCli;
+    private int cod_cli;
     private double valor_total;
     private double descont;
     private String obs;
 
     public OrcamentoCtrl(){}
-    public OrcamentoCtrl(int id, String data_orc, int cod_vendedor, String nomeCli, double valor_total, double descont, String obs) {
+    public OrcamentoCtrl(int id, String data_orc, int cod_vendedor, int cod_cli, double valor_total, double descont, String obs) {
         this.id = id;
         this.data_orc = data_orc;
         this.cod_vendedor = cod_vendedor;
-        this.nomeCli = nomeCli;
+        this.cod_cli = cod_cli;
         this.valor_total = valor_total;
         this.descont = descont;
         this.obs = obs;
@@ -53,12 +53,12 @@ public class OrcamentoCtrl {
         this.cod_vendedor = cod_vendedor;
     }
 
-    public String getNomeCli() {
-        return nomeCli;
+    public int getCodCli() {
+        return cod_cli;
     }
 
-    public void setNomeCli(String nomeCli) {
-        this.nomeCli = nomeCli;
+    public void setCodCli(int cod_cli) {
+        this.cod_cli = cod_cli;
     }
 
     public double getValor_total() {

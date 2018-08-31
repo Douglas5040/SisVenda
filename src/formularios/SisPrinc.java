@@ -5,6 +5,18 @@
  */
 package formularios;
 
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import ctrl.UsuarioCtrl;
 import ctrl.ClienteCtrl;
 import ctrl.CompraCtrl;
@@ -14,19 +26,24 @@ import ctrl.VendaCtrl;
 import ctrl.DocumentJTextFIXACtrl;
 import ctrl.DocumentJTextNumerosCtrl;
 import ctrl.FuncionarioCtrl;
+import ctrl.OrcamentoCtrl;
 import ctrl.OrdemServiceCtrl;
+import ctrl.ProOrcamentCtrl;
 import ctrl.SaidaProCtrl;
 import dao.AcessoDao;
 import dao.ClienteDao;
 import dao.CompraDao;
 import dao.ContasDao;
 import dao.FuncionarioDao;
+import dao.OrcamentoDao;
 import dao.OrdemServiceDao;
+import dao.ProOrcamentDao;
 import dao.ProdutoDao;
 import dao.RelatorioDAO;
 import dao.SaidaProDao;
 import dao.VendaDao;
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.FocusTraversalPolicy;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
@@ -34,6 +51,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.ResultSet;
@@ -55,10 +74,12 @@ import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.html.parser.Element;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.sl.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Cell;
+import sun.font.FontFamily;
 
 /**
  *
@@ -80,7 +101,7 @@ public class SisPrinc extends javax.swing.JFrame {
    public int qtdPro, oldQtdPro;
    public int posiPro = 0, ctrlDoubleClick = 0;
    
-   public static int codOS = 0, codCli = 0, codPro = 0, codParametro = 0;
+   public static int codOS = 0, codCli = 0, codOrc = 0, codPro = 0, codParametro = 0;
    
    //public static boolean is_param_gerir_cli = false, is_param_gerir_pro = false;
 
@@ -529,7 +550,13 @@ public class SisPrinc extends javax.swing.JFrame {
 
         jNomeVend.setDocument(new DocumentJTextFIXACtrl());
         jNomeVend.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jNomeVend.setText("GERENTE");
         jNomeVend.setPreferredSize(new java.awt.Dimension(100, 23));
+        jNomeVend.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jNomeVendActionPerformed(evt);
+            }
+        });
         jNomeVend.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 jNomeVendKeyPressed(evt);
@@ -578,6 +605,7 @@ public class SisPrinc extends javax.swing.JFrame {
         jPanel63.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jBomusCLi.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jBomusCLi.setText("0");
         jBomusCLi.setPreferredSize(new java.awt.Dimension(100, 23));
         jBomusCLi.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -595,7 +623,6 @@ public class SisPrinc extends javax.swing.JFrame {
 
         jNomeCli.setDocument(new DocumentJTextFIXACtrl());
         jNomeCli.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jNomeCli.setBorder(null);
         jNomeCli.setPreferredSize(new java.awt.Dimension(100, 23));
         jNomeCli.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -972,7 +999,7 @@ public class SisPrinc extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Codigo", "Neme Produto", "Valor", "Quantidate", "Desconto", "Sub Total"
+                "Codigo", "Nome Produto", "Valor", "Quantidate", "Desconto", "Sub Total"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -2628,9 +2655,7 @@ public class SisPrinc extends javax.swing.JFrame {
                     userlogin.setEmail(objRs.getString("EMAIL"));
                     userlogin.setId(objRs.getInt("ID"));
                     userlogin.setLogin(objRs.getString("LOGIN"));
-                    if(userlogin.getCargo().equals("GERENTE") || userlogin.getCargo().equals("PROGRAMADOR")){
-                        func = null;
-                    }else{
+
                        ResultSet objFuncRs = funcDao.selectFuncForUser(objRs.getInt("ID"));
                        func.setId(objFuncRs.getInt("ID"));
                        func.setCodigo(objFuncRs.getString("CODIGO"));
@@ -2650,7 +2675,7 @@ public class SisPrinc extends javax.swing.JFrame {
                        func.setFoto(objFuncRs.getBytes("FOTO"));
                        func.setCargo(objFuncRs.getString("CARGO"));
                        func.setCod_user(objFuncRs.getInt("COD_USER"));
-                    }
+                    
                 }else{
                     JOptionPane.showMessageDialog(null, "Senha incorreta");
                     jbAcessar.setNextFocusableComponent(jPasswordField1);
@@ -2854,35 +2879,43 @@ public class SisPrinc extends javax.swing.JFrame {
         ProdutoDao objDao = new ProdutoDao();
         boolean isAddPro = false;
         
+        
     if(evt.getKeyCode()==KeyEvent.VK_ENTER){
-        if( Integer.parseInt(jtCodPro.getText().replace("", "0")) > 0 && objDao.verificarPro(jtCodPro.getText())){
+        
+        ResultSet objRs = objDao.selecionarPro(jtCodPro.getText());
+        
+        if( objDao.verificarPro(jtCodPro.getText())){
             if(objDao.qtdPro(jtCodPro.getText()) != -1 || objDao.qtdPro(jtCodPro.getText()) != 0){           
               for(int x=0; x < jTablePro.getRowCount(); x++){
                 if(jTablePro.getValueAt(x, 0).equals(jtCodPro.getText()) ){
                     isAddPro = true;
                     posiPro = x;
 
-                    ResultSet objRs = objDao.selecionarPro(jtCodPro.getText());
                     try {
-                        objRs.first();
-                        qtdPro = objRs.getInt("ESTOQ_ATUAL");
+                        if(objRs.first() && objRs != null){
+                            qtdPro = objRs.getInt("ESTOQ_ATUAL");
+                            System.out.println("qtd nome: "+objRs.getString("NOME"));
+                        }else System.out.println("produto nulo qtd");
                     } catch (SQLException ex) {
                         JOptionPane.showMessageDialog(null, "ERRO: PRODUTO NÃO ENCONTRADO "+ex);
                     }
                 }
+                
               }
                 if(!isAddPro){     
-                    jcombNomePro.removeAllItems();
-                    ResultSet objRs = objDao.selecionarPro(jtCodPro.getText());
+                    //jcombNomePro.removeAllItems();
+                    //ResultSet objRs = objDao.selecionarPro(jtCodPro.getText());
 
                       try {
-
-                           while(objRs.next()){jcombNomePro.addItem(objRs.getString("NOME"));}
-                           while(objRs.previous()){}
-                           objRs.first();
+                          
+//                            System.out.println("passou aq nome pro");
+                        if(objRs.first() && objRs != null){
+                            System.out.println("Sisprinc Cod: "+objRs.getInt("ID")+" - nome, "+objRs.getString("NOME"));
+                           jNomePro.setText(objRs.getString("NOME"));
+                           //objRs.first();
                            jtValorUnit.setText(objRs.getString("PRECO_VAREJO"));
                            qtdPro = objRs.getInt("ESTOQ_ATUAL");
-
+                        }else System.out.println("produto nulo nome");
                       } catch (SQLException ex) {
                           JOptionPane.showMessageDialog(null, "ERRO: PRODUTO NÃO ENCONTRADO "+ex);
                           jbAdd.setNextFocusableComponent(jtCodPro);
@@ -2985,6 +3018,7 @@ public class SisPrinc extends javax.swing.JFrame {
        ProdutoDao objDao = new ProdutoDao();
 
             ResultSet objRs = objDao.selecionarPro("");
+            System.out.println("Entrou no Show jcomb");
            jcombNomePro.removeAllItems();
              try {
                  while(objRs.next()){jcombNomePro.addItem(objRs.getString("NOME"));}
@@ -3000,35 +3034,198 @@ public class SisPrinc extends javax.swing.JFrame {
 
     private void jbConcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbConcluirActionPerformed
         if(jTablePro.getRowCount()>0){
-                                               
             ProdutoDao objDaopro = new ProdutoDao();
             OrdemServiceDao objOSDao = new OrdemServiceDao();
             OrdemServiceCtrl objOSCtrl = new OrdemServiceCtrl();
             SaidaProCtrl objSPCtrl = new SaidaProCtrl();
             SaidaProDao objSpDao = new SaidaProDao();
             
+            if(jcbTipoVend.getSelectedIndex() == 0){
+                ResultSet rsOs = objOSDao.selecionarOS(""+codOS);
+                try{
+                    if(rsOs.first()){
+                        objOSCtrl.setId(codOS);//caso tenha uma conta
+                            String data, hora;
+                            Date dataSistema = new Date();
+                            SimpleDateFormat formato = new SimpleDateFormat("yyyy/MM/dd");
+                            data = (formato.format(dataSistema));
+                            Calendar now = Calendar.getInstance();
+                            hora = (String.format("%1$tH:%1$tM:%1tS", now));
+                        objOSCtrl.setData_hora_opem(data+" "+hora);
+                        objOSCtrl.setData_hora_close("0000/00/00 00:00:00");
+                        objOSCtrl.setValor(Double.valueOf(jlValorTotal.getText().replace(",", ".")));
+                        objOSCtrl.setCod_cli(codCli);
+                        objOSCtrl.setCod_vendedor(func.getId());
+                        objOSCtrl.setDescont(0.0);
+                        objOSCtrl.setCod_status_os(1);
+                        objOSCtrl.setObs("");
+                        
+                        objOSDao.alterarOS(objOSCtrl);
+                        
+                       new Alertas("Ordem de Serviço Gerada","N° "+rsOs.getString("ID"), getWidth(), getHeight());
+                       
+                       
+                    }
+                }catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, "erro ao fazer cunsulta OS, "+ex);
+                }
+                    
+            }else if(jcbTipoVend.getSelectedIndex() == 1){
+                Document doc = new Document(PageSize.A4,20,20,25,15);
+                String nomeArqPdf = "relatorio.pdf";
+                
+                try {
+                    PdfWriter.getInstance(doc, new FileOutputStream(nomeArqPdf));
+                   doc.open();
+                    
+                    
+                    Font fontTitle = FontFactory.getFont(FontFactory.HELVETICA, 20, Font.BOLD, BaseColor.BLACK);
+                    Paragraph p = new Paragraph("Orçamento",fontTitle);
+                    p.setAlignment(1);
+                    doc.add(p);
+                    p = new Paragraph(1," ");
+                    doc.add(p);
+                    
+                    PdfPTable tableBorder = new PdfPTable(1);
+                    tableBorder.setSpacingBefore(5);
+                    tableBorder.setSpacingAfter(5);
+                    tableBorder.setWidthPercentage(100);
+                    
+                    PdfPTable table = new PdfPTable(6);
+                    float[] headerwidths = { 25,40,12,6,12,15 };
+                    table.setWidths(headerwidths);
+                    table.setWidthPercentage(100);
+                    table.setHorizontalAlignment(PdfPTable.ALIGN_TOP);
+                    table.setSpacingBefore(0);
+                    table.setSpacingAfter(0);
+                    
+                    
+                    Font fontHead = FontFactory.getFont(FontFactory.HELVETICA, 12, Font.BOLD, BaseColor.WHITE);
+                    PdfPCell cel1 = new PdfPCell(new Paragraph("CODIGO",fontHead));
+                    cel1.setNoWrap(false);
+                    //cel1.setVerticalAlignment(PdfPCell.ALIGN_MIDDLE);
+                    cel1.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
+                    cel1.setFixedHeight(23f);
+                    cel1.setBackgroundColor(BaseColor.BLACK);
+                 
+                    
+                    PdfPCell cel2 = new PdfPCell(new Paragraph("NOME (DESCRIÇÃO)",fontHead));
+                    cel2.setNoWrap(false);
+                    //cel2.setVerticalAlignment(PdfPCell.ALIGN_MIDDLE);
+                    //cel2.setHorizontalAlignment(PdfPCell.LEFT);
+                    cel2.setFixedHeight(23f);
+                    cel2.setBackgroundColor(BaseColor.BLACK);
+                    
+                    PdfPCell cel3 = new PdfPCell(new Paragraph("VALOR UNIT",fontHead));
+                    cel3.setNoWrap(false);
+                    //cel3.setVerticalAlignment(PdfPCell.ALIGN_MIDDLE);
+                    cel3.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
+                    cel3.setFixedHeight(23f);
+                    cel3.setBackgroundColor(BaseColor.BLACK);
+                    
+                    PdfPCell cel4 = new PdfPCell(new Paragraph("QTD",fontHead));
+                    cel4.setNoWrap(false);
+                    //cel4.setVerticalAlignment(PdfPCell.ALIGN_MIDDLE);
+                    cel4.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
+                    cel4.setFixedHeight(23f);
+                    cel4.setBackgroundColor(BaseColor.BLACK);
+                    
+                    PdfPCell cel5 = new PdfPCell(new Paragraph("DESCONTO",fontHead));
+                    cel5.setNoWrap(false);
+                    //cel5.setVerticalAlignment(PdfPCell.ALIGN_MIDDLE);
+                    cel5.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
+                    cel5.setFixedHeight(23f);
+                    cel5.setBackgroundColor(BaseColor.BLACK);
+                    
+                    PdfPCell cel6 = new PdfPCell(new Paragraph("VALOR TOTAL",fontHead));
+                    cel6.setNoWrap(false);
+                    //cel6.setVerticalAlignment(PdfPCell.ALIGN_MIDDLE);
+                    cel6.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
+                    cel6.setFixedHeight(23f);
+                    cel6.setBackgroundColor(BaseColor.BLACK);
+                    //cel6.setBorder(Rectangle.NO_BORDER);
+                    
+                    
+                    table.addCell(cel1);
+                    table.addCell(cel2);
+                    table.addCell(cel3);
+                    table.addCell(cel4);
+                    table.addCell(cel5);
+                    table.addCell(cel6);
+                    
+                    DefaultTableModel objTM = (DefaultTableModel) jTablePro.getModel();
+                    for(int x=0; x < objTM.getRowCount(); x++){
+                        System.out.println("saida Orc: "+objTM.getValueAt(x, 0).toString());
+                        PdfPCell cel7 = new PdfPCell(new Paragraph(objTM.getValueAt(x, 0).toString()));
+                        cel7.setVerticalAlignment(PdfPCell.ALIGN_MIDDLE);
+                        cel7.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
+                        cel7.setFixedHeight(20f);
+                        cel7.setBorder(Rectangle.NO_BORDER);
+                        if(x != 0 && !((x % 2) == 0)) cel7.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                        
+                        PdfPCell cel8 = new PdfPCell(new Paragraph(objTM.getValueAt(x, 1).toString()));
+                        cel8.setVerticalAlignment(PdfPCell.ALIGN_MIDDLE);
+                        cel8.setFixedHeight(20f);
+                        cel8.setBorder(Rectangle.NO_BORDER);
+                        if(x != 0 && !((x % 2) == 0)) cel8.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                        
+                        PdfPCell cel9 = new PdfPCell(new Paragraph(objTM.getValueAt(x, 2).toString()));
+                        cel9.setVerticalAlignment(PdfPCell.ALIGN_MIDDLE);
+                        cel9.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
+                        cel9.setFixedHeight(20f);
+                        cel9.setBorder(Rectangle.NO_BORDER);
+                        if(x != 0 && !((x % 2) == 0)) cel9.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                        
+                        PdfPCell cel10 = new PdfPCell(new Paragraph(objTM.getValueAt(x, 3).toString()));
+                        cel10.setVerticalAlignment(PdfPCell.ALIGN_MIDDLE);
+                        cel10.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
+                        cel10.setFixedHeight(20f);
+                        cel10.setBorder(Rectangle.NO_BORDER);
+                        if(x != 0 && !((x % 2) == 0)) cel10.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                        
+                        PdfPCell cel11 = new PdfPCell(new Paragraph(objTM.getValueAt(x, 4).toString()));
+//                        cel11.setVerticalAlignment(PdfPCell.ALIGN_MIDDLE);
+                        cel11.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
+                        cel11.setFixedHeight(20f);
+                        cel11.setBorder(Rectangle.NO_BORDER);
+                        if(x != 0 && !((x % 2) == 0)) cel11.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                        
+                        PdfPCell cel12 = new PdfPCell(new Paragraph(objTM.getValueAt(x, 5).toString()));
+                        cel12.setVerticalAlignment(PdfPCell.ALIGN_MIDDLE);
+                        cel12.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
+                        cel12.setFixedHeight(20f);
+                        cel12.setBorder(Rectangle.NO_BORDER);;
+                        if(x != 0 && !((x % 2) == 0)) cel12.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                        
+
+                        table.addCell(cel7);
+                        table.addCell(cel8);
+                        table.addCell(cel9);
+                        table.addCell(cel10);
+                        table.addCell(cel11);
+                        table.addCell(cel12);
+                    }
+                    tableBorder.addCell(table);
+                    doc.add(tableBorder);
+                    doc.close();
+                    Desktop.getDesktop().open(new File(nomeArqPdf));
+                } catch (DocumentException ex) {
+                    Logger.getLogger(SisPrinc.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(SisPrinc.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(SisPrinc.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                 
+            }
+                       
             JTextField text2 = new JTextField("00,00");;
             JLabel labelTroco = new JLabel(jlValorTotal.getText().replace(",", "."));
             JButton buttonFin = new JButton("Finalizar");
             JTextField text1 = new JTextField();
-            setEnabled(false);
-
-
-            jfPagComp.setBounds(this.getWidth()/2-200, this.getHeight()/2-150, 400, 300);
-            jfPagComp.show();
-            jfPagComp.setVisible(true);
-            jfPagComp.setDefaultCloseOperation(HIDE_ON_CLOSE);
-            jfPagComp.setIconImage(null);
-            jfPagComp.setBackground(null);
-            jfPagComp.setResizable(false);
-            //setEnabled(false);
-
-
             
-            jbConcluir.setNextFocusableComponent(text1);
-            jbConcluir.nextFocus();
-                /*
-            */
+
+
         }else{
             JOptionPane.showMessageDialog(null, "Realize uma compra para efetuar um pagamento!!!");
             jbConcluir.setNextFocusableComponent(jtCodPro);
@@ -3038,32 +3235,35 @@ public class SisPrinc extends javax.swing.JFrame {
     
     
     public void addProList(){
-         ProdutoDao objDaopro = new ProdutoDao();
+        ProdutoDao objDaopro = new ProdutoDao();
         OrdemServiceDao objOSDao = new OrdemServiceDao();
         OrdemServiceCtrl objOSCtrl = new OrdemServiceCtrl();
         SaidaProCtrl objSPCtrl = new SaidaProCtrl();
         SaidaProDao objSpDao = new SaidaProDao();
         DoubleCtrl doubleCtrl = new DoubleCtrl();
+        ProdutoDao proDao = new ProdutoDao();
+        
         
         if(!jNomePro.getText().equals("")){
           if(Double.valueOf(jtDesc.getText().replace(",", ".")) <= Double.valueOf(jtValorSubTotal.getText().replace(",", "."))){
             if(objDaopro.verificarPro(jtCodPro.getText())){
-                //tipo de venda orçamento ou venda balcão
+                //venda balcão
                 if(jcbTipoVend.getSelectedIndex() == 0){
                     if(jTablePro.getRowCount()==0){
-
 
                         objOSCtrl.setId(0);//caso tenha uma conta
                         objOSCtrl.setData_hora_opem("0000/00/00 00:00:00");
                         objOSCtrl.setData_hora_close("0000/00/00 00:00:00");
                         objOSCtrl.setValor(0.0);
-                        objOSCtrl.setCod_cli(0);
+                        objOSCtrl.setCod_cli(codCli);
+                        objOSCtrl.setCod_vendedor(func.getId());
                         objOSCtrl.setDescont(0.0);
                         objOSCtrl.setCod_status_os(1);
                         objOSCtrl.setObs("");
 
                         objOSDao.inserir(objOSCtrl);
                         codOS = objOSDao.selecionarCodOS();
+                        System.out.println("saida OS"+codOS);
                     }
 
                     String valSubPro = jtValorSubTotal.getText();
@@ -3083,9 +3283,18 @@ public class SisPrinc extends javax.swing.JFrame {
                     if(valSubPro.substring(valSubPro.length()-2,valSubPro.length()-1).equals("."))  valSubPro = valSubPro+"0";
 
                     Double valTotal2 = Double.valueOf(valTotal);
-
+                    System.out.println("Cod Pro: "+jtCodPro.getText()+" - "+objDaopro.selecionarID(jtCodPro.getText()));
+                    objSPCtrl.setCOD_PRO(objDaopro.selecionarID(jtCodPro.getText()));
+                    System.out.println("Cod Pro2:"+objSPCtrl.getCOD_PRO());
+                    objSPCtrl.setVALOR_PRO(Double.valueOf(valorPro));
+                    objSPCtrl.setQTD(Integer.parseInt(jtQTD.getText()));
+                    objSPCtrl.setVALOR_TOTAL(valSubPro2);
+                    objSPCtrl.setDESCONT(desc2);
+                    objSPCtrl.setCOD_OS(codOS);
+                    objSPCtrl.setCOD_STATUS_SP(3);
 
                     if(!wasEdit){
+                        
                         jbAdd.setNextFocusableComponent(jTablePro);
                         jbAdd.nextFocus();
                         DefaultTableModel objTM = (DefaultTableModel) jTablePro.getModel();
@@ -3100,15 +3309,6 @@ public class SisPrinc extends javax.swing.JFrame {
                             //objTM.setRowCount(0);                
                             objTM.addRow(linha);
 
-                        objSPCtrl.setID(0);
-                        objSPCtrl.setCOD_PRO(objDaopro.selecionarID(jtCodPro.getText()));
-                        objSPCtrl.setVALOR_PRO(Double.valueOf(valorPro));
-                        objSPCtrl.setQTD(Integer.parseInt(jtQTD.getText()));
-                        objSPCtrl.setVALOR_TOTAL(valSubPro2);
-                        objSPCtrl.setDESCONT(desc2);
-                        objSPCtrl.setCOD_OS(codOS);
-                        objSPCtrl.setCOD_STATUS_SP(3);
-
 
                         objSpDao.inserir(objSPCtrl);
 
@@ -3119,16 +3319,9 @@ public class SisPrinc extends javax.swing.JFrame {
                         jTablePro.setRowSelectionInterval(qtdRows, qtdRows);
                         jScrollBar1.getModel().setValue(jScrollBar1.getModel().getMaximum() - jScrollBar1.getModel().getExtent());
                         jlValorTotal.setText(doubleCtrl.convertDoubleToString(valTotal2+(valSubPro2)));
+                    
                     }else{
-                        objSPCtrl.setCOD_PRO(objDaopro.selecionarID(jtCodPro.getText()));
-                        objSPCtrl.setVALOR_PRO(Double.valueOf(valorPro));
-                        objSPCtrl.setQTD(Integer.parseInt(jtQTD.getText()));
-                        objSPCtrl.setVALOR_TOTAL(valSubPro2);
-                        objSPCtrl.setDESCONT(desc2);
-                        objSPCtrl.setCOD_OS(codOS);
-                        objSPCtrl.setCOD_STATUS_SP(3);
-
-                        objSpDao.alterarSP(objSPCtrl.getCOD_PRO(),objSPCtrl);
+                        objSpDao.alterarSP(objSPCtrl);
 
                         objDaopro.alterarQtdPro(qtdPro + Integer.parseInt(jTablePro.getValueAt(posiPro, 3).toString()) - Integer.parseInt(jtQTD.getText()), 
                                                 jtCodPro.getText());
@@ -3143,20 +3336,46 @@ public class SisPrinc extends javax.swing.JFrame {
                         jScrollBar1.getModel().setValue(jScrollBar1.getModel().getMaximum() - jScrollBar1.getModel().getExtent());
                     }
 
-                        jtValorSubTotal.setText("0.00");
-                        jtValorUnit.setText("0.00");
-                        jtDesc.setText("0.00");
-                        jtQTD.setText("1");
-                        jNomePro.setText("");
+                    jtValorSubTotal.setText("0.00");
+                    jtValorUnit.setText("0.00");
+                    jtDesc.setText("0.00");
+                    jtQTD.setText("1");
+                    jNomePro.setText("");
 
-                        jbAdd.setNextFocusableComponent(jtCodPro);
-                        jbAdd.nextFocus();
-                        jtCodPro.selectAll();
+                    jbAdd.setNextFocusableComponent(jtCodPro);
+                    jbAdd.nextFocus();
+                    jtCodPro.selectAll();
+                        
+                   //ORÇAMENTO
                 }else if(jcbTipoVend.getSelectedIndex() == 1){
                     String valSubPro = jtValorSubTotal.getText();
                     String valTotal = jlValorTotal.getText();
                     String valorPro = jtValorUnit.getText();
                     String desc = jtDesc.getText();
+                    OrcamentoDao orcDao = new OrcamentoDao();
+                    OrcamentoCtrl orcCtrl = new OrcamentoCtrl();
+                    ProOrcamentCtrl proOrcCtrl = new ProOrcamentCtrl();
+                    ProOrcamentDao proOrcDao = new ProOrcamentDao();
+                    
+                    if(jTablePro.getRowCount()==0){            
+                       orcCtrl.setCod_vendedor(func.getId());
+                       orcCtrl.setData_orc(desc);
+
+                       String data, hora;
+                       Date dataSistema = new Date();
+                       SimpleDateFormat formato = new SimpleDateFormat("yyyy/MM/dd");
+                       data = (formato.format(dataSistema));
+                       Calendar now = Calendar.getInstance();
+                       hora = (String.format("%1$tH:%1$tM:%1tS", now));
+                       orcCtrl.setData_orc(data+" "+hora);
+                       orcCtrl.setDescont(0.0);
+                       orcCtrl.setCodCli(proDao.selecionarID(jNomeCli.getText()));
+                       orcCtrl.setObs("");
+                       orcCtrl.setValor_total(0.0);
+
+                       orcDao.inserir(orcCtrl);
+                       codOrc = orcDao.selectLastCodOrc();
+                    }
 
                     valSubPro = valSubPro.replace(",", ".");
                     valTotal = valTotal.replace(",", ".");
@@ -3170,7 +3389,15 @@ public class SisPrinc extends javax.swing.JFrame {
                     if(valSubPro.substring(valSubPro.length()-2,valSubPro.length()-1).equals("."))  valSubPro = valSubPro+"0";
 
                     Double valTotal2 = Double.valueOf(valTotal);
-
+                    
+                    proOrcCtrl.setCod_orc(codOrc);
+                    proOrcCtrl.setCod_pro(objDaopro.selecionarID(jtCodPro.getText()));
+                    proOrcCtrl.setValor_unit(Double.valueOf(valorPro));
+                    proOrcCtrl.setQtd(Integer.parseInt(jtQTD.getText()));
+                    proOrcCtrl.setSub_total(Double.valueOf(valSubPro));
+                    proOrcCtrl.setDescont(Double.valueOf(desc));
+                    
+                    if(!wasEdit){
                         jbAdd.setNextFocusableComponent(jTablePro);
                         jbAdd.nextFocus();
                         DefaultTableModel objTM = (DefaultTableModel) jTablePro.getModel();
@@ -3184,6 +3411,32 @@ public class SisPrinc extends javax.swing.JFrame {
                                 };
                             //objTM.setRowCount(0);                
                             objTM.addRow(linha);
+                            
+
+                        proOrcDao.inserir(proOrcCtrl);
+                        
+                        int qtdRows = jTablePro.getRowCount()-1;
+                        jTablePro.setRowSelectionInterval(qtdRows, qtdRows);
+                        jScrollBar1.getModel().setValue(jScrollBar1.getModel().getMaximum() - jScrollBar1.getModel().getExtent());
+                        
+                        jlValorTotal.setText(doubleCtrl.convertDoubleToString(valTotal2+(valSubPro2)));
+                    
+                    }else{
+                        proOrcDao.alterar(proOrcCtrl);
+
+                        jlValorTotal.setText(String.valueOf(valTotal2+(valSubPro2-desc2)-Double.valueOf(jTablePro.getValueAt(posiPro, 5).toString())));
+                        //jTablePro.setShowVerticalLines(true);
+                        jTablePro.setValueAt(jtQTD.getText(),posiPro, 3);
+                        jTablePro.setValueAt(desc,posiPro, 4);
+                        jTablePro.setValueAt(valSubPro2-desc2,posiPro, 5);
+                        wasEdit = false;
+                        jTablePro.setRowSelectionInterval(posiPro, posiPro);
+                        jScrollBar1.getModel().setValue(jScrollBar1.getModel().getMaximum() - jScrollBar1.getModel().getExtent());
+                    }
+                    
+                    jbAdd.setNextFocusableComponent(jtCodPro);
+                    jbAdd.nextFocus();
+                    jtCodPro.selectAll();
                 }
             }else{
                 JOptionPane.showMessageDialog(null, "Adicione um produto valido");
@@ -3217,24 +3470,29 @@ public class SisPrinc extends javax.swing.JFrame {
        if(jTablePro.getSelectedRow() != -1){
         if(JOptionPane.showConfirmDialog(jPanel6, "Confirme a Exclusão", "Deseja excluir produto?", 0)==0){
             DefaultTableModel objTM = (DefaultTableModel) jTablePro.getModel();
-            SaidaProDao objSpDao = new SaidaProDao();
+
+            SaidaProDao saidaProDao = new SaidaProDao();
             ProdutoDao proDao = new ProdutoDao();
+            ProOrcamentDao proOrc = new ProOrcamentDao();
             
+            Double valTotal2 = Double.valueOf(jlValorTotal.getText());
+            Double valorPro = Double.valueOf(objTM.getValueAt(jTablePro.getSelectedRow(), 5).toString());
+            int qtdProAlt = Integer.parseInt(objTM.getValueAt(jTablePro.getSelectedRow(), 3).toString()) 
+                            + proDao.qtdPro(objTM.getValueAt(jTablePro.getSelectedRow(), 0).toString());
+            int codPro = Integer.parseInt(objTM.getValueAt(jTablePro.getSelectedRow(), 0).toString()); 
+                
             if(jcbTipoVend.getSelectedIndex()==0){
-                Double valTotal2 = Double.valueOf(jlValorTotal.getText());
-                Double valorPro = Double.valueOf(objTM.getValueAt(jTablePro.getSelectedRow(), 5).toString());
-                int qtdProAlt = Integer.parseInt(objTM.getValueAt(jTablePro.getSelectedRow(), 3).toString()) 
-                                + proDao.qtdPro(objTM.getValueAt(jTablePro.getSelectedRow(), 0).toString());
-                int codPro = Integer.parseInt(objTM.getValueAt(jTablePro.getSelectedRow(), 0).toString()); 
-
                 proDao.alterarQtdPro(qtdProAlt, ""+codPro);
-
-                jlValorTotal.setText(String.valueOf(valTotal2-valorPro));
-
-                objSpDao.deletar(proDao.selecionarID(""+codCli), codOS, 1); //apagar uma saida de produto Pendente
-
+                saidaProDao.deletar(proDao.selecionarID(""+codCli), codOS, 1); //apagar uma saida de produto Pendente
                 objTM.removeRow(jTablePro.getSelectedRow());
-            }else objTM.removeRow(jTablePro.getSelectedRow());
+                
+            }else if(jcbTipoVend.getSelectedIndex()==1){
+                proOrc.deletar(codPro, codOS);
+                objTM.removeRow(jTablePro.getSelectedRow());
+            
+            }
+            jlValorTotal.setText(String.valueOf(valTotal2-valorPro));
+            wasEdit = false;
         }
        }else JOptionPane.showMessageDialog(jPanel6, "Selecione um item para EXCLUIR!!!");
     }//GEN-LAST:event_jbExcluirActionPerformed
@@ -3244,9 +3502,9 @@ public class SisPrinc extends javax.swing.JFrame {
         if(jTabbedPane1.getSelectedIndex() == 1){
             //jTabbedPane1.setNextFocusableComponent(jPanel6);
             //jTabbedPane1.nextFocus();
-            jPanel6.setNextFocusableComponent(jtCodPro);
+            jPanel6.setNextFocusableComponent(jNomeCli);
             jPanel6.nextFocus();
-            jtCodPro.setEditable(true);
+            jNomeCli.setEditable(true);
         }
     }//GEN-LAST:event_jTabbedPane1MousePressed
 
@@ -3357,9 +3615,9 @@ public class SisPrinc extends javax.swing.JFrame {
         if(evt.getKeyCode()==KeyEvent.VK_F2 || jTabbedPane1.getSelectedIndex()==1){
             jTabbedPane1.setNextFocusableComponent(jPanel6);
             jTabbedPane1.nextFocus();
-            jPanel6.setNextFocusableComponent(jtCodPro);
+            jPanel6.setNextFocusableComponent(jNomeCli);
             jPanel6.nextFocus();
-            jtCodPro.setEditable(true);
+            jNomeCli.setEditable(true);
             
             if(func.equals(null) || func.equals("")) jNomeVend.setText(userlogin.getCargo());
             else {
@@ -3370,27 +3628,33 @@ public class SisPrinc extends javax.swing.JFrame {
 
     private void jbCancelProActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbCancelProActionPerformed
       if(jTablePro.getRowCount()>0){  
-        DefaultTableModel objTM = (DefaultTableModel) jTablePro.getModel();
-        int tamTable = objTM.getRowCount();
-        OrdemServiceDao objOsDao = new OrdemServiceDao();
-        ProdutoDao proDao = new ProdutoDao();
-        SaidaProDao saidaProDao = new SaidaProDao();
-        for(int x=0;x < tamTable; x++){
-            if(jcbTipoVend.getSelectedIndex()==0){
-                int qtdProAlt = Integer.parseInt(objTM.getValueAt(0, 3).toString()) 
-                                + proDao.qtdPro(objTM.getValueAt(0, 0).toString());
-                int codPro = Integer.parseInt(objTM.getValueAt(0, 0).toString()); 
+            DefaultTableModel objTM = (DefaultTableModel) jTablePro.getModel();
+            int tamTable = objTM.getRowCount();
+            OrdemServiceDao objOsDao = new OrdemServiceDao();
+            SaidaProDao saidaProDao = new SaidaProDao();
+            ProdutoDao proDao = new ProdutoDao();
+            OrcamentoDao orcDao = new OrcamentoDao();
+            ProOrcamentDao proOrc = new ProOrcamentDao();
+            for(int x=0;x < tamTable; x++){
+                int codPro = Integer.parseInt(objTM.getValueAt(x, 0).toString()); 
+                if(jcbTipoVend.getSelectedIndex()==0){
+                    int qtdProAlt = Integer.parseInt(objTM.getValueAt(x, 3).toString()) 
+                                    + proDao.qtdPro(objTM.getValueAt(x, 0).toString());
 
-                proDao.alterarQtdPro(qtdProAlt, ""+codPro);
-                saidaProDao.deletar(proDao.selecionarID(""+codCli), codOS, 1); //apagar uma saida de produto Pendente
-            //System.out.println(x);
-                objTM.removeRow(0);
-            }else objTM.removeRow(0);
-        }
-        objOsDao.deletar(codOS, 6);
-         jlValorTotal.setText("00,00");
-        jTabbedPane1.setNextFocusableComponent(jtCodPro);
-        jTabbedPane1.nextFocus();
+                    proDao.alterarQtdPro(qtdProAlt, ""+codPro);
+                    saidaProDao.deletar(proDao.selecionarID(""+codCli), codOS, 1); //apagar uma saida de produto Pendente
+                    
+                }else if(jcbTipoVend.getSelectedIndex()==1){
+                    proOrc.deletar(codPro, codOS);
+                }
+            }
+            objOsDao.deletar(codOS, 6);
+            orcDao.deletar(codOrc);
+            objTM.setNumRows(0);
+             jlValorTotal.setText("00,00");
+            jTabbedPane1.setNextFocusableComponent(jtCodPro);
+            jTabbedPane1.nextFocus();
+          
       }else{
         jTabbedPane1.setNextFocusableComponent(jtCodPro);
         jTabbedPane1.nextFocus();
@@ -3413,13 +3677,14 @@ public class SisPrinc extends javax.swing.JFrame {
                 jtValorSubTotal.setText(jTablePro.getValueAt(jTablePro.getSelectedRow(), 5).toString());
                 
                 posiPro = jTablePro.getSelectedRow();
+                System.out.println("Entrou click tabela");
                 wasEdit = true;
                 ResultSet objRs = objDao.selecionarPro(jTablePro.getValueAt(jTablePro.getSelectedRow(), 0).toString());
                 try {
-                    objRs.next();
+                    objRs.first();
                     qtdPro = objRs.getInt("ESTOQ_ATUAL");
                 } catch (SQLException ex) {
-                    JOptionPane.showMessageDialog(null, "ERRO NA CONSULTA: PRODUTO NÃO ENCONTRADO");
+                    JOptionPane.showMessageDialog(null, "ERRO NA CONSULTA: PRODUTO NÃO ENCONTRADO, "+ex);
                 }
                 jTablePro.setNextFocusableComponent(jtQTD);
                 jTablePro.nextFocus();
@@ -4063,8 +4328,12 @@ public class SisPrinc extends javax.swing.JFrame {
             jNomeCli.setNextFocusableComponent(jBomusCLi);
             jNomeCli.nextFocus();
             
-            if(jcombNomePro.getItemCount()<1) JOptionPane.showMessageDialog(null, "PRODUTO NÃO ENCONTRADO");
-            
+            try {
+                if(!objRs.first()) JOptionPane.showMessageDialog(null, "NOME NÃO ENCONTRADO");
+            } catch (SQLException ex) {
+                Logger.getLogger(SisPrinc.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            codCli = objDao.selectIdCli(jNomeCli.getText());
         }
     }//GEN-LAST:event_jNomeCliKeyPressed
 
@@ -4114,7 +4383,8 @@ public class SisPrinc extends javax.swing.JFrame {
     }//GEN-LAST:event_jNomeVendKeyPressed
 
     private void jBomusCLiKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jBomusCLiKeyPressed
-        // TODO add your handling code here:
+            jBomusCLi.setNextFocusableComponent(jtCodPro);
+            jBomusCLi.nextFocus();
     }//GEN-LAST:event_jBomusCLiKeyPressed
 
     private void jtValorSubTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtValorSubTotalActionPerformed
@@ -4186,6 +4456,10 @@ public class SisPrinc extends javax.swing.JFrame {
     private void jbExportExcelProActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbExportExcelProActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jbExportExcelProActionPerformed
+
+    private void jNomeVendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jNomeVendActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jNomeVendActionPerformed
 
 /**
      * @param args the command line arguments

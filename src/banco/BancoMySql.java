@@ -19,15 +19,16 @@ public class BancoMySql {
     private static final String URL = "jdbc:mysql://"+IP+"/bd_sistema_venda";
     private static final String USER = "root";
     private static final String PASSWORD = "";
-	
+    private static Connection conn=null;
 	public static Connection obtemConexao() throws SQLException{
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		
-		return (Connection) DriverManager.getConnection(URL, USER, PASSWORD);
+		if(conn==null) conn = (Connection) DriverManager.getConnection(URL, USER, PASSWORD);
+
+                return conn;
 		
 	}
 }

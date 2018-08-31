@@ -33,7 +33,8 @@ public class MarcaDao {
 			
 			ppStm.setString(1, obj.getNome());
 			ppStm.setString(2, obj.getDescri());
-                        ppStm.execute();
+                        ppStm.execute(); ppStm.close();
+                        con.close();
                         
                         //JOptionPane.showMessageDialog(null, "Comando executado com sucesso");
                         
@@ -57,7 +58,7 @@ public class MarcaDao {
                     ppStm.setString(1, obj.getNome());
                     ppStm.setString(2, obj.getDescri());
                     ppStm.setString(3, ""+obj.getID());
-                    ppStm.execute();
+                    ppStm.execute(); ppStm.close();
                     
                     return true;
 	
@@ -125,7 +126,7 @@ public class MarcaDao {
             ResultSet objRst = ppStm.executeQuery();
             
             //JOptionPane.showMessageDialog(null, "Comando executado com sucesso");
-            return objRst;
+             if(objRst.first() && objRst != null) return objRst;
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "erro na execução do selecionar cod Marca, "+ex);
         }

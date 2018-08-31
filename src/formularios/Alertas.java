@@ -1,5 +1,6 @@
 package formularios;
 
+import java.awt.Color;
 import java.awt.Container;  
 import java.awt.Font;
 import java.awt.GridLayout;  
@@ -22,16 +23,26 @@ public class Alertas extends JFrame{
         Container c = getContentPane();  
 
         JLabel label = new JLabel(txt);
-        Font font = new Font(Font.SANS_SERIF, Font.BOLD, 18);
+        Font font = new Font(Font.SANS_SERIF, Font.BOLD, 50);
         label.setFont(font);
+        label.setVerticalAlignment(JLabel.CENTER);
+        label.setVerticalTextPosition(JLabel.CENTER);
+        label.setHorizontalAlignment(JLabel.CENTER);
+        label.setHorizontalTextPosition(JLabel.CENTER);
+        label.setAlignmentY(CENTER_ALIGNMENT);
+        label.setAlignmentX(CENTER_ALIGNMENT);
+        //label.setSize(300, 150);
+        label.setForeground(Color.BLACK);
+        
         c.setLayout(new GridLayout(1,1));  
         c.add(label);  
 
 
 
 
-        setBounds((width/2)-15,(height/2)-6, 100, 50);
-        setSize(220,80);
+        setBounds((width/2)-175,(height/2)-80, 350, 150);
+        //setSize(220,80);
+        setResizable(false);
         setVisible(true);
         setAlwaysOnTop(true);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -39,12 +50,12 @@ public class Alertas extends JFrame{
     }
     public static void main(String[] args) {
 
-        new Alertas("Aguarde","CARREGANDO...", 1000, 800);
+        //new Alertas("Aguarde","CARREGANDO...", 1000, 800);
     }
     public void parecer(){
-        setVisible(true);
+        this.setVisible(true);
     }
     public void sumir(){
-        setVisible(false);
+        this.setVisible(false);
     }
 }

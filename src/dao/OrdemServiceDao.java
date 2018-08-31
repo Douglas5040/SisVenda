@@ -26,24 +26,25 @@ public class OrdemServiceDao {
         try {
             Connection con = objBanco.obtemConexao();
             
-            String queryInserir = "INSERT INTO ordem_service VALUES(0,?,?,?,?,?,?,?,?)";
+            String queryInserir = "INSERT INTO ordem_service VALUES(0,?,?,?,?,?,?,?,?,?)";
 			
 			PreparedStatement ppStm = con.prepareStatement(queryInserir);
 			
-			ppStm.setString(1, ""+obj.getValor());
-			ppStm.setString(2, obj.getData_hora_opem());
-			ppStm.setString(3, obj.getData_hora_close());
-			ppStm.setString(4, ""+obj.getCod_vendedor());
-			ppStm.setString(5, ""+obj.getCod_cli());
+			ppStm.setString(1, "null");
+			ppStm.setString(2, ""+obj.getValor());
+			ppStm.setString(3, obj.getData_hora_opem());
+			ppStm.setString(4, obj.getData_hora_close());
+			ppStm.setString(5, ""+obj.getCod_vendedor());
 			ppStm.setString(6, ""+obj.getCod_cli());
 			ppStm.setString(7, ""+obj.getDescont());
-			ppStm.setString(8, obj.getObs());
-                        ppStm.execute();
+			ppStm.setString(8, ""+obj.getCod_status_os());
+			ppStm.setString(9, obj.getObs());
+                        ppStm.execute(); ppStm.close();
                         
                         //JOptionPane.showMessageDialog(null, "Comando executado com sucesso");
                         
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "erro na execução do inserir Categoria: "+ex);
+            JOptionPane.showMessageDialog(null, "erro na execução do inserir ordem_service: "+ex);
                         
         }
     }
@@ -120,7 +121,7 @@ public class OrdemServiceDao {
                                                         + " DATA_HORA_CLOSE=?,"
                                                         + " COD_VENDEDOR=?, "
                                                         + " COD_CLI=?,"                                             
-                                                        + " DECONT=?,"
+                                                        + " DESCONT=?,"
                                                         + " COD_STATUS_OS=?,"
                                                         + " OBS=? "
 
@@ -137,12 +138,12 @@ public class OrdemServiceDao {
                         ppStm.setString(7, String.valueOf(osCtrl.getCod_status_os()));
                         ppStm.setString(8, String.valueOf(osCtrl.getObs()));
                         ppStm.setString(9, String.valueOf(osCtrl.getId()));
-                        ppStm.execute();
+                        ppStm.execute(); ppStm.close();
                         
                         //JOptionPane.showMessageDialog(null, "Comando executado com sucesso");
                         
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "erro na execução do alterar quantidade produto da venda");
+            JOptionPane.showMessageDialog(null, "erro na execução do alterar ordem_service, "+ex);
                         
         }
     }
@@ -178,12 +179,12 @@ public class OrdemServiceDao {
             PreparedStatement ppStm = con.prepareStatement(queryInserir);
             ppStm.setString(1, String.valueOf(cod));
             ppStm.setString(2, String.valueOf(codstatus));
-            ppStm.execute();
+            ppStm.execute(); ppStm.close();
                         
             //JOptionPane.showMessageDialog(null, "Comando executado com sucesso");
             
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "erro na execução do deletar ordem Service");
+            JOptionPane.showMessageDialog(null, "erro na execução do deletar ordem Service, "+ex);
         }
     }
 }

@@ -46,7 +46,8 @@ public class FornecedorDao {
 			ppStm.setString(13, obj.getObs());
 			ppStm.setString(14, obj.getEmail());
                         
-                        ppStm.execute();
+                        ppStm.execute(); ppStm.close();
+                        con.close();
                         
                         int lastId = selecionarLastID();
                         PreparedStatement ppStmCod = con.prepareStatement("UPDATE fornecedor SET CODIGO = ? WHERE ID=?");   
@@ -124,7 +125,7 @@ public class FornecedorDao {
 			ppStm.setString(14, String.valueOf(obj.getID()));
 			ppStm.setString(15, obj.getCodigo());
                         
-                        ppStm.execute();
+                        ppStm.execute(); ppStm.close();
                         
                         //JOptionPane.showMessageDialog(null, "Comando executado com sucesso");
                         
@@ -196,7 +197,7 @@ public class FornecedorDao {
             ResultSet objRst = ppStm.executeQuery();
             
             //JOptionPane.showMessageDialog(null, "Comando executado com sucesso");
-            return objRst;
+             if(objRst.first() && objRst != null) return objRst;
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "erro na execução do selecionar cod fornecedor: "+ex);
         }

@@ -20,7 +20,7 @@ import javax.swing.JOptionPane;
  * @author Adm
  */
 public class ControleProDAO {
-    public void inserir(ControleProCtrl obj){
+    public boolean inserir(ControleProCtrl obj){
         BancoMySql objBanco = new BancoMySql();
         
         int codPro = obj.getCodPro();
@@ -48,14 +48,19 @@ public class ControleProDAO {
 			ppStm.setString(6, obs);
 			ppStm.setString(7, ""+codCli);
 			ppStm.setString(8, ""+codForence);
-                        ppStm.execute();
+                        
+                        boolean execute = ppStm.execute();
+                        ppStm.close();
+                        //con.close();
+            return execute;
                         
                         //JOptionPane.showMessageDialog(null, "Comando executado com sucesso");
                         
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "erro na execução do operação produto, "+ex);
-                        
+            System.out.println("erro na execução do operação produto,  "+ex);
+            //JOptionPane.showMessageDialog(null, "erro na execução do operação produto, "+ex);              
         }
+        return false;
     }
     
     public ResultSet selecionar(){

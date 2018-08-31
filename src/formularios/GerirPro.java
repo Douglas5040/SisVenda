@@ -42,7 +42,7 @@ public class GerirPro extends javax.swing.JFrame {
     public GerirPro() {
         initComponents();
         
-        ProdutoCtrl objProduto = new ProdutoCtrl();
+        //ProdutoCtrl objProduto = new ProdutoCtrl();
         ProdutoDao objProDao = new ProdutoDao();
         CategoriaDao cateDao = new CategoriaDao();
         FornecedorDao forneDao = new FornecedorDao();
@@ -100,57 +100,56 @@ public class GerirPro extends javax.swing.JFrame {
         //Formulário de Consulta de preodutos
             jbCadPro.setEnabled(false);
             jbEditPro.setEnabled(true);
-            
-            ResultSet objProRs = objProDao.selecionarPro(String.valueOf(SisPrinc.codPro));
             System.out.println("consulta Produto = "+SisPrinc.codPro);
             
             try{
-                objProRs.first();
+               ResultSet objProRs = objProDao.selecionarPro(String.valueOf(SisPrinc.codPro));
+               if(objProRs.first() && objProRs != null){
                     
-                //DADOS DO PRODUTO
-                jtCodBarras.setText(objProRs.getString("COD_BARRAS"));
-                jtNome.setText(objProRs.getString("NOME"));
-                jtCatego.setText(cateDao.selecionarCatego(objProRs.getString("COD_CATEGORIA")).getString("NOME"));
-                jtFornece.setText(forneDao.selectFornece(objProRs.getString("COD_FORNECEDOR")).getString("NOME_FANTAZIA"));
-                jtUnid.setText(undDao.selecionarUndMed(objProRs.getString("COD_UNIDADE_MED")).getString("NOME"));
-                jtMarca.setText(marcaDao.selectMarca(objProRs.getString("COD_MARCA")).getString("NOME"));
-                jtPeso.setText(objProRs.getString("PESO"));
-                
-                //PREÇO PRODUTO
-                jtPriceFrabric.setText(objProRs.getString("CUSTO_FABRICA"));
-                jtPriceVarejo.setText(objProRs.getString("PRECO_VAREJO"));
-                jtPriceAtaca.setText(objProRs.getString("PRECO_ATACADO"));
-                jtLucro.setText(objProRs.getString("MARKUP_LUCRO"));
-                jtValorBonus.setText(objProRs.getString("VALOR_BONUS"));       
-                jtBonus.setText(objProRs.getString("PONTOS_BONUS"));
-                
-                //ESTOQUE
-                jtEstoqMax.setText(objProRs.getString("ESTOQ_MAX"));
-                jtEstoqMin.setText(objProRs.getString("ESTOQ_MIN"));
-                jtEstoqAtual.setText(objProRs.getString("ESTOQ_ATUAL"));
-                        
-                //DADOS FISCAIS
-                jtImpIPI.setText(objProRs.getString("IPI_IMPOSTO"));
-                jtImpCEST.setText(objProRs.getString("CEST_IMPOSTO"));
-                jtImpICMS.setText(objProRs.getString("ICMS_IMPOSTO"));
-                jtImpNCM.setText(objProRs.getString("NCM_IMPOSTO"));
-                        
-                //IMAGENS
-                //jlImg1
-                //jlImg2
-                        
-                //DESCRIÇÃO
-                jtaDescri.setText(objProRs.getString("DESCRI"));
-                        
-                //DATAS PRODUTO
-                jftDataFabric.setText(objProRs.getString("DATA_FABRICA").substring(8,10)+"/"+
-                                      objProRs.getString("DATA_FABRICA").substring(5,7)+"/"+
-                                      objProRs.getString("DATA_FABRICA").substring(0,4));
-                jftValidade.setText(objProRs.getString("VALIDADE").substring(8,10)+"/"+
-                                    objProRs.getString("VALIDADE").substring(5,7)+"/"+
-                                    objProRs.getString("VALIDADE").substring(0,4));
-                        
-                
+                    //DADOS DO PRODUTO
+                    jtCodBarras.setText(objProRs.getString("COD_BARRAS"));
+                    jtNome.setText(objProRs.getString("NOME"));
+                    jtCatego.setText(cateDao.selecionarCatego(objProRs.getString("COD_CATEGORIA")).getString("NOME"));
+                    jtFornece.setText(forneDao.selectFornece(objProRs.getString("COD_FORNECEDOR")).getString("NOME_FANTAZIA"));
+                    jtUnid.setText(undDao.selecionarUndMed(objProRs.getString("COD_UNIDADE_MED")).getString("NOME"));
+                    jtMarca.setText(marcaDao.selectMarca(objProRs.getString("COD_MARCA")).getString("NOME"));
+                    jtPeso.setText(objProRs.getString("PESO"));
+
+                    //PREÇO PRODUTO
+                    jtPriceFrabric.setText(objProRs.getString("CUSTO_FABRICA"));
+                    jtPriceVarejo.setText(objProRs.getString("PRECO_VAREJO"));
+                    jtPriceAtaca.setText(objProRs.getString("PRECO_ATACADO"));
+                    jtLucro.setText(objProRs.getString("MARKUP_LUCRO"));
+                    jtValorBonus.setText(objProRs.getString("VALOR_BONUS"));       
+                    jtBonus.setText(objProRs.getString("PONTOS_BONUS"));
+
+                    //ESTOQUE
+                    jtEstoqMax.setText(objProRs.getString("ESTOQ_MAX"));
+                    jtEstoqMin.setText(objProRs.getString("ESTOQ_MIN"));
+                    jtEstoqAtual.setText(objProRs.getString("ESTOQ_ATUAL"));
+
+                    //DADOS FISCAIS
+                    jtImpIPI.setText(objProRs.getString("IPI_IMPOSTO"));
+                    jtImpCEST.setText(objProRs.getString("CEST_IMPOSTO"));
+                    jtImpICMS.setText(objProRs.getString("ICMS_IMPOSTO"));
+                    jtImpNCM.setText(objProRs.getString("NCM_IMPOSTO"));
+
+                    //IMAGENS
+                    //jlImg1
+                    //jlImg2
+
+                    //DESCRIÇÃO
+                    jtaDescri.setText(objProRs.getString("DESCRI"));
+
+                    //DATAS PRODUTO
+                    jftDataFabric.setText(objProRs.getString("DATA_FABRICA").substring(8,10)+"/"+
+                                          objProRs.getString("DATA_FABRICA").substring(5,7)+"/"+
+                                          objProRs.getString("DATA_FABRICA").substring(0,4));
+                    jftValidade.setText(objProRs.getString("VALIDADE").substring(8,10)+"/"+
+                                        objProRs.getString("VALIDADE").substring(5,7)+"/"+
+                                        objProRs.getString("VALIDADE").substring(0,4));
+
+                }
             }catch(Exception ex){
                 JOptionPane.showMessageDialog(null, "erro ao fazer cunsulta de PRODUTOS GerirProdutos: "+ex);
             }
