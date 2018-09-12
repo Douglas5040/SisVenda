@@ -142,7 +142,7 @@ public class ProOrcamentDao {
     }
     
 
-    public void deletar(int cod_pro, int os){
+    public void deletar(String cod_pro, int os){
         BancoMySql objBanco = new BancoMySql();
         
         try {
@@ -151,7 +151,7 @@ public class ProOrcamentDao {
             String queryInserir = "DELETE from pro_orcament WHERE COD_PRO=? AND COD_ORC=?";
 		
             PreparedStatement ppStm = con.prepareStatement(queryInserir);
-            ppStm.setString(1, String.valueOf(cod_pro));
+            ppStm.setString(1, cod_pro);
             ppStm.setString(2, String.valueOf(os));
             ppStm.execute(); ppStm.close();
                         

@@ -99,6 +99,27 @@ public class OrcamentoDao {
         return null;
     }
 
+       public ResultSet selectOrcForId(int id){
+        BancoMySql objBanco = new BancoMySql();
+        
+        try {
+            Connection con = objBanco.obtemConexao();
+            
+            String querySelect = "select * from orcamento WHERE ID = ?";
+			
+            PreparedStatement ppStm = con.prepareStatement(querySelect);
+			
+            ppStm.setString(1, ""+id);
+            ResultSet objRst = ppStm.executeQuery();
+            //JOptionPane.showMessageDialog(null, "Comando executado com sucesso");
+            
+            if(objRst.first()) return objRst;
+            else return null;
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "erro na execução do selecionar orcamento, "+ex);
+        }
+        return null;
+    }
     public int selectLastCodOrc() {
         BancoMySql objBanco = new BancoMySql();
         

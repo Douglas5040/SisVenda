@@ -163,7 +163,7 @@ public class OrdemServiceDao {
                         //JOptionPane.showMessageDialog(null, "Comando executado com sucesso");
                         
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "erro na execução do alterar status OS");
+            JOptionPane.showMessageDialog(null, "erro na execução do alterar status OS, "+ex);
                         
         }
     }

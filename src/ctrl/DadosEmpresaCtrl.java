@@ -19,9 +19,10 @@ public class DadosEmpresaCtrl {
     private String tel;
     private String cell;
     private String email;
-    private String nome_dono;
+    private String nome_dono; 
     private byte[] logo;
 
+     public DadosEmpresaCtrl(){}
     public DadosEmpresaCtrl(int id, String nome, String ender, String cidade, String estado, String cnpj, String tel, String cell, String email, String nome_dono, byte[] logo) {
         this.id = id;
         this.nome = nome;

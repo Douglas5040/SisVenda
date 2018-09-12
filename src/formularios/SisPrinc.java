@@ -6,12 +6,14 @@
 package formularios;
 
 import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfPCell;
@@ -20,6 +22,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import ctrl.UsuarioCtrl;
 import ctrl.ClienteCtrl;
 import ctrl.CompraCtrl;
+import ctrl.DadosEmpresaCtrl;
 import ctrl.DoubleCtrl;
 import ctrl.ProdutoCtrl;
 import ctrl.VendaCtrl;
@@ -34,6 +37,7 @@ import dao.AcessoDao;
 import dao.ClienteDao;
 import dao.CompraDao;
 import dao.ContasDao;
+import dao.DadosEmpresaDao;
 import dao.FuncionarioDao;
 import dao.OrcamentoDao;
 import dao.OrdemServiceDao;
@@ -3039,6 +3043,11 @@ public class SisPrinc extends javax.swing.JFrame {
             OrdemServiceCtrl objOSCtrl = new OrdemServiceCtrl();
             SaidaProCtrl objSPCtrl = new SaidaProCtrl();
             SaidaProDao objSpDao = new SaidaProDao();
+            OrcamentoDao objOrcDao = new OrcamentoDao();
+            OrcamentoCtrl objOrcCtrl = new OrcamentoCtrl();
+            ClienteDao cliDao = new ClienteDao();
+            DadosEmpresaCtrl dadosEmpCtrl = new DadosEmpresaCtrl();
+            DadosEmpresaDao dadosEmpDao = new DadosEmpresaDao();
             
             if(jcbTipoVend.getSelectedIndex() == 0){
                 ResultSet rsOs = objOSDao.selecionarOS(""+codOS);
@@ -3051,8 +3060,8 @@ public class SisPrinc extends javax.swing.JFrame {
                             data = (formato.format(dataSistema));
                             Calendar now = Calendar.getInstance();
                             hora = (String.format("%1$tH:%1$tM:%1tS", now));
-                        objOSCtrl.setData_hora_opem(data+" "+hora);
-                        objOSCtrl.setData_hora_close("0000/00/00 00:00:00");
+                        objOSCtrl.setData_hora_opem(rsOs.getString("DATA_HORA_OPEM"));
+                        objOSCtrl.setData_hora_close(data+" "+hora);
                         objOSCtrl.setValor(Double.valueOf(jlValorTotal.getText().replace(",", ".")));
                         objOSCtrl.setCod_cli(codCli);
                         objOSCtrl.setCod_vendedor(func.getId());
@@ -3069,26 +3078,243 @@ public class SisPrinc extends javax.swing.JFrame {
                 }catch (SQLException ex) {
                     JOptionPane.showMessageDialog(null, "erro ao fazer cunsulta OS, "+ex);
                 }
-                    
+            //Orcamento
             }else if(jcbTipoVend.getSelectedIndex() == 1){
+              try {
+                  
                 Document doc = new Document(PageSize.A4,20,20,25,15);
                 String nomeArqPdf = "relatorio.pdf";
                 
-                try {
+                ResultSet rsOrc = objOrcDao.selectOrcForId(codOrc);
+                rsOrc.first();
+                
+                objOrcCtrl.setId(codOrc);
+                objOrcCtrl.setCodCli(codCli);
+                objOrcCtrl.setCod_vendedor(func.getId());
+                objOrcCtrl.setDescont(0);
+                objOrcCtrl.setValor_total(Double.valueOf(jlValorTotal.getText().replace(",", ".")));
+                objOrcCtrl.setObs(hora);
+                    String data, hora;
+                    Date dataSistema = new Date();
+                    SimpleDateFormat formato = new SimpleDateFormat("yyyy/MM/dd");
+                    SimpleDateFormat formatoNormal = new SimpleDateFormat("dd/MM/yyyy");
+                    data = (formato.format(dataSistema));
+                    Calendar now = Calendar.getInstance();
+                    hora = (String.format("%1$tH:%1$tM:%1tS", now));
+                objOrcCtrl.setData_orc(data+" "+hora);
+                
+                objOrcDao.alterar(objOrcCtrl);
+                
+                    
+                    ResultSet rsDadosEmp = dadosEmpDao.selecionarTodos();
+                    rsDadosEmp.first();
+                    
                     PdfWriter.getInstance(doc, new FileOutputStream(nomeArqPdf));
                    doc.open();
+                   
+                   //tabela 1
+                    PdfPTable tableBorder1 = new PdfPTable(1);
+                    tableBorder1.setSpacingBefore(5);
+                    tableBorder1.setSpacingAfter(5);
+                    tableBorder1.setWidthPercentage(100);
+                    
+                    PdfPTable table1 = new PdfPTable(3);
+                    float[] headerwidths1 = { 30,52,18 };
+                    table1.setWidths(headerwidths1);
+                    table1.setWidthPercentage(100);
+                    table1.setHorizontalAlignment(PdfPTable.ALIGN_TOP);
+                    table1.setSpacingBefore(0);
+                    table1.setSpacingAfter(0);
+                    
+                    Font fontDados11 = FontFactory.getFont(FontFactory.HELVETICA, 11, Font.BOLD, BaseColor.BLACK);
+                    Font fontDados12 = FontFactory.getFont(FontFactory.HELVETICA, 12, Font.BOLD, BaseColor.BLACK);
+                    PdfPCell cell1 = new PdfPCell();
+                    cell1.addElement(new Paragraph("Logotipo Loja"));
+                    cell1.setNoWrap(false);
+                    cell1.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
+                    cell1.setBorder(Rectangle.NO_BORDER);
+                    cell1.setRowspan(3);   
+                    cell1.setFixedHeight(23f); 
+                    
+                    PdfPCell cell2 = new PdfPCell();
+                        Paragraph dadosEmpParag = new Paragraph();
+                        dadosEmpParag.add(new Phrase("Telefone: "+rsDadosEmp.getString("TEL")+" / "+rsDadosEmp.getString("CELL")+" \n", fontDados12));
+                        dadosEmpParag.add(new Phrase("WhatsApp: "+rsDadosEmp.getString("CELL")+" \n", fontDados12));
+                        dadosEmpParag.add(new Phrase(rsDadosEmp.getString("ENDER")+"  \n",fontDados11));
+                        dadosEmpParag.add(new Phrase(rsDadosEmp.getString("CIDADE")+"  - "+rsDadosEmp.getString("ESTADO")+" \n",fontDados11));
+                        dadosEmpParag.add(" ");
+                        dadosEmpParag.add(new Phrase("CNPJ: "+rsDadosEmp.getString("CNPJ")+" \n"));
+                        dadosEmpParag.add(new Phrase("Email: "+rsDadosEmp.getString("EMAIL")));
+                        dadosEmpParag.setAlignment(Paragraph.ALIGN_CENTER);
+                    cell2.addElement(dadosEmpParag);
+                    cell2.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
+                    cell2.setBorder(Rectangle.NO_BORDER);
+                    cell2.setRowspan(3);     
+                    cell2.setPaddingTop(-3);
+                    cell2.setPaddingLeft(0);
+                    cell2.setPaddingRight(3);
+                    
+                    Font fontTop = FontFactory.getFont(FontFactory.HELVETICA, 12, Font.BOLD, BaseColor.BLACK);
+
+                    PdfPCell cell3 = new PdfPCell();
+                    Paragraph pCel3 = new Paragraph();
+                    pCel3.add("Criado em");
+                    Paragraph madeData = new Paragraph(formatoNormal.format(dataSistema), fontTop);
+                    madeData.setAlignment(Paragraph.ALIGN_CENTER);
+                    pCel3.add(madeData);
+                    pCel3.setAlignment(Paragraph.ALIGN_CENTER);
+                    cell3.addElement(pCel3);
+                    cell3.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
+                    cell3.setPaddingTop(-4);
+                    cell3.setPaddingBottom(3);
+                    cell3.setPaddingLeft(3);
+                    
+                    PdfPCell cell4 = new PdfPCell();
+                    Paragraph pCel4 = new Paragraph();
+                    pCel4.add("Validade");
+                        System.out.println("criado em: "+dataSistema);
+                        dataSistema.setMonth(dataSistema.getMonth()+1);
+                        System.out.println("validade: "+dataSistema);
+                    Paragraph validade = new Paragraph(formatoNormal.format(dataSistema), fontTop);
+                    validade.setAlignment(Paragraph.ALIGN_CENTER);
+                    validade.setSpacingAfter(0);
+                    pCel4.add(validade);//\Acrecentar validade de 1 mês
+                    pCel4.setAlignment(Paragraph.ALIGN_CENTER);
+                    cell4.addElement(pCel4);
+                    cell4.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
+                    cell4.setPaddingTop(-4);
+                    cell4.setPaddingBottom(3);
+                    cell4.setPaddingLeft(3);
+                    
+                    PdfPCell cell5 = new PdfPCell();
+                    Paragraph pCel5 = new Paragraph();
+                    pCel5.add("Orçamento n°");
+                    Paragraph nOrc = new Paragraph(""+codOrc, fontTop);
+                    nOrc.setAlignment(Paragraph.ALIGN_CENTER);
+                    pCel5.add(nOrc);
+                    pCel5.setAlignment(Paragraph.ALIGN_CENTER);
+                    cell5.addElement(pCel5);
+                    cell5.setVerticalAlignment(PdfPCell.ALIGN_CENTER);
+                    cell5.setPaddingTop(-4);
+                    cell5.setPaddingBottom(3);
+                    cell5.setPaddingLeft(3);
+                    
+                                    
+                    table1.addCell(cell1);              
+                    table1.addCell(cell2);
+                    table1.addCell(cell3);
+                    table1.addCell(cell4);
+                    table1.addCell(cell5);
+                    
+                    tableBorder1.addCell(table1);
+                    doc.add(tableBorder1);
+                    
+                    doc.add(new Paragraph(1, " "));
                     
                     
+                    //titulo
                     Font fontTitle = FontFactory.getFont(FontFactory.HELVETICA, 20, Font.BOLD, BaseColor.BLACK);
                     Paragraph p = new Paragraph("Orçamento",fontTitle);
                     p.setAlignment(1);
                     doc.add(p);
-                    p = new Paragraph(1," ");
-                    doc.add(p);
                     
+                    doc.add(new Paragraph(1, " "));
+                    doc.add(new Paragraph(1, " "));
+                    
+                    
+//                   //tabela 2 dados
+//                    PdfPTable tableBorder2 = new PdfPTable(1);
+//                    tableBorder2.setSpacingBefore(5);
+//                    tableBorder2.setSpacingAfter(5);
+//                    tableBorder2.setWidthPercentage(100);
+                    
+                    PdfPTable table2 = new PdfPTable(2);
+                    float[] headerwidths2 = { 65,35 };
+                    table2.setWidths(headerwidths2);
+                    table2.setWidthPercentage(100);
+                    table2.setHorizontalAlignment(PdfPTable.ALIGN_TOP);
+                    table2.setSpacingBefore(5);
+                    table2.setSpacingAfter(5);
+
+                    
+                    ResultSet rsCli = cliDao.selecionarCliente(""+codCli);
+                    rsCli.first();
+                    
+                    PdfPCell celt21 = new PdfPCell();     
+                    Paragraph pCelt21 = new Paragraph();
+                    pCelt21.add(new Paragraph("Cliente: ", fontTop));
+                    pCelt21.add(rsCli.getString("NOME"));
+                    celt21.addElement(pCelt21);
+                    celt21.setPaddingTop(-4);
+                    celt21.setPaddingBottom(4);
+                    celt21.setPaddingLeft(3);
+                    
+                    PdfPCell celt22 = new PdfPCell();
+                    Paragraph pCelt22 = new Paragraph();
+                    pCelt22.add(new Paragraph("Criado por : ", fontTop));
+                    pCelt22.add(func.getNome()+" - "+func.getCargo());
+                    celt22.addElement(pCelt22);
+                    celt22.setPaddingTop(-4);
+                    celt22.setPaddingBottom(4);
+                    celt22.setPaddingLeft(3);
+                    
+                    table2.addCell(celt21);
+                    table2.addCell(celt22);
+                    
+                   // tableBorder2.addCell(table2);
+                    doc.add(table2);
+                    
+                    doc.add(new Paragraph(1," "));
+                    
+                     //tabela 3 dados
+                    
+                    PdfPTable table3 = new PdfPTable(3);
+                    float[] headerwidths3 = { 32,33,35 };
+                    table3.setWidths(headerwidths3);
+                    table3.setWidthPercentage(100);
+                    //table3.setHorizontalAlignment(PdfPTable.ALIGN_TOP);
+                    table3.setSpacingBefore(0);
+                    table3.setSpacingAfter(0);
+                    
+                    PdfPCell celt31 = new PdfPCell();     
+                    Paragraph pCelt31 = new Paragraph();
+                    pCelt31.add(new Paragraph("Telefone: ", fontTop));
+                    pCelt31.add(rsDadosEmp.getString("TEL"));
+                    celt31.addElement(pCelt31);
+                    celt31.setPaddingTop(-4);
+                    celt31.setPaddingBottom(5);
+                    celt31.setPaddingLeft(3);
+                    
+                    PdfPCell celt32 = new PdfPCell();     
+                    Paragraph pCelt32 = new Paragraph();
+                    pCelt32.add(new Paragraph("Celular: ", fontTop));
+                    pCelt32.add(rsDadosEmp.getString("CELL"));
+                    celt32.addElement(pCelt32);
+                    celt32.setPaddingTop(-4);
+                    celt32.setPaddingBottom(5);
+                    celt32.setPaddingLeft(3);
+                    
+                    PdfPCell celt33 = new PdfPCell();     
+                    Paragraph pCelt33 = new Paragraph();
+                    pCelt33.add(new Paragraph("Email: ", fontTop));
+                    pCelt33.add(rsDadosEmp.getString("EMAIL"));
+                    celt33.addElement(pCelt33);
+                    celt33.setPaddingTop(-4);
+                    celt33.setPaddingBottom(5);
+                    celt33.setPaddingLeft(3);
+                    
+                    table3.addCell(celt31);
+                    table3.addCell(celt32);
+                    table3.addCell(celt33);
+                    
+                    doc.add(table3);
+                    
+                    doc.add(new Paragraph(1," "));
+                    
+                    //tabela produtos
                     PdfPTable tableBorder = new PdfPTable(1);
                     tableBorder.setSpacingBefore(5);
-                    tableBorder.setSpacingAfter(5);
+                    tableBorder.setSpacingAfter(0);
                     tableBorder.setWidthPercentage(100);
                     
                     PdfPTable table = new PdfPTable(6);
@@ -3098,7 +3324,6 @@ public class SisPrinc extends javax.swing.JFrame {
                     table.setHorizontalAlignment(PdfPTable.ALIGN_TOP);
                     table.setSpacingBefore(0);
                     table.setSpacingAfter(0);
-                    
                     
                     Font fontHead = FontFactory.getFont(FontFactory.HELVETICA, 12, Font.BOLD, BaseColor.WHITE);
                     PdfPCell cel1 = new PdfPCell(new Paragraph("CODIGO",fontHead));
@@ -3137,7 +3362,7 @@ public class SisPrinc extends javax.swing.JFrame {
                     cel5.setFixedHeight(23f);
                     cel5.setBackgroundColor(BaseColor.BLACK);
                     
-                    PdfPCell cel6 = new PdfPCell(new Paragraph("VALOR TOTAL",fontHead));
+                    PdfPCell cel6 = new PdfPCell(new Paragraph("SUBTOTAL",fontHead));
                     cel6.setNoWrap(false);
                     //cel6.setVerticalAlignment(PdfPCell.ALIGN_MIDDLE);
                     cel6.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
@@ -3192,7 +3417,7 @@ public class SisPrinc extends javax.swing.JFrame {
                         
                         PdfPCell cel12 = new PdfPCell(new Paragraph(objTM.getValueAt(x, 5).toString()));
                         cel12.setVerticalAlignment(PdfPCell.ALIGN_MIDDLE);
-                        cel12.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
+                        cel12.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
                         cel12.setFixedHeight(20f);
                         cel12.setBorder(Rectangle.NO_BORDER);;
                         if(x != 0 && !((x % 2) == 0)) cel12.setBackgroundColor(BaseColor.LIGHT_GRAY);
@@ -3205,15 +3430,75 @@ public class SisPrinc extends javax.swing.JFrame {
                         table.addCell(cel11);
                         table.addCell(cel12);
                     }
+                    
                     tableBorder.addCell(table);
                     doc.add(tableBorder);
+                    
+                    
+                    //tabela produtos
+                    PdfPTable tableBorderTot = new PdfPTable(4);
+                    float[] headerwidthsBordTot = { 25,40,12,33 };
+                    tableBorderTot.setWidths(headerwidthsBordTot);
+                    tableBorderTot.setSpacingBefore(0);
+                    tableBorderTot.setSpacingAfter(0);
+                    tableBorderTot.setWidthPercentage(100);
+                    
+                    Font fontTotal = FontFactory.getFont(FontFactory.HELVETICA, 12, Font.BOLD, BaseColor.BLACK);
+                    PdfPTable tableTotal = new PdfPTable(2);
+                    float[] headerwidthsTot = { 15,18 };
+                    tableTotal.setWidths(headerwidthsTot);
+                    tableTotal.setWidthPercentage(100);
+                    tableTotal.setHorizontalAlignment(PdfPTable.ALIGN_TOP);
+                    tableTotal.setSpacingBefore(0);
+                    tableTotal.setSpacingAfter(5);
+                        PdfPCell linha01 = new PdfPCell(new Paragraph("Total: R$", fontTotal));
+                        linha01.setPadding(5);
+                        linha01.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
+                        tableTotal.addCell(linha01);
+                        PdfPCell linha02 = new PdfPCell(new Paragraph(jlValorTotal.getText(), fontTotal));
+                        linha02.setPadding(5);
+                        linha02.setVerticalAlignment(PdfPCell.ALIGN_MIDDLE);
+                        linha02.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
+                        tableTotal.addCell(linha02);
+                    
+                    PdfPCell linha1 = new PdfPCell();
+                    linha1.setPaddingTop(0);
+                    linha1.setBorder(Rectangle.NO_BORDER);
+                    tableBorderTot.addCell(linha1);
+                    
+                    PdfPCell linha2 = new PdfPCell();
+                    linha2.setPaddingTop(0);
+                    linha2.setBorder(Rectangle.NO_BORDER);
+                    tableBorderTot.addCell(linha2);
+                    
+                    PdfPCell linha3 = new PdfPCell();
+                    linha3.setPaddingTop(0);
+                    linha3.setPaddingRight(0);
+                    linha3.setBorder(Rectangle.NO_BORDER);
+                    tableBorderTot.addCell(linha3);
+                    
+                    PdfPCell linha4 = new PdfPCell();
+                    linha4.setPaddingTop(0);
+                    linha4.setPaddingRight(0);
+                    linha4.addElement(tableTotal);
+                    linha4.setBorder(Rectangle.NO_BORDER);
+                    tableBorderTot.addCell(linha4);
+                    
+                    
+                   // tableBorder2.addCell(table2);
+                    doc.add(tableBorderTot);
+                    
                     doc.close();
+                    
                     Desktop.getDesktop().open(new File(nomeArqPdf));
+                    
                 } catch (DocumentException ex) {
                     Logger.getLogger(SisPrinc.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (FileNotFoundException ex) {
                     Logger.getLogger(SisPrinc.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (IOException ex) {
+                    Logger.getLogger(SisPrinc.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (SQLException ex) {
                     Logger.getLogger(SisPrinc.class.getName()).log(Level.SEVERE, null, ex);
                 }
                  
@@ -3251,8 +3536,14 @@ public class SisPrinc extends javax.swing.JFrame {
                 if(jcbTipoVend.getSelectedIndex() == 0){
                     if(jTablePro.getRowCount()==0){
 
+                            String data, hora;
+                            Date dataSistema = new Date();
+                            SimpleDateFormat formato = new SimpleDateFormat("yyyy/MM/dd");
+                            data = (formato.format(dataSistema));
+                            Calendar now = Calendar.getInstance();
+                            hora = (String.format("%1$tH:%1$tM:%1tS", now));
                         objOSCtrl.setId(0);//caso tenha uma conta
-                        objOSCtrl.setData_hora_opem("0000/00/00 00:00:00");
+                        objOSCtrl.setData_hora_opem(data+" "+hora);
                         objOSCtrl.setData_hora_close("0000/00/00 00:00:00");
                         objOSCtrl.setValor(0.0);
                         objOSCtrl.setCod_cli(codCli);
@@ -3479,7 +3770,7 @@ public class SisPrinc extends javax.swing.JFrame {
             Double valorPro = Double.valueOf(objTM.getValueAt(jTablePro.getSelectedRow(), 5).toString());
             int qtdProAlt = Integer.parseInt(objTM.getValueAt(jTablePro.getSelectedRow(), 3).toString()) 
                             + proDao.qtdPro(objTM.getValueAt(jTablePro.getSelectedRow(), 0).toString());
-            int codPro = Integer.parseInt(objTM.getValueAt(jTablePro.getSelectedRow(), 0).toString()); 
+            String codPro = objTM.getValueAt(jTablePro.getSelectedRow(), 0).toString(); 
                 
             if(jcbTipoVend.getSelectedIndex()==0){
                 proDao.alterarQtdPro(qtdProAlt, ""+codPro);
@@ -3636,7 +3927,7 @@ public class SisPrinc extends javax.swing.JFrame {
             OrcamentoDao orcDao = new OrcamentoDao();
             ProOrcamentDao proOrc = new ProOrcamentDao();
             for(int x=0;x < tamTable; x++){
-                int codPro = Integer.parseInt(objTM.getValueAt(x, 0).toString()); 
+                String codPro = objTM.getValueAt(x, 0).toString(); 
                 if(jcbTipoVend.getSelectedIndex()==0){
                     int qtdProAlt = Integer.parseInt(objTM.getValueAt(x, 3).toString()) 
                                     + proDao.qtdPro(objTM.getValueAt(x, 0).toString());
@@ -3645,11 +3936,12 @@ public class SisPrinc extends javax.swing.JFrame {
                     saidaProDao.deletar(proDao.selecionarID(""+codCli), codOS, 1); //apagar uma saida de produto Pendente
                     
                 }else if(jcbTipoVend.getSelectedIndex()==1){
-                    proOrc.deletar(codPro, codOS);
+                    proOrc.deletar(codPro, codOrc);
                 }
             }
-            objOsDao.deletar(codOS, 6);
-            orcDao.deletar(codOrc);
+            if(jcbTipoVend.getSelectedIndex()==0){ objOsDao.deletar(codOS, 6);
+            }else if(jcbTipoVend.getSelectedIndex()==1){ orcDao.deletar(codOrc);}
+            
             objTM.setNumRows(0);
              jlValorTotal.setText("00,00");
             jTabbedPane1.setNextFocusableComponent(jtCodPro);
